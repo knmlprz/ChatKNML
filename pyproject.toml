@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chatknml"
+version = "0.1.0"
+description = "Chatbot"
+authors = ["Piotr Krawiec <piotr.krawiec23@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+transformers = {git = "https://www.github.com/huggingface/transformers"}
+accelerate = {git = "https://github.com/huggingface/accelerate"}
+bitsandbytes = "^0.41.1"
+einops = "^0.7.0"
+scipy = "^1.11.3"
+torch = "2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+ruff = "^0.0.292"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

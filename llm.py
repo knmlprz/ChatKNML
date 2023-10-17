@@ -1,0 +1,37 @@
+import dotenv
+import chromadb
+
+from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain.prompts import PromptTemplate
+from chromadb.config import Settings
+from langchain.chains import RetrievalQAWithSourcesChain
+
+client = chromadb.HttpClient(settings=Settings(allow_reset=True))
+dotenv.load_dotenv()
+vectorstore = Chroma(client=client, embedding_function=OpenAIEmbeddings())
+retriever = vectorstore.as_retriever()
+
+
+template = """
+Jesteś asystentem odpowiadającym na pytania. 
+Aby odpowiedzieć na pytanie, użyj następujących elementów kontekstu. 
+Jeśli nie znasz odpowiedzi, po prostu powiedz, że nie wiesz. 
+Użyj maksymalnie trzech zdań i zachowaj zwięzłość odpowiedzi. 
+Odpowiadaj wyłącznie używając języka polskiego.
+
+Pytanie: {question} 
+Kontekst: {context} 
+Odpowiedź:"""
+rag_prompt = PromptTemplate.from_template(template)
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=300)
+chain = RetrievalQAWithSourcesChain.from_llm(
+    llm=llm,
+    retriever=retriever,
+    verbose=True,
+    return_source_documents=True,
+    question_prompt=rag_prompt,
+)
+

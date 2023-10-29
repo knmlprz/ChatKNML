@@ -5,12 +5,19 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from chromadb.config import Settings
 from langchain.chains import RetrievalQAWithSourcesChain
+from langchain.vectorstores import SQLiteVSS
+from langchain.embeddings import OpenAIEmbeddings
 
-client = chromadb.HttpClient(settings=Settings(allow_reset=True))
+connection = SQLiteVSS.create_connection(db_file="./vss.db")
+
 dotenv.load_dotenv()
-vectorstore = Chroma(client=client, embedding_function=OpenAIEmbeddings())
+
+vectorstore = SQLiteVSS(
+    embedding=OpenAIEmbeddings(),
+    table="state_union",
+    connection=connection
+)
 retriever = vectorstore.as_retriever()
 
 
@@ -34,4 +41,3 @@ chain = RetrievalQAWithSourcesChain.from_llm(
     return_source_documents=True,
     question_prompt=rag_prompt,
 )
-

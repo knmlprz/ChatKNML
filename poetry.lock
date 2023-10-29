@@ -2513,6 +2513,21 @@ pymysql = ["pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
+name = "sqlite-vss"
+version = "0.1.2"
+description = ""
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sqlite_vss-0.1.2-py3-none-macosx_10_6_x86_64.whl", hash = "sha256:9eefa4207f8b522e32b2747fce44422c773e36710bf807613795218c7ba125f0"},
+    {file = "sqlite_vss-0.1.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:84994eaf7fe700218b258422358c4536a6aca39b96026c308b28630967f954c4"},
+    {file = "sqlite_vss-0.1.2-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux1_x86_64.whl", hash = "sha256:e44f03bc4cb214bb77b206519abfb623e3e4795967a569218e288927a7715806"},
+]
+
+[package.extras]
+test = ["pytest"]
+
+[[package]]
 name = "starlette"
 version = "0.27.0"
 description = "The little ASGI library that shines."
@@ -3284,4 +3299,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "eb4326e46949bdea27ee37900e21a2edfc770b5d60244b340d8aa63a804d70ac"
+content-hash = "8269e8735fd30d89961fa0d49ccd38af68a5ca38ff1eb877dd44a07a195f29b9"

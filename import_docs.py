@@ -1,5 +1,4 @@
 import dotenv
-import chromadb
 from langchain.document_loaders import PyPDFDirectoryLoader
 from pprint import pprint
 
@@ -7,15 +6,18 @@ from langchain.text_splitter import (
     RecursiveCharacterTextSplitter,
     CharacterTextSplitter,
 )
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import SQLiteVSS
 from langchain.embeddings import OpenAIEmbeddings
-from chromadb.config import Settings
 
-client = chromadb.HttpClient(settings=Settings(allow_reset=True))
+connection = SQLiteVSS.create_connection(db_file="./vss.db")
+
 dotenv.load_dotenv()
 
-vectorstore = Chroma(client=client, embedding_function=OpenAIEmbeddings())
-
+vectorstore = SQLiteVSS(
+    embedding=OpenAIEmbeddings(),
+    table="state_union",
+    connection=connection
+)
 # List documents in a directory
 loader = PyPDFDirectoryLoader(path="ingest")
 documents = loader.load()

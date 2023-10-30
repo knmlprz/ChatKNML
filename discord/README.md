@@ -2,7 +2,7 @@
 
 ## Setup
 
-`
+```
 # Create virtual env
 python3 -m venv .venv
 source .venv/bin/activate
@@ -22,5 +22,5 @@ set -a
 
 # Run a bot!
 python3 Bot.py
-`
+```
 

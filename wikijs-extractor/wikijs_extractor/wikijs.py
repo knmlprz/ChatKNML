@@ -2,11 +2,17 @@ import aiohttp
 import asyncio
 import logging
 
+from typing import List
+
+from langchain.docstore.document import Document
+from langchain.document_loaders.base import BaseLoader
+
 from .models import Page, PageListItem
 
 logger = logging.getLogger(__name__)
 
-def get_session(url: str, token: str):
+
+def _get_session(url: str, token: str):
     """
     Generate aiohttp session with authentication headers
 
@@ -24,7 +30,7 @@ def get_session(url: str, token: str):
     return session
 
 
-async def list_pages(session: aiohttp.ClientSession) -> list[PageListItem]:
+async def _list_pages(session: aiohttp.ClientSession) -> List[PageListItem]:
     """
     List all pages in wiki
 
@@ -48,17 +54,23 @@ async def list_pages(session: aiohttp.ClientSession) -> list[PageListItem]:
     """
     logger.debug("Listing pages from wiki on url: %s", session._base_url)
     resp = await session.post("/graphql", json={"query": query})
-    
-    logger.debug("Got response from wiki. Response status: %s, Response text: %s", resp.status, await resp.text())
+
+    logger.debug(
+        "Got response from wiki. Response status: %s, Response text: %s",
+        resp.status,
+        await resp.text(),
+    )
     data = await resp.json()
-    
+
     logger.debug("Json: %s", data)
     pages_ = data["data"]["pages"]["list"]
     pages = [PageListItem(**item) for item in pages_]
     return pages
 
 
-async def get_page(session: aiohttp.ClientSession, page_id: int) -> Page | None:
+async def _get_page(
+    session: aiohttp.ClientSession, page_id: int, locale: str
+) -> Page | None:
     """Get page with content
 
     Args:
@@ -85,16 +97,59 @@ async def get_page(session: aiohttp.ClientSession, page_id: int) -> Page | None:
     resp = await session.post(
         "/graphql", json={"query": query, "variables": {"id": page_id}}
     )
-    logger.debug("Got response from wiki for Page with id %s. Response status: %s, Response text: %s",page_id, resp.status, await resp.text())
-    
+    logger.debug(
+        "Got response from wiki for Page with id %s. Response status: %s, Response text: %s",
+        page_id,
+        resp.status,
+        await resp.text(),
+    )
+
     data = await resp.json()
     if session._base_url is None:
         raise ValueError("Base url is None")
     try:
-        page = Page(**data["data"]["pages"]["single"], instance_url=str(session._base_url), locale="pl")
+        page = Page(
+            **data["data"]["pages"]["single"],
+            instance_url=str(session._base_url),
+            locale=locale,
+        )
     except TypeError:
         return None
     return page
+
+
+class WikiJSLoader(BaseLoader):
+    """Load all pages from WikiJS instance"""
+
+    url: str
+    token: str
+    locale: str
+
+    def __init__(self, url: str, token: str, locale: str) -> None:
+        self.url = url
+        self.token = token
+        self.locale = locale
+
+        # Create session and event loop for async operations
+        self.loop = asyncio.get_event_loop()
+        self.session = _get_session(self.url, self.token)
+
+    def load(self) -> List[Document]:
+        page_items = self.loop.run_until_complete(_list_pages(self.session))
+        pages = self.loop.run_until_complete(
+            asyncio.gather(
+                *[_get_page(self.session, page.id, self.locale) for page in page_items]
+            )
+        )
+        documents = [page.to_document() for page in pages if page is not None]
+        return documents
+
+    def __del__(self) -> None:
+        self.loop.run_until_complete(self.session.close())
+        if not self.loop.is_running():
+            # Close loop if it is not running (e.g. if it was created by this class)
+            # This is needed to prevent "Unclosed event loop" warning
+            self.loop.close()
 
 
 def cli():
@@ -118,7 +173,9 @@ def cli():
         ch.setLevel(logging.DEBUG)
 
         # create formatter
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
 
         # add formatter to ch
         ch.setFormatter(formatter)
@@ -131,17 +188,8 @@ def cli():
     token = os.getenv("WIKIJS_TOKEN")
     if token is None:
         raise ValueError("WIKIJS_TOKEN is not defined in environment variables")
-    loop = asyncio.get_event_loop()
 
-    print(f"Downloading pages from {url}...")
-    session = get_session(url, token)
-    page_items = loop.run_until_complete(list_pages(session))
-    #print(f"Downloaded {len(page_items)} pages")
-    # pprint(page_items)
+    loader = WikiJSLoader(url, token, "pl")
+    documents = loader.load()
 
-    pages_to_download = [get_page(session, page.id) for page in page_items]
-    pages = loop.run_until_complete(asyncio.gather(*pages_to_download))
-    #pprint(pages)
- 
-    loop.run_until_complete(session.close())
-    #pprint(pages)
+    pprint(documents)

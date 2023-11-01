@@ -11,6 +11,7 @@ python = "^3.10"
 python-dotenv = "^1.0.0"
 aiohttp = {extras = ["speedups"], version = "^3.8.6"}
 pydantic = "^2.4.2"
+langchain = "^0.0.327"
 
 [tool.poetry.scripts]
 wikijs-extractor = "wikijs_extractor.wikijs:cli"

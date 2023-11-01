@@ -146,7 +146,7 @@ class WikiJSLoader(BaseLoader):
 
     def __del__(self) -> None:
         self.loop.run_until_complete(self.session.close())
-        if not self.loop.is_running():
+        if not self.loop.is_running(): # TODO: Check if this is needed
             # Close loop if it is not running (e.g. if it was created by this class)
             # This is needed to prevent "Unclosed event loop" warning
             self.loop.close()

@@ -17,6 +17,7 @@ chromadb = "^0.4.15"
 langchainhub = "^0.1.13"
 tiktoken = "^0.5.1"
 openpyxl = "^3.1.2"
+streamlit = "^1.28.0"
 
 [tool.poetry.scripts]
 wikijs-save-documents = "wikijs_extractor.loaders:cli"

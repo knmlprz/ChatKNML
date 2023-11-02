@@ -331,8 +331,8 @@ Example usage (after installing with pip):
     if args.split is not None:
         text_splitter = RecursiveCharacterTextSplitter(
             # Set a really small chunk size, just to show.
+            separators=["#", "##", "###", "####", "#####"],
             chunk_size=700,
-            chunk_overlap=200,
             length_function=len,
             is_separator_regex=False,
         )

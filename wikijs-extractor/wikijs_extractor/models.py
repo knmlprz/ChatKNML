@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, HttpUrl, computed_field
 from urllib.parse import urljoin
+from typing import Any
 
 from langchain.docstore.document import Document
 
@@ -26,20 +27,24 @@ class Page(BaseModel):
     
     @computed_field
     @property
-    def source(self) -> HttpUrl:
+    def source(self) -> str:
         # Url pf page is instance url / locale / path
-        return HttpUrl(urljoin(self.instance_url, f"{self.locale}/{self.path}"))
+        return urljoin(self.instance_url, f"{self.locale}/{self.path}")
+    
+    @property
+    def metadata(self) -> dict[str, str | int | float | bool]:
+        return {
+            "id": self.id,
+            "path": self.path,
+            "title": self.title,
+            "description": self.description,
+            "locale": self.locale,
+            "instance_url": self.instance_url,
+            "source": self.source,
+        }
     
     def to_document(self) -> Document:
         return Document(
             page_content=self.content,
-            metadata={
-                "id": self.id,
-                "path": self.path,
-                "title": self.title,
-                "description": self.description,
-                "locale": self.locale,
-                "instance_url": self.instance_url,
-                "source": self.source,
-            }
+            metadata=self.metadata,
         )

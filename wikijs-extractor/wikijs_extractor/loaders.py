@@ -9,6 +9,9 @@ from langchain.docstore.document import Document
 from langchain.document_loaders.base import BaseLoader
 from langchain.text_splitter import TextSplitter
 
+from openpyxl import Workbook, load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
+
 from .models import Page, PageListItem
 
 logger = logging.getLogger(__name__)
@@ -127,9 +130,6 @@ def save_documents_to_xlsx(documents: List[Document], outfile: Path):
         documents: List of documents
         outfile: Path to output file
     """
-    from openpyxl import Workbook
-    from openpyxl.worksheet.worksheet import Worksheet
-
     # Create workbook
     wb = Workbook()
     # Open first sheet
@@ -149,6 +149,47 @@ def save_documents_to_xlsx(documents: List[Document], outfile: Path):
         )
 
     wb.save(outfile)
+
+
+def load_xslx_to_documents(infile: Path) -> List[Document]:
+    """Loads documents from xslx file
+
+    First row is header, second row is first document and so on.
+
+    Each row should have two columns:
+    - Text
+    - Source
+
+    Column names are ignored.
+
+    Args:
+        infile: File to load from
+
+    Returns:
+        List of Documents
+    """
+    wb = load_workbook(infile)
+    ws: Worksheet | None = wb.active  # type: ignore
+    if ws is None:
+        raise ValueError("No worksheet")
+    
+    documents = []
+    
+    for i, row in enumerate(ws.rows):
+        # Check if row has two columns
+        if len(row) != 2:
+            raise ValueError("Row {i} has {len(row)} columns, expected 2")
+        
+        # Check if both columns are not None
+        if row[0].value is None or row[1].value is None:
+            raise ValueError("Row {i} has None value")
+        
+        # Ignore header
+        if i != 0:
+            documents.append(
+                Document(page_content=str(row[0].value), metadata={"source": str(row[1].value)})
+            )
+    return documents
 
 
 class WikiJSLoader(BaseLoader):

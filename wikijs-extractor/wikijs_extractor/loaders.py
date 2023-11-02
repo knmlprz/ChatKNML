@@ -153,7 +153,7 @@ def save_documents_to_xlsx(documents: List[Document], outfile: Path):
 
 class WikiJSLoader(BaseLoader):
     """Load all pages from WikiJS instance.add()
-    
+
     Args:
         url: Url of WikiJS instance
         token: Authentication token
@@ -199,7 +199,7 @@ class WikiJSLoader(BaseLoader):
         if self.text_splitter is not None:
             for page in pages:
                 texts = self.text_splitter.split_text(page.content)
-                
+
                 documents.extend(
                     self.text_splitter.create_documents(
                         texts, [page.metadata] * len(texts)
@@ -208,13 +208,15 @@ class WikiJSLoader(BaseLoader):
         else:
             documents = [page.to_document() for page in pages]
 
-        
         for document in documents:
             if self.add_path_to_contents:
                 document.page_content += f"\nŹródło: {document.metadata['path']}"
             if self.add_desc_to_contents:
-                document.page_content = f"Opis strony: {document.metadata['description']}\n" + document.page_content
-            
+                document.page_content = (
+                    f"Opis strony: {document.metadata['description']}\n"
+                    + document.page_content
+                )
+
         return documents
 
     def __del__(self) -> None:
@@ -249,7 +251,16 @@ Example usage (after installing with pip):
         "-o", "--out-file", metavar="OUTFILE", type=Path, default="documents.xslx"
     )
     parser.add_argument("-d", "--debug", action="store_true")
-    parser.add_argument("--add-path", action="store_true", help="Add source path to content of Document. Example: '{text}\nŹródło: path/to/page'")
+    parser.add_argument(
+        "--add-path",
+        action="store_true",
+        help="Add source path to content of Document. Example: '{text}\nŹródło: path/to/page'",
+    )
+    parser.add_argument(
+        "--add-desc",
+        action="store_true",
+        help="Add description to content of Document. Example: 'Opis strony: {text}'",
+    )
 
     if parser.parse_args().debug:
         # create console handler and set level to debug
@@ -279,15 +290,22 @@ Example usage (after installing with pip):
     if args.split is not None:
         text_splitter = RecursiveCharacterTextSplitter(
             # Set a really small chunk size, just to show.
-            chunk_size = 700,
-            chunk_overlap  = 200,
-            length_function = len,
-            is_separator_regex = False,
+            chunk_size=700,
+            chunk_overlap=200,
+            length_function=len,
+            is_separator_regex=False,
         )
 
-    loader = WikiJSLoader(url, token, "pl", text_splitter=text_splitter, add_path_to_contents=args.add_path)
+    loader = WikiJSLoader(
+        url,
+        token,
+        "pl",
+        text_splitter=text_splitter,
+        add_path_to_contents=args.add_path,
+        add_desc_to_contents=args.add_desc,
+    )
     documents = loader.load()
-    
+
     if args.out_file:
         save_documents_to_xlsx(documents, args.out_file)
     else:

@@ -1,7 +1,5 @@
-from pydantic import BaseModel, ConfigDict, HttpUrl, computed_field
+from pydantic import BaseModel, ConfigDict, computed_field
 from urllib.parse import urljoin
-from typing import Any
-
 from langchain.docstore.document import Document
 
 class PageListItem(BaseModel):

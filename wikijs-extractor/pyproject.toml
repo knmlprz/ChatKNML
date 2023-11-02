@@ -12,9 +12,14 @@ python-dotenv = "^1.0.0"
 aiohttp = {extras = ["speedups"], version = "^3.8.6"}
 pydantic = "^2.4.2"
 langchain = "^0.0.327"
+openai = "^0.28.1"
+chromadb = "^0.4.15"
+langchainhub = "^0.1.13"
+tiktoken = "^0.5.1"
+openpyxl = "^3.1.2"
 
 [tool.poetry.scripts]
-wikijs-extractor = "wikijs_extractor.wikijs:cli"
+wikijs-save-documents = "wikijs_extractor.loaders:cli"
 
 [build-system]
 requires = ["poetry-core"]

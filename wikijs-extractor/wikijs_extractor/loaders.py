@@ -12,6 +12,8 @@ from langchain.text_splitter import TextSplitter
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 
+from cleantext import clean
+
 from .models import Page, PageListItem
 
 logger = logging.getLogger(__name__)
@@ -70,9 +72,40 @@ async def _list_pages(session: aiohttp.ClientSession) -> List[PageListItem]:
     logger.debug("Json: %s", data)
     pages_ = data["data"]["pages"]["list"]
     pages = [PageListItem(**item) for item in pages_]
+    # TODO: Fix page IDs
     return pages
 
 
+async def _get_page_id(session: aiohttp.ClientSession, path: str, locale: str) -> int:
+    query = """
+    query ($path: String!, $locale: String!) {
+        pages {
+            tree(path: $path, locale: $locale, mode: ALL) {
+                id
+                path
+                title
+            }
+        }
+    }
+    """
+    resp = await session.post(
+        "/graphql", json={"query": query, "variables": {"path": path, "locale": locale}}
+    )
+    data = await resp.json()
+    if session._base_url is None:
+        raise ValueError("Base url is None")
+    pages = [
+        PageListItem(
+            **page,
+        )
+        for page in data["data"]["pages"]["tree"]]
+    
+    # Find exact math of path
+    for page in pages:
+        if page.path == path:
+            return page.id
+    raise ValueError("Page does not exist on a path.")
+    
 async def _get_page(
     session: aiohttp.ClientSession, page_id: int, locale: str
 ) -> Page | None:
@@ -121,6 +154,47 @@ async def _get_page(
     except TypeError:
         return None
     return page
+
+
+async def _search_by_keyword(
+    session: aiohttp.ClientSession, keyword: str, locale: str
+) -> List[PageListItem] | None:
+    query = """
+    query ($keyword: String!) {
+        pages {
+            search(query: $keyword) {
+                results {
+                    id
+                    path
+                    title
+                    description
+                }
+            }
+        }
+    }
+    """
+    resp = await session.post(
+        "/graphql", json={"query": query, "variables": {"keyword": keyword}}
+    )
+    data = await resp.json()
+    print(data)
+    if session._base_url is None:
+        raise ValueError("Base url is None")
+    try:
+        pages = [
+            PageListItem(
+                **page,
+            )
+            for page in data["data"]["pages"]["search"]["results"]
+        ]
+        # Fix page IDs
+        # See: https://github.com/Requarks/wiki/issues/2938
+        for page in pages:
+            page.id = await _get_page_id(session, page.path, locale=locale)
+    
+    except (TypeError):
+        return None
+    return pages
 
 
 def save_documents_to_xlsx(documents: List[Document], outfile: Path):
@@ -172,22 +246,25 @@ def load_xslx_to_documents(infile: Path) -> List[Document]:
     ws: Worksheet | None = wb.active  # type: ignore
     if ws is None:
         raise ValueError("No worksheet")
-    
+
     documents = []
-    
+
     for i, row in enumerate(ws.rows):
         # Check if row has two columns
         if len(row) != 2:
             raise ValueError("Row {i} has {len(row)} columns, expected 2")
-        
+
         # Check if both columns are not None
         if row[0].value is None or row[1].value is None:
             raise ValueError("Row {i} has None value")
-        
+
         # Ignore header
         if i != 0:
             documents.append(
-                Document(page_content=str(row[0].value), metadata={"source": str(row[1].value)})
+                Document(
+                    page_content=str(row[0].value),
+                    metadata={"source": str(row[1].value)},
+                )
             )
     return documents
 
@@ -210,6 +287,7 @@ class WikiJSLoader(BaseLoader):
         token: str,
         locale: str,
         text_splitter: Optional[TextSplitter] = None,
+        clean_text: bool = False,
         add_path_to_contents: bool = False,
         add_desc_to_contents: bool = False,
     ) -> None:
@@ -217,6 +295,7 @@ class WikiJSLoader(BaseLoader):
         self.token = token
         self.locale = locale
         self.text_splitter = text_splitter
+        self.clean_text = clean_text
         self.add_path_to_contents = add_path_to_contents
         self.add_desc_to_contents = add_desc_to_contents
 
@@ -231,7 +310,7 @@ class WikiJSLoader(BaseLoader):
                 *[_get_page(self.session, page.id, self.locale) for page in page_items]
             )
         )
-
+        # TODO: Refactor this, move Page -> Document and filtering/etc to separate function
         # Filter out None values
         pages = [page for page in pages if page is not None]
 
@@ -257,7 +336,31 @@ class WikiJSLoader(BaseLoader):
                     f"Opis strony: {document.metadata['description']}\n"
                     + document.page_content
                 )
+            if self.clean_text:
+                document.page_content = clean(document.page_content, lower=False)
 
+        return documents
+
+    def search_by_keywords(self, keywords: List[str], locale: str) -> List[Document]:
+        results: List[List[PageListItem] | None] = self.loop.run_until_complete(
+            asyncio.gather(
+                *[_search_by_keyword(self.session, keyword, locale=locale) for keyword in keywords]
+            )
+        )
+        page_items: List[PageListItem] = []
+        for result in results:
+            if result is not None:
+                page_items.extend(result)
+        # Filter out duplicates
+        page_items = list(set(page_items))
+        print(page_items)
+        
+        pages: List[Page | None] = self.loop.run_until_complete(
+            asyncio.gather(
+                *[_get_page(self.session, page.id, self.locale) for page in page_items]
+            )
+        )
+        documents = [page.to_document() for page in pages if page is not None]
         return documents
 
     def __del__(self) -> None:
@@ -302,6 +405,11 @@ Example usage (after installing with pip):
         action="store_true",
         help="Add description to content of Document. Example: 'Opis strony: {text}'",
     )
+    parser.add_argument(
+        "--clean-text",
+        action="store_true",
+        help="Clean text using cleantext library",
+    )
 
     if parser.parse_args().debug:
         # create console handler and set level to debug
@@ -328,7 +436,7 @@ Example usage (after installing with pip):
         raise ValueError("WIKIJS_TOKEN is not defined in environment variables")
 
     text_splitter = None
-    if args.split is not None:
+    if args.split:
         text_splitter = RecursiveCharacterTextSplitter(
             # Set a really small chunk size, just to show.
             separators=["#", "##", "###", "####", "#####"],
@@ -344,6 +452,7 @@ Example usage (after installing with pip):
         text_splitter=text_splitter,
         add_path_to_contents=args.add_path,
         add_desc_to_contents=args.add_desc,
+        clean_text=args.clean_text,
     )
     documents = loader.load()
 

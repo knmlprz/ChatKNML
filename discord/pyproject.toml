@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "discord-knml"
+version = "0.1.0"
+description = ""
+authors = [""]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+"discord.py" = "^2.3.2"
+discord = "^2.3.2"
+requests = "^2.31.0"
+Pillow = "^10.1.0"
+urllib3 = "^2.0.7"
+beautifulsoup4 = "^4.12.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -2,7 +2,7 @@ import discord
 import os
 import config
 
-from typing import Self, Any
+from typing import Self
 from discord.ext import commands
 
 intents = discord.Intents.all()
@@ -38,7 +38,7 @@ class Buttons(discord.ui.View):
 @bot.command()
 async def ask(
     ctx: commands.Context,
-    *args: Any,
+    *args: str,
 ):
     await ctx.send(args, view=Buttons())
 

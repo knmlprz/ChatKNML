@@ -1,0 +1,4 @@
+services:
+  discord-bot:
+    build: ./discord
+    env_file: .env

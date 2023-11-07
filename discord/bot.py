@@ -2,6 +2,7 @@ import discord
 import os
 import config
 
+from typing import Self, Any
 from discord.ext import commands
 
 intents = discord.Intents.all()
@@ -10,12 +11,14 @@ bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=inte
 
 
 class Buttons(discord.ui.View):
-    def __init__(self, *, timeout=180):
+    def __init__(self: Self, *, timeout: int = 180):
         super().__init__(timeout=timeout)
 
     @discord.ui.button(label="Good bot", style=discord.ButtonStyle.green)
     async def good_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
+        self: Self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button,
     ):
         await interaction.response.send_message(
             content="This is an edited button response!"
@@ -23,7 +26,9 @@ class Buttons(discord.ui.View):
 
     @discord.ui.button(label="Bad bot", style=discord.ButtonStyle.red)
     async def bad_button(
-        self, interaction: discord.Interaction, button: discord.ui.Button
+        self: Self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button,
     ):
         await interaction.response.send_message(
             content="This is an edited button response!"
@@ -31,8 +36,11 @@ class Buttons(discord.ui.View):
 
 
 @bot.command()
-async def ask(ctx, *args):
+async def ask(
+    ctx: commands.Context,
+    *args: Any,
+):
     await ctx.send(args, view=Buttons())
 
 
-bot.run(os.environ.get("TOKEN", ""))
+bot.run(os.environ["TOKEN"])

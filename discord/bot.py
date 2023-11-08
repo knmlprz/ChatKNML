@@ -1,31 +1,29 @@
 import discord
 import os
 import config
+import logging
 
 from discord.ext import commands
-from .llm import ask_model
+from llm import ask_model
 
-intents = discord.Intents(messages=True)
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.INFO)
 
+intents = discord.Intents()
+intents.message_content = True
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
-@bot.command(name="ask smol model")
-async def _ask_smol_model(
+@bot.command(name="smol")
+async def smol(
     ctx: commands.Context,
     arg: str,
 ):
-    return ask_model(arg, "smol")
+    logger.info("Got ask_smol_model command")
+    response = await ask_model(arg, "smol")
+    return ctx.send(response)
 
 
-@bot.command(name="ask big model")
-async def _ask_big_model(
-    ctx: commands.Context,
-    arg: str,
-):
-    return ask_model(arg, "big")
-
-
+logger.warn("Hello")
 bot.run(os.environ["TOKEN"])
 
-bot.add_command(_ask_smol_model)
-bot.add_command(_ask_big_model)

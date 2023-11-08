@@ -47,7 +47,7 @@ if prompt := st.chat_input("Zadaj pytanie?"):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
-        docs = docsearch.similarity_search(prompt)
+        docs = docsearch.similarity_search(prompt, k=1)
         result = chain({"input_documents": docs, "question": prompt}, return_only_outputs=True)
         message_placeholder.markdown(result["output_text"])
         

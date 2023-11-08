@@ -168,7 +168,10 @@ async def _list_by_keyword(
     return pages
 
 
-async def search_by_keywords(self, keywords: List[str], locale: str) -> List[Document]:
+async def search_by_keywords(
+    session: aiohttp.ClientSession,
+    keywords: List[str],
+    locale: str) -> List[Document]:
     """Search for pages by keywords
 
     Args:
@@ -180,7 +183,7 @@ async def search_by_keywords(self, keywords: List[str], locale: str) -> List[Doc
     """
     results: List[List[PageListItem] | None] = await asyncio.gather(
         *[
-            _list_by_keyword(self.session, keyword, locale=locale)
+            _list_by_keyword(session, keyword, locale=locale)
             for keyword in keywords
         ]
     )
@@ -193,7 +196,7 @@ async def search_by_keywords(self, keywords: List[str], locale: str) -> List[Doc
     print(page_items)
 
     pages: List[Page | None] = await asyncio.gather(
-        *[_get_page(self.session, page.id, self.locale) for page in page_items]
+        *[_get_page(session, page.id, locale) for page in page_items]
     )
     documents = [page.to_document() for page in pages if page is not None]
     return documents

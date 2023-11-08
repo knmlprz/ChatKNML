@@ -2,3 +2,5 @@ services:
   discord-bot:
     build: ./discord
     env_file: .env
+  extra_hosts:
+    - "host.docker.internal:host-gateway"

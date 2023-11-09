@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 discord = "^2.3.2"
-openai = "^1.1.1"
+openai = "=0.27.0"
 langchain = "=0.0.310"
 tiktoken = "^0.5.1"
 duckduckgo-search = "^3.9.4"

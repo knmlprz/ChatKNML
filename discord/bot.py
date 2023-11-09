@@ -26,7 +26,7 @@ async def smol(
     await ctx.send(response)
 
 @bot.command(name="big")
-async def smol(
+async def big(
     ctx: commands.Context,
     *,
     arg: str,

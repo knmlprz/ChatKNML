@@ -10,18 +10,32 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.INFO)
 
-intents = discord.Intents()
+intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
 @bot.command(name="smol")
 async def smol(
     ctx: commands.Context,
+    *,
     arg: str,
 ):
     logger.info("Got ask_smol_model command")
-    response = await ask_model(arg, "smol")
-    return ctx.send(response)
+    async with ctx.typing():
+        response = await ask_model(arg, "smol")
+    await ctx.send(response)
+
+@bot.command(name="big")
+async def smol(
+    ctx: commands.Context,
+    *,
+    arg: str,
+):
+    logger.info("Got ask_big_model command")
+    async with ctx.typing():
+        response = await ask_model(arg, "big")
+    await ctx.send(response)
+
 
 
 logger.warn("Hello")

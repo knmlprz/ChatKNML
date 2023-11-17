@@ -3,7 +3,6 @@ name: Task
 about: Wyznaczanie zadań
 title: ''
 labels: ''
-assignees: pgronkievitz, finloop
 
 ---
 

@@ -14,6 +14,7 @@ np. Wdrożenie nowej funkcjonalności, lewitowanie kota, naprawa buga
 Zaproponuj jakbyś wykonał task. Zrób listę co w ramach taska trzeba zrobić.
 
 np. Dodać świecące diody led, żeby bot wyglądał jak potwór z bagien
+
 **TODO:**
 - Kupić ledy
 - Przymocować do monitora

@@ -19,6 +19,7 @@ np. Dodać świecące diody led, żeby bot wyglądał jak potwór z bagien
 - Kupić ledy
 - Przymocować do monitora
 - Zrobić dokumentację
+- Napisać testy
 
 **Powiązane taski/bugi**
 Czy task jest blokowowany przez jakiś inny lub jest powiązany z innym.

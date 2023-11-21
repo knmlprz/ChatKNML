@@ -1,5 +1,3 @@
-from typing import List
-
 from langchain.output_parsers.boolean import BooleanOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import CommaSeparatedListOutputParser
@@ -29,7 +27,6 @@ Słowa kluczowe, oddzielone przecinkami:
 def get_relevance_chain(
     llm: LLM,
     template=JUDGE_QUERY_RELEVANCE,
-    input_variables: List[str] = ["query", "document"],
 ):
     """Return chain for judging query relevance.
     Chain will take `query` and `document` and return boolean value.

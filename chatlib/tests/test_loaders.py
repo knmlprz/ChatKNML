@@ -1,27 +1,37 @@
-import pytest  # noqa: F401
+import pytest
+import os
 
-# Required for fixtures to work
-from .fixtures import documents_with_source  # noqa: F401
+from chatlib.wikijs.loaders import get_session, list_pages, search_by_keywords
+from chatlib.wikijs.models import PageListItem, Page
 
-from typing import List
-from langchain.docstore.document import Document
-from pathlib import Path
+@pytest.fixture
+def wikijs_api_token():
+    api_token = os.getenv("WIKIJS_API_TOKEN")
+    if api_token is None:
+        raise ValueError("WIKIJS_API_TOKEN is not set")
+    return api_token
 
-from tempfile import TemporaryDirectory
+@pytest.mark.asyncio
+@pytest.fixture
+async def session_coro(wikijs_api_token):
+    session = get_session("https://wiki.knml.edu.pl", wikijs_api_token)
+    return session
 
-from chatlib.loaders import save_documents_to_xlsx, load_xslx_to_documents
+@pytest.mark.asyncio
+@pytest.mark.integration
+async def test_list_pages(session_coro):
+    session = await session_coro # Needs to bo awaited 
+    async with session:
+        pages = await list_pages(session, "pl")
+    assert len(pages) > 5, "There should be at least 5 pages in the wiki. Check if your token is valid."
+    assert all(isinstance(page, PageListItem) for page in pages), "All pages should be of type Page"
+    
 
-
-def test_xslx(documents_with_source: List[Document]):  # noqa: F811
-    # Create temporary directory
-    temp_dir = TemporaryDirectory()
-    # Create temporary file
-    temp_file = Path(temp_dir.name) / "test.xlsx"
-    # Save documents to xlsx
-    save_documents_to_xlsx(documents=documents_with_source, outfile=temp_file)
-    # Load documents from xlsx
-    documents = load_xslx_to_documents(infile=temp_file)
-    # Check that documents are equal
-    assert documents == documents_with_source
-    # Close temporary directory
-    temp_dir.cleanup()
+@pytest.mark.asyncio
+@pytest.mark.integration
+async def test_search_by_keywords(session_coro):
+    session = await session_coro # Needs to bo awaited
+    async with session:
+        pages = await search_by_keywords(session, ["KNML"], "pl")
+    assert len(pages) > 0, "There should be at least 1 page with KNML keyword. Check if your token is valid."
+    assert all(isinstance(page, Page) for page in pages), "All pages should be of type Page"

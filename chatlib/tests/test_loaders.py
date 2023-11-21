@@ -9,7 +9,7 @@ from pathlib import Path
 
 from tempfile import TemporaryDirectory
 
-from wikijs_extractor.loaders import save_documents_to_xlsx, load_xslx_to_documents
+from chatlib.loaders import save_documents_to_xlsx, load_xslx_to_documents
 
 
 def test_xslx(documents_with_source: List[Document]):  # noqa: F811

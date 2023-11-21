@@ -1,17 +1,10 @@
-import os
-import asyncio
 from typing import List
 
-from langchain.docstore.document import Document
 from langchain.output_parsers.boolean import BooleanOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import CommaSeparatedListOutputParser
 from langchain.llms.base import LLM
-from langchain.llms import OpenAI
-from langchain.schema.runnable.base import Runnable
 
-
-from wikijs_extractor.loaders import search_by_keywords, _get_session
 
 JUDGE_QUERY_RELEVANCE = """Majac zapytanie i dokument, określ czy dokument może być przedatny dla tego zapytania.
 
@@ -32,7 +25,12 @@ Zapytanie: {query}
 Słowa kluczowe, oddzielone przecinkami:
 """
 
-def get_relevance_chain(llm: LLM, template=JUDGE_QUERY_RELEVANCE, input_variables: List[str] = ["query", "document"]):
+
+def get_relevance_chain(
+    llm: LLM,
+    template=JUDGE_QUERY_RELEVANCE,
+    input_variables: List[str] = ["query", "document"],
+):
     """Return chain for judging query relevance.
     Chain will take `query` and `document` and return boolean value.
 
@@ -41,10 +39,11 @@ def get_relevance_chain(llm: LLM, template=JUDGE_QUERY_RELEVANCE, input_variable
         prompt: Prompt. Defaults to JUDGE_QUERY_RELEVANCE.
 
     Returns:
-        Chain 
+        Chain
     """
     prompt_template = PromptTemplate.from_template(template=template)
     return prompt_template | llm | BooleanOutputParser(false_val="nie", true_val="tak")
+
 
 def get_extract_keywords_chain(llm: LLM, template=EXTRACT_KEYWORDS_PROMPT):
     prompt_template = PromptTemplate.from_template(template=template)

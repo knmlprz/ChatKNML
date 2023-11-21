@@ -4,8 +4,6 @@ import logging
 
 from typing import List
 
-from langchain.docstore.document import Document
-
 from .models import Page, PageListItem
 
 logger = logging.getLogger(__name__)
@@ -45,8 +43,6 @@ async def _get_page_id(session: aiohttp.ClientSession, path: str, locale: str) -
         "/graphql", json={"query": query, "variables": {"path": path, "locale": locale}}
     )
     data = await resp.json()
-    if session._base_url is None:
-        raise ValueError("Base url is None")
     pages = [
         PageListItem(
             **page,
@@ -54,7 +50,7 @@ async def _get_page_id(session: aiohttp.ClientSession, path: str, locale: str) -
         for page in data["data"]["pages"]["tree"]
     ]
 
-    # Find exact math of path
+    # Find exact match of path
     for page in pages:
         if page.path == path:
             return page.id
@@ -68,9 +64,7 @@ async def _fix_pageid(
     return page
 
 
-async def _get_page(
-    session: aiohttp.ClientSession, page_id: int, locale: str
-) -> Page | None:
+async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -> Page:
     """Get page with content
 
     Args:
@@ -105,28 +99,23 @@ async def _get_page(
     )
 
     data = await resp.json()
-    if session._base_url is None:
-        raise ValueError("Base url is None")
-    try:
-        page = Page(
-            **data["data"]["pages"]["single"],
-            instance_url=str(session._base_url),
-            locale=locale,
-        )
-    except TypeError:
-        return None
+    page = Page(
+        **data["data"]["pages"]["single"],
+        instance_url=str(session._base_url),
+        locale=locale,
+    )
     return page
 
 
 async def _list_by_keyword(
     session: aiohttp.ClientSession, keyword: str, locale: str
-) -> List[PageListItem] | None:
+) -> List[PageListItem]:
     """List pages by keyword
-    
+
     Args:
         session: aiohttp session
         keyword: Keyword to search for
-    
+
     Returns:
         List of page items (Pages without content)
     """
@@ -148,30 +137,23 @@ async def _list_by_keyword(
         "/graphql", json={"query": query, "variables": {"keyword": keyword}}
     )
     data = await resp.json()
-    print(data)
-    if session._base_url is None:
-        raise ValueError("Base url is None")
-    try:
-        pages = [
-            PageListItem(
-                **page,
-            )
-            for page in data["data"]["pages"]["search"]["results"]
-        ]
-        # Fix page IDs
-        # See: https://github.com/Requarks/wiki/issues/2938
-        coros = [_fix_pageid(session, page, locale=locale) for page in pages]
-        pages = await asyncio.gather(*coros)
-
-    except TypeError:
-        return None
+    pages = [
+        PageListItem(
+            **page,
+        )
+        for page in data["data"]["pages"]["search"]["results"]
+    ]
+    # Fix page IDs
+    # See: https://github.com/Requarks/wiki/issues/2938
+    pages = await asyncio.gather(
+        *[_fix_pageid(session, page, locale=locale) for page in pages]
+    )
     return pages
 
 
 async def search_by_keywords(
-    session: aiohttp.ClientSession,
-    keywords: List[str],
-    locale: str) -> List[Document]:
+    session: aiohttp.ClientSession, keywords: List[str], locale: str
+) -> List[Page]:
     """Search for pages by keywords
 
     Args:
@@ -181,25 +163,19 @@ async def search_by_keywords(
     Returns:
         List of documents
     """
-    results: List[List[PageListItem] | None] = await asyncio.gather(
-        *[
-            _list_by_keyword(session, keyword, locale=locale)
-            for keyword in keywords
-        ]
+    results: List[List[PageListItem]] = await asyncio.gather(
+        *[_list_by_keyword(session, keyword, locale=locale) for keyword in keywords]
     )
     page_items: List[PageListItem] = []
     for result in results:
-        if result is not None:
-            page_items.extend(result)
+        page_items.extend(result)
     # Filter out duplicates
     page_items = list(set(page_items))
-    print(page_items)
 
-    pages: List[Page | None] = await asyncio.gather(
+    pages: List[Page] = await asyncio.gather(
         *[_get_page(session, page.id, locale) for page in page_items]
     )
-    documents = [page.to_document() for page in pages if page is not None]
-    return documents
+    return pages
 
 
 async def list_pages(session: aiohttp.ClientSession, locale: str) -> List[PageListItem]:

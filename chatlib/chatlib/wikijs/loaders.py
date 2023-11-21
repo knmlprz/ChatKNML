@@ -9,7 +9,7 @@ from .models import Page, PageListItem
 logger = logging.getLogger(__name__)
 
 
-def _get_session(url: str, token: str):
+def get_session(url: str, token: str):
     """
     Generate aiohttp session with authentication headers
 
@@ -99,6 +99,10 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
     )
 
     data = await resp.json()
+    # Check if response is not an error
+    if "errors" in data:
+        raise PermissionError(data["errors"][0]["message"], "page_id", page_id)
+
     page = Page(
         **data["data"]["pages"]["single"],
         instance_url=str(session._base_url),
@@ -110,7 +114,7 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
 async def _list_by_keyword(
     session: aiohttp.ClientSession, keyword: str, locale: str
 ) -> List[PageListItem]:
-    """List pages by keyword
+    """List pages by keyword. Even pages that you don't have access to!
 
     Args:
         session: aiohttp session
@@ -172,11 +176,20 @@ async def search_by_keywords(
     # Filter out duplicates
     page_items = list(set(page_items))
 
-    pages: List[Page] = await asyncio.gather(
-        *[_get_page(session, page.id, locale) for page in page_items]
+    # Get pages, note that _list_by_keyword can return pages that 
+    # you don't have access to
+    page_gather_results: List[Page|PermissionError] = await asyncio.gather(
+        *[_get_page(session, page.id, locale) for page in page_items],
+        return_exceptions=True
     )
-    return pages
+    # Filter out pages that you don't have access to
+    def permission_error_filter(item: Page|PermissionError) -> bool:
+        if not isinstance(item, PermissionError):
+            return True
+        logger.warning(item)
+        return False
 
+    return list(filter(permission_error_filter, page_gather_results)) # type: ignore
 
 async def list_pages(session: aiohttp.ClientSession, locale: str) -> List[PageListItem]:
     """
@@ -216,7 +229,8 @@ async def list_pages(session: aiohttp.ClientSession, locale: str) -> List[PageLi
 
     # Fix page IDs
     # See: https://github.com/Requarks/wiki/issues/2938
-    coros = [_fix_pageid(session, page, locale=locale) for page in pages]
-    pages = await asyncio.gather(*coros)
+    pages = await asyncio.gather(
+        *[_fix_pageid(session, page, locale=locale) for page in pages]
+    )
 
     return pages

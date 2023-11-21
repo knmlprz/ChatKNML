@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, computed_field
 from urllib.parse import urljoin
 from langchain.docstore.document import Document
 
+
 class PageListItem(BaseModel):
     # Allow extra fields
     model_config = ConfigDict(extra="allow")
@@ -12,6 +13,7 @@ class PageListItem(BaseModel):
 
     def __hash__(self) -> int:
         return hash(self.id)
+
 
 class Page(BaseModel):
     # Allow extra fields
@@ -24,13 +26,13 @@ class Page(BaseModel):
     content: str
     locale: str
     instance_url: str
-    
+
     @computed_field
     @property
     def source(self) -> str:
         # Url pf page is instance url / locale / path
         return urljoin(self.instance_url, f"{self.locale}/{self.path}")
-    
+
     @property
     def metadata(self) -> dict[str, str | int | float | bool]:
         return {
@@ -42,7 +44,7 @@ class Page(BaseModel):
             "instance_url": self.instance_url,
             "source": self.source,
         }
-    
+
     def to_document(self) -> Document:
         return Document(
             page_content=self.content,

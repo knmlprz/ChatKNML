@@ -176,20 +176,22 @@ async def search_by_keywords(
     # Filter out duplicates
     page_items = list(set(page_items))
 
-    # Get pages, note that _list_by_keyword can return pages that 
+    # Get pages, note that _list_by_keyword can return pages that
     # you don't have access to
-    page_gather_results: List[Page|PermissionError] = await asyncio.gather(
+    page_gather_results: List[Page | PermissionError] = await asyncio.gather(
         *[_get_page(session, page.id, locale) for page in page_items],
-        return_exceptions=True
+        return_exceptions=True,
     )
+
     # Filter out pages that you don't have access to
-    def permission_error_filter(item: Page|PermissionError) -> bool:
+    def permission_error_filter(item: Page | PermissionError) -> bool:
         if not isinstance(item, PermissionError):
             return True
         logger.warning(item)
         return False
 
-    return list(filter(permission_error_filter, page_gather_results)) # type: ignore
+    return list(filter(permission_error_filter, page_gather_results))  # type: ignore
+
 
 async def list_pages(session: aiohttp.ClientSession, locale: str) -> List[PageListItem]:
     """

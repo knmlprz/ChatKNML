@@ -195,7 +195,9 @@ async def search_by_keywords(
     return list(filter(permission_error_filter, page_gather_results))  # type: ignore
 
 
-async def list_all_pages(session: aiohttp.ClientSession, locale: str) -> List[PageListItem]:
+async def list_all_pages(
+    session: aiohttp.ClientSession, locale: str
+) -> List[PageListItem]:
     """
     List all pages in wiki
 

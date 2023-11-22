@@ -17,6 +17,7 @@ langchain = "^0.0.327"
 pytest = "^7.4.3"
 ruff = "^0.1.5"
 pytest-asyncio = "^0.21.1"
+pyright = "^1.1.336"
 
 [build-system]
 requires = ["poetry-core"]
@@ -27,3 +28,17 @@ build-backend = "poetry.core.masonry.api"
 markers = [
     "integration: mark a test as an integration test (deselect with '-m \"not integration\"')",
 ]
+
+[tool.pyright]
+include = ["chatlib"]
+exclude = [
+    "**/__pycache__",
+]
+useLibraryCodeForTypes = true
+typeCheckingMode = "basic"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+pythonVersion = "3.10"
+pythonPlatform = "Linux"

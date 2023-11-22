@@ -2,11 +2,16 @@ import aiohttp
 import asyncio
 import logging
 
-from typing import List
+from typing import List, cast
+from urllib.parse import urlparse
 
 from .models import Page, PageListItem
 
 logger = logging.getLogger(__name__)
+
+
+def _get_base_url(resp: aiohttp.ClientResponse) -> str:
+    return urlparse(str(resp.url)).netloc
 
 
 def get_session(url: str, token: str):
@@ -91,6 +96,7 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
     resp = await session.post(
         "/graphql", json={"query": query, "variables": {"id": page_id}}
     )
+
     logger.debug(
         "Got response from wiki for Page with id %s. Response status: %s, Response text: %s",
         page_id,
@@ -105,7 +111,7 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
 
     page = Page(
         **data["data"]["pages"]["single"],
-        instance_url=str(session._base_url),
+        instance_url=_get_base_url(resp),
         locale=locale,
     )
     return page
@@ -192,7 +198,7 @@ async def search_by_keywords(
         logger.warning(item)
         return False
 
-    return list(filter(permission_error_filter, page_gather_results))  # type: ignore
+    return cast(list[Page], list(filter(permission_error_filter, page_gather_results)))
 
 
 async def list_all_pages(
@@ -219,8 +225,8 @@ async def list_all_pages(
         }
     }
     """
-    logger.debug("Listing pages from wiki on url: %s", session._base_url)
     resp = await session.post("/graphql", json={"query": query})
+    logger.debug("Listing pages from wiki on url: %s", resp.url)
 
     logger.debug(
         "Got response from wiki. Response status: %s, Response text: %s",

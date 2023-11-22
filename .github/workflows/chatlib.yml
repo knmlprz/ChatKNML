@@ -36,7 +36,7 @@ jobs:
         name: Define a cache for the virtual environment based on the dependencies lock file
         with:
           path: chatlib/.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
+          key: venv-${{ hashFiles('chatlib/poetry.lock') }}
 
       - name: Install dev dependencies
         run: |

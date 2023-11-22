@@ -7,10 +7,7 @@ from chatlib.wikijs.models import PageListItem, Page
 
 @pytest.fixture
 def wikijs_api_token():
-    api_token = os.getenv("WIKIJS_API_TOKEN")
-    if api_token is None:
-        raise ValueError("WIKIJS_API_TOKEN is not set")
-    return api_token
+    return os.environ["WIKIJS_API_TOKEN"]
 
 
 @pytest.mark.asyncio

@@ -15,8 +15,7 @@ def _get_base_url(resp: aiohttp.ClientResponse) -> str:
 
 
 def get_session(url: str, token: str):
-    """
-    Generate aiohttp session with authentication headers
+    """Generate aiohttp session with authentication headers
 
     Args:
         url: GraphQL endpoint url
@@ -180,7 +179,7 @@ async def search_by_keywords(
 
     page_items: List[PageListItem] = []
     for result in results:
-        page_items.extend(result)
+        page_items += result
     # Filter out duplicates
     page_items = list(set(page_items))
 

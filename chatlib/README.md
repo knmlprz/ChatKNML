@@ -7,13 +7,13 @@ Modules:
 
 ## Installation
 
-```bash
+```sh
 poetry install
 ```
 
 ## Development
 
-```bash
+```sh
 poetry install --with dev
 ```
 
@@ -25,13 +25,13 @@ To run integration tests you need to have:
 
 Run every test (including integration tests):
 
-```bash
+```sh
 poetry run python -m pytest
 ```
 
 Run unit tests only:
 
-```bash
+```sh
 poetry run python -m pytest -m "not integration"
 ```
 
@@ -39,12 +39,12 @@ poetry run python -m pytest -m "not integration"
 
 Formatting:
 
-```bash
+```sh
 poetry run ruff format .
 ```
 
 Linting
 
-```bash
+```sh
 poetry run ruff check .
 ```

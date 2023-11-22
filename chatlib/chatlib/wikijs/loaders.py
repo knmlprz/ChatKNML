@@ -178,14 +178,14 @@ async def search_by_keywords(
 
     # Get pages, note that _list_by_keyword can return pages that
     # you don't have access to
-    page_gather_results: List[Page | PermissionError] = await asyncio.gather(
+    page_gather_results: List[Page | Exception] = await asyncio.gather(
         *[_get_page(session, page.id, locale) for page in page_items],
         return_exceptions=True,
     )
 
     # Filter out pages that you don't have access to
-    def permission_error_filter(item: Page | PermissionError) -> bool:
-        if not isinstance(item, PermissionError):
+    def permission_error_filter(item: Page | Exception) -> bool:
+        if not isinstance(item, Exception):
             return True
         logger.warning(item)
         return False

@@ -15,8 +15,6 @@ jobs:
     defaults:
       run:
         working-directory: chatlib
-      uses:
-        working-directory: chatlib
 
     steps:
       - uses: actions/checkout@v4

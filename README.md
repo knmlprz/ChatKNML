@@ -6,7 +6,7 @@
 
 Download models:
 
-```bash
+```sh
 cd models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
@@ -15,6 +15,6 @@ After starting the app, OpenAI-compatible embedding API will be available at: ht
 
 #### Starting app
 
-```
+```sh
 docker compose up -d
 ```

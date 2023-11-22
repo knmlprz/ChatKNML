@@ -1,14 +1,50 @@
-## Getting started
+## Chatlib
 
-Create .env file with the following content:
+Library for creating chatbots.
 
+Modules:
+- wikijs - module for querying wikijs
+
+## Installation
+
+```bash
+poetry install
 ```
-WIKIJS_TOKEN=your_token
+
+## Development
+
+```bash
+poetry install --with dev
 ```
 
-To scan a wiki, run:
+## Testing
 
-```sh
-poetry install # Install dependencies
-poetry run wikijs-extractor https://wiki.knml.edu.pl/
+To run integration tests you need to have:
+
+- `WIKIJS_API_TOKEN` env variable set to valid token (ask admins)
+
+Run every test (including integration tests):
+
+```bash
+poetry run python -m pytest
+```
+
+Run unit tests only:
+
+```bash
+poetry run python -m pytest -m "not integration"
+```
+
+## Formatting and linting
+
+Formatting:
+
+```bash
+poetry run ruff format .
+```
+
+Linting
+
+```bash
+poetry run ruff check .
 ```

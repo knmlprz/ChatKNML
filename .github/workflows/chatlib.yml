@@ -1,6 +1,9 @@
 name: Python application
 
-on: pull_request
+on: 
+  pull_request:
+    paths:
+      - 'chatlib/**'
 
 permissions:
   contents: read
@@ -9,11 +12,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: chatlib
+
     steps:
       - uses: actions/checkout@v4
         with:
           sparse-checkout: 'chatlib'
           sparse-checkout-cone-mode: false
+      
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -22,11 +30,6 @@ jobs:
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: "1.7"
-      # This step is needed because expo-github-action does not support paths.
-      # Therefore all mobile app assets should be moved to the project root.
-      - name: Move mobile app files to root
-        run: ls -lah |
-          mv chatlib/* .
 
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file

@@ -1,9 +1,9 @@
 name: Python application
 
-on: 
+on:
   pull_request:
     paths:
-      - 'chatlib/**'
+      - "chatlib/**"
 
 permissions:
   contents: read
@@ -19,13 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          sparse-checkout: 'chatlib'
+          sparse-checkout: "chatlib"
           sparse-checkout-cone-mode: false
-      
-      - name: Set up Python 3.10
+
+      - name: Set up Python 3.10 🐍
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+
       - name: Run image
         uses: abatilo/actions-poetry@v2
         with:
@@ -40,6 +41,13 @@ jobs:
       - name: Install dev dependencies
         run: |
           poetry install --with dev
+
+      - name: Lint with ruff
+        run: poetry run ruff check .
+
+      - name: Format with ruff
+        run: poetry run ruff format --check .
+
       - name: Run the automated tests (for example)
         run: poetry run pytest
         env:

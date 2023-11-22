@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           sparse-checkout: 'chatlib'
           sparse-checkout-cone-mode: false
@@ -18,11 +18,15 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-
       - name: Run image
         uses: abatilo/actions-poetry@v2
         with:
           poetry-version: "1.7"
+      # This step is needed because expo-github-action does not support paths.
+      # Therefore all mobile app assets should be moved to the project root.
+      - name: Move mobile app files to root
+        run: ls -lah |
+          mv chatlib/* .
 
       - uses: actions/cache@v3
         name: Define a cache for the virtual environment based on the dependencies lock file

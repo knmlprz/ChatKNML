@@ -1,7 +1,7 @@
 import pytest
 import os
 
-from chatlib.wikijs.loaders import get_session, list_pages, search_by_keywords
+from chatlib.wikijs.loaders import get_session, list_all_pages, search_by_keywords
 from chatlib.wikijs.models import PageListItem, Page
 
 
@@ -25,7 +25,7 @@ async def session_coro(wikijs_api_token):
 async def test_list_pages(session_coro):
     session = await session_coro  # Needs to bo awaited
     async with session:
-        pages = await list_pages(session, "pl")
+        pages = await list_all_pages(session, "pl")
     assert (
         len(pages) > 5
     ), "There should be at least 5 pages in the wiki. Check if your token is valid."

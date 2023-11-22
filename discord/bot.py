@@ -14,17 +14,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
-@bot.command(name="smol")
-async def smol(
-    ctx: commands.Context,
-    *,
-    arg: str,
-):
-    logger.info("Got ask_smol_model command")
-    async with ctx.typing():
-        response = await ask_model(arg, "smol")
-    await ctx.send(response)
-
 @bot.command(name="big")
 async def big(
     ctx: commands.Context,

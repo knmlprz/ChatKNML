@@ -22,25 +22,38 @@ smol_model_client = OpenAI(
 
 big_model_client = OpenAI(
     openai_api_key="XD",
-    openai_api_base="http://host.docker.internal:8000/v1",
+    openai_api_base="http://host.docker.internal:8001/v1",
+    max_tokens=512
 )
 
 
 
-PREFIX = """Odpowiedz na poniższe pytania najlepiej jak potrafisz. Odpowiadaj wyłącznie w języku polskim. Masz dostęp do następujących narzędzi:"""
+PREFIX = """SYSTEM: Odpowiedz na poniższe pytania najlepiej jak potrafisz. Odpowiadaj wyłącznie w języku polskim. Jeżeli nie znasz odpowiedzi na pytanie, to napisz: nie wiem. Masz dostęp do następujących narzędzi:"""
 FORMAT_INSTRUCTIONS = """Używaj następującego formatu:
 
 Question: pytanie wejściowe, na które musisz odpowiedzieć
 Thought: zawsze powinieneś myśleć o tym, co zrobić.
-Action: działanie, które należy podjąć, MUSI być jednym z [{tool_names}] np. wikipedia
+Action: działanie, które należy podjąć, MUSI być jednym z [{tool_names}] np. DuckDuckGo Search
 Action Input: wejście do Action.
 Observation: wynik działania
 ... (ta Thought/Action/Action Input/Observation może powtórzyć się N razy)
 Thought: Znam teraz ostateczną odpowiedź
-Final Answer: ostateczna odpowiedź na pierwotne pytanie wejściowe"""
+Final Answer: ostateczna odpowiedź na pierwotne pytanie wejściowe
+
+Example:
+Question: Jak to jest być skrybą?
+Thought: Muszę wyszukać "jak to jest być skrybą"
+Action: DuckDuckGo Search
+Action Input: jak to jest być skrybą
+Observation: A, wie pan, moim zdaniem to nie ma tak, że dobrze, albo że niedobrze. Gdybym miał powiedzieć, co cenię w życiu najbardziej, powiedziałbym, że ludzi.
+Thought: Znam teraz ostateczną odpowiedź
+Final Answer: A, wie pan, moim zdaniem to nie ma tak, że dobrze, albo że niedobrze...
+
+"""
 SUFFIX = """Zaczynaj!
 
-Question: {input}
+USER: {input}
+ASSISTANT:
 Thought:{agent_scratchpad}"""
 
 
@@ -60,7 +73,7 @@ async def ask_model(question: str, model: Literal["smol", "big"]):
         tools=tools,
         llm=client,
         verbose=True,
-        max_iterations=20,
+        max_iterations=2,
         handle_parsing_errors=True,
         agent_kwargs={
             'prefix':PREFIX,
@@ -71,4 +84,4 @@ async def ask_model(question: str, model: Literal["smol", "big"]):
 
     response = await zero_shot_agent.ainvoke({"input": question})
 
-    return str(response)
+    return response["output"]

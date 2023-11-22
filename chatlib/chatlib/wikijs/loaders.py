@@ -170,6 +170,8 @@ async def search_by_keywords(
     results: List[List[PageListItem]] = await asyncio.gather(
         *[_list_by_keyword(session, keyword, locale=locale) for keyword in keywords]
     )
+    logger.debug("Keyword search results: %s", results)
+    
     page_items: List[PageListItem] = []
     for result in results:
         page_items.extend(result)

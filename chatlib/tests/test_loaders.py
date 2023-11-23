@@ -1,8 +1,11 @@
-import pytest
+"""Test chatlib.wikijs.loaders."""
+
 import os
 
+import pytest
+
 from chatlib.wikijs.loaders import get_session, list_all_pages, search_by_keywords
-from chatlib.wikijs.models import PageListItem, Page
+from chatlib.wikijs.models import Page, PageListItem
 
 
 @pytest.fixture
@@ -15,20 +18,20 @@ def wikijs_api_token():
 @pytest.fixture
 async def session_coro(wikijs_api_token):
     """Get session as soroutine."""
-    session = get_session("https://wiki.knml.edu.pl", wikijs_api_token)
-    return session
+    return get_session("https://wiki.knml.edu.pl", wikijs_api_token)
 
 
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_list_pages(session_coro):
     """Test listing ALL pages on WikiJS."""
+    min_pages = 5
     session = await session_coro  # Needs to bo awaited
     async with session:
         pages = await list_all_pages(session, "pl")
     assert (
-        len(pages) > 5
-    ), "There should be at least 5 pages in the wiki. Check if your token is valid."
+        len(pages) > min_pages
+    ), f"There should be at least {min_pages} pages in the wiki. Check if your token is valid."
     assert all(
         isinstance(page, PageListItem) for page in pages
     ), "All pages should be of type Page"

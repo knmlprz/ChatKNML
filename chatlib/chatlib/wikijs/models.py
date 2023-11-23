@@ -1,14 +1,17 @@
-from pydantic import BaseModel, ConfigDict, computed_field
+"""Pydantic models for WikiJS's Grapghql API."""
+
 from urllib.parse import urljoin
+
 from langchain.docstore.document import Document
+from pydantic import BaseModel, ConfigDict, computed_field
 
 
 class PageListItem(BaseModel):
     """PageListItem from WikiJS's Graphql API."""
+
     # Allow extra fields
     model_config = ConfigDict(extra="allow")
 
-    id: int
     path: str
     title: str
 
@@ -19,10 +22,10 @@ class PageListItem(BaseModel):
 
 class Page(BaseModel):
     """Page from WikiJS's Graphql API."""
+
     # Allow extra fields
     model_config = ConfigDict(extra="allow")
 
-    id: int
     path: str
     title: str
     description: str
@@ -33,7 +36,7 @@ class Page(BaseModel):
     @computed_field
     @property
     def source(self) -> str:
-        """Source of page (url/locale/path)"""
+        """Source of page (url/locale/path)."""
         # Url page is: instance url / locale / path
         return urljoin(self.instance_url, f"{self.locale}/{self.path}")
 
@@ -51,7 +54,7 @@ class Page(BaseModel):
         }
 
     def to_document(self) -> Document:
-        """Convert page to Langchain's `Document`"""
+        """Convert page to Langchain's `Document`."""
         return Document(
             page_content=self.content,
             metadata=self.metadata,

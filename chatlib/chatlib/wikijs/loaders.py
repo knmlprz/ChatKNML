@@ -1,9 +1,11 @@
-import aiohttp
+"""Functions for loading data from WikiJS's Graphql API."""
+
 import asyncio
 import logging
-
 from typing import cast
 from urllib.parse import urlparse
+
+import aiohttp
 
 from .models import Page, PageListItem
 
@@ -43,7 +45,8 @@ async def _get_page_id(session: aiohttp.ClientSession, path: str, locale: str) -
     }
     """
     resp = await session.post(
-        "/graphql", json={"query": query, "variables": {"path": path, "locale": locale}}
+        "/graphql",
+        json={"query": query, "variables": {"path": path, "locale": locale}},
     )
     data = await resp.json()
     pages = [
@@ -57,11 +60,14 @@ async def _get_page_id(session: aiohttp.ClientSession, path: str, locale: str) -
     for page in pages:
         if page.path == path:
             return page.id
-    raise ValueError("Page does not exist on a path.")
+    msg = "Page does not exist on a path."
+    raise ValueError(msg)
 
 
 async def _fix_pageid(
-    session: aiohttp.ClientSession, page: PageListItem, locale: str
+    session: aiohttp.ClientSession,
+    page: PageListItem,
+    locale: str,
 ) -> PageListItem:
     page.id = await _get_page_id(session, page.path, locale=locale)
     return page
@@ -93,7 +99,8 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
     """
     logger.debug("Getting page with id %s", page_id)
     resp = await session.post(
-        "/graphql", json={"query": query, "variables": {"id": page_id}}
+        "/graphql",
+        json={"query": query, "variables": {"id": page_id}},
     )
 
     logger.debug(
@@ -108,16 +115,17 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
     if "errors" in data:
         raise PermissionError(data["errors"][0]["message"], "page_id", page_id)
 
-    page = Page(
+    return Page(
         **data["data"]["pages"]["single"],
         instance_url=_get_base_url(resp),
         locale=locale,
     )
-    return page
 
 
 async def _list_by_keyword(
-    session: aiohttp.ClientSession, keyword: str, locale: str
+    session: aiohttp.ClientSession,
+    keyword: str,
+    locale: str,
 ) -> list[PageListItem]:
     """List pages by keyword. Even pages that you don't have access to!
 
@@ -144,7 +152,8 @@ async def _list_by_keyword(
     }
     """
     resp = await session.post(
-        "/graphql", json={"query": query, "variables": {"keyword": keyword}}
+        "/graphql",
+        json={"query": query, "variables": {"keyword": keyword}},
     )
     data = await resp.json()
     pages = [
@@ -155,14 +164,15 @@ async def _list_by_keyword(
     ]
     # Fix page IDs
     # See: https://github.com/Requarks/wiki/issues/2938
-    pages = await asyncio.gather(
-        *[_fix_pageid(session, page, locale=locale) for page in pages]
+    return await asyncio.gather(
+        *[_fix_pageid(session, page, locale=locale) for page in pages],
     )
-    return pages
 
 
 async def search_by_keywords(
-    session: aiohttp.ClientSession, keywords: list[str], locale: str
+    session: aiohttp.ClientSession,
+    keywords: list[str],
+    locale: str,
 ) -> list[Page]:
     """Search for pages by keywords on WikiJS.
 
@@ -175,7 +185,7 @@ async def search_by_keywords(
         List of documents
     """
     results: list[list[PageListItem]] = await asyncio.gather(
-        *[_list_by_keyword(session, keyword, locale=locale) for keyword in keywords]
+        *[_list_by_keyword(session, keyword, locale=locale) for keyword in keywords],
     )
     logger.debug("Keyword search results: %s", results)
 
@@ -203,7 +213,8 @@ async def search_by_keywords(
 
 
 async def list_all_pages(
-    session: aiohttp.ClientSession, locale: str
+    session: aiohttp.ClientSession,
+    locale: str,
 ) -> list[PageListItem]:
     """List all pages in wiki.
 
@@ -241,8 +252,6 @@ async def list_all_pages(
 
     # Fix page IDs
     # See: https://github.com/Requarks/wiki/issues/2938
-    pages = await asyncio.gather(
-        *[_fix_pageid(session, page, locale=locale) for page in pages]
+    return await asyncio.gather(
+        *[_fix_pageid(session, page, locale=locale) for page in pages],
     )
-
-    return pages

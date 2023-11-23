@@ -2,7 +2,7 @@ import aiohttp
 import asyncio
 import logging
 
-from typing import List, cast
+from typing import cast
 from urllib.parse import urlparse
 
 from .models import Page, PageListItem
@@ -118,7 +118,7 @@ async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -
 
 async def _list_by_keyword(
     session: aiohttp.ClientSession, keyword: str, locale: str
-) -> List[PageListItem]:
+) -> list[PageListItem]:
     """List pages by keyword. Even pages that you don't have access to!
 
     Args:
@@ -162,8 +162,8 @@ async def _list_by_keyword(
 
 
 async def search_by_keywords(
-    session: aiohttp.ClientSession, keywords: List[str], locale: str
-) -> List[Page]:
+    session: aiohttp.ClientSession, keywords: list[str], locale: str
+) -> list[Page]:
     """Search for pages by keywords on WikiJS.
 
     Args:
@@ -174,12 +174,12 @@ async def search_by_keywords(
     Returns:
         List of documents
     """
-    results: List[List[PageListItem]] = await asyncio.gather(
+    results: list[list[PageListItem]] = await asyncio.gather(
         *[_list_by_keyword(session, keyword, locale=locale) for keyword in keywords]
     )
     logger.debug("Keyword search results: %s", results)
 
-    page_items: List[PageListItem] = []
+    page_items: list[PageListItem] = []
     for result in results:
         page_items += result
     # Filter out duplicates
@@ -187,7 +187,7 @@ async def search_by_keywords(
 
     # Get pages, note that _list_by_keyword can return pages that
     # you don't have access to
-    page_gather_results: List[Page | Exception] = await asyncio.gather(
+    page_gather_results: list[Page | Exception] = await asyncio.gather(
         *[_get_page(session, page.id, locale) for page in page_items],
         return_exceptions=True,
     )
@@ -204,7 +204,7 @@ async def search_by_keywords(
 
 async def list_all_pages(
     session: aiohttp.ClientSession, locale: str
-) -> List[PageListItem]:
+) -> list[PageListItem]:
     """List all pages in wiki.
 
     Args:

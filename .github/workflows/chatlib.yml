@@ -1,6 +1,7 @@
 name: Lint, test and format chatblib
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "chatlib/**"

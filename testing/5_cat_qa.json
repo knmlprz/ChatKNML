@@ -1,107 +1,109 @@
 {
-    "testing_language_skills": [
+    "testing_quality_consistency": [
         {
             "_id": 1,
-            "question": "Co to jest fotosynteza?",
-            "answer": "Fotosynteza to proces, w którym rośliny przekształcają światło słoneczne w energię chemiczną."
+            "question": "Jakie są kluczowe elementy dobrej opowieści?",
+            "answer": "Kluczowe elementy dobrej opowieści to interesująca fabuła, dobrze rozwinięte postacie, spójny i przemyślany wątek, angażujący styl narracji oraz wyraźny punkt kulminacyjny i zakończenie."
         },
         {
             "_id": 2,
-            "question": "Przetłumacz na angielski: \"Kot siedzi na dachu.\"",
-            "answer": "The cat sits on the roof."
+            "question": "Napisz krótki akapit opisujący wschód słońca nad morzem.",
+            "answer": "Wschód słońca nad morzem był spektaklem barw. Niebo stopniowo rozjaśniało się, przechodząc od głębokiego granatu do ciepłych odcieni pomarańczu i różu. Słońce, powoli wynurzając się z horyzontu, odbijało swoje promienie na spokojnej powierzchni wody, tworząc złoty szlak błyszczący na falach."
         },
         {
             "_id": 3,
-            "question": "Podaj synonim słowa 'szybki'.",
-            "answer": "Szybki - prędki, błyskawiczny."
+            "question": "Jakie są trzy główne zalety energii odnawialnej?",
+            "answer": "Trzy główne zalety energii odnawialnej to: zrównoważony charakter, który nie wyczerpuje zasobów naturalnych; niski poziom emisji szkodliwych gazów, co jest korzystne dla środowiska; oraz długoterminowa opłacalność ekonomiczna, pomimo początkowych kosztów instalacji."
         },
         {
             "_id": 4,
-            "question": "Streszcz krótko \"Hamleta\" Szekspira.",
-            "answer": "\"Hamlet\" to tragedia Szekspira o duńskim księciu, który dąży do zemsty na swoim wuju za zabójstwo ojca."
+            "question": "Opisz, jak przygotować spaghetti carbonara.",
+            "answer": "Aby przygotować spaghetti carbonara, najpierw ugotuj spaghetti al dente. Na patelni usmaż pokrojony w kostkę boczek do chrupkości. W misce ubij jajka z parmezanem, dodając sól i pieprz. Gdy makaron będzie gotowy, odcedź go, zachowując trochę wody z gotowania. Wymieszaj gorący makaron z jajkami i parmezanem, dodając boczek. Jeśli sos jest zbyt gęsty, dodaj trochę wody z gotowania makaronu. Podawaj natychmiast po przygotowaniu."
         },
         {
             "_id": 5,
-            "question": "Wyjaśnij różnicę między \"efektem\" a \"afektem\".",
-            "answer": "\"Efekt\" to rezultat, \"afekt\" to emocja."
+            "question": "Napisz krótki wiersz o jesieni.",
+            "answer": "Kiedy liście tańczą wiatrem pędzone,\nA słońce złocisto świeci mdlejące,\nJesień przybywa w barwach ognia,\nW szumie deszczu, w chłodzie dnia."
         },
         {
             "_id": 6,
-            "question": "Utwórz zdanie z wyrazem \"konstytucja\".",
-            "answer": "Polska konstytucja została uchwalona 3 maja 1791 roku."
+            "question": "Jakie są główne przyczyny zmian klimatycznych?",
+            "answer": "Główne przyczyny zmian klimatycznych to emisje gazów cieplarnianych spowodowane spalaniem paliw kopalnych, wylesianie, które zmniejsza zdolność Ziemi do absorbowania dwutlenku węgla, oraz intensywna działalność rolnicza i przemysłowa, która przyczynia się do zwiększenia emisji metanu i innych gazów."
         },
         {
             "_id": 7,
-            "question": "Jakie są główne przyczyny zmian klimatycznych?",
-            "answer": "Główne przyczyny zmian klimatycznych to emisja gazów cieplarnianych i wylesianie."
+            "question": "Opisz idealny dzień na plaży.",
+            "answer": "Idealny dzień na plaży zaczyna się od relaksującego spaceru po miękkim, ciepłym piasku o poranku. Następnie kilka godzin spędzonych na leżaku pod parasolem, czytając książkę lub słuchając muzyki. Popołudnie to czas na zabawę w wodzie, pływanie i nurkowanie. Dzień kończy się piknikiem na zachodzie słońca, z widokiem na spokojne morze."
         },
         {
             "_id": 8,
-            "question": "Napisz wiersz o wiośnie.",
-            "answer": "Wiosna budzi się do życia, kwitną kwiaty, śpiewa ptak..."
+            "question": "Napisz krótką recenzję filmu science fiction.",
+            "answer": "\"Galaktyczna Odyseja\" to fascynujący film science fiction, który zabiera widzów w podróż po niezbadanych zakątkach kosmosu. Znakomite efekty specjalne, oryginalna ścieżka dźwiękowa i głębokie przesłanie o ludzkiej ciekawości i dążeniu do odkrywania nieznanego sprawiają, że jest to film nie tylko rozrywkowy, ale i inspirujący."
         },
         {
             "_id": 9,
-            "question": "Co oznacza idiom \"trzymać kogoś za słowo\"?",
-            "answer": "Idiom \"trzymać kogoś za słowo\" oznacza oczekiwanie, że ktoś dotrzyma obietnicy."
+            "question": "Jakie są korzyści z regularnego uprawiania jogi?",
+            "answer": "Regularne uprawianie jogi przynosi wiele korzyści, w tym poprawę elastyczności i siły ciała, redukcję stresu i napięcia, lepszą równowagę i koordynację, a także pozytywny wpływ na zdrowie psychiczne i emocjonalne."
         },
         {
             "_id": 10,
-            "question": "Wyjaśnij, jak działa silnik spalinowy.",
-            "answer": "Silnik spalinowy generuje ruch poprzez spalanie paliwa, co powoduje ruch tłoków."
+            "question": "Opisz, jak wygląda typowy dzień w życiu astronauty na Międzynarodowej Stacji Kosmicznej.",
+            "answer": "Typowy dzień astronauty na Międzynarodowej Stacji Kosmicznej rozpoczyna się od porannej rutyny higienicznej i śniadania. Następnie większość dnia zajmują eksperymenty naukowe, konserwacja sprzętu i ćwiczenia fizyczne, które są niezbędne do utrzymania zdrowia w warunkach nieważkości. Astronauci komunikują się również z centrum kontroli misji i biorą udział w wideokonferencjach. Dzień kończy się wspólnym posiłkiem i czasem na relaks, zanim nadejdzie czas na sen."
         }
+    
     ],
-    "testing_on_diverse_Data": [
+    "testing_translate_skills": [
         {
             "_id": 11,
-            "question": "Jakie są składniki tradycyjnej japońskiej potrawy sushi?",
-            "answer": "Sushi składa się z ryżu, ryb (surowych lub wędzonych) i warzyw."
+            "question": "Jak przetłumaczysz na angielski zdanie: \"Wiosna to moja ulubiona pora roku\"?",
+            "answer": "Spring is my favorite season of the year."
         },
         {
             "_id": 12,
-            "question": "Opisz zasady gry w szachy.",
-            "answer": "Szachy to gra strategiczna dla dwóch graczy, polegająca na matowaniu króla przeciwnika."
+            "question": "Jak brzmi po polsku zdanie: \"The book is on the table\"?",
+            "answer": "Książka jest na stole."
         },
         {
             "_id": 13,
-            "question": "Jakie są objawy grypy?",
-            "answer": "Objawy grypy to gorączka, ból głowy, kaszel i bóle mięśni."
+            "question": "Jak przetłumaczysz na niemiecki: \"Czy możesz mi pomóc?\"",
+            "answer": "Kannst du mir helfen?"
         },
         {
             "_id": 14,
-            "question": "Wymień trzy dzieła Leonarda da Vinci.",
-            "answer": "\"Mona Lisa\", \"Ostatnia Wieczerza\", \"Człowiek witruwiański\"."
+            "question": "Jak brzmi po polsku zdanie: \"La vie est belle\" (francuski)?",
+            "answer": "Życie jest piękne."
         },
         {
             "_id": 15,
-            "question": "Jakie są podstawowe zasady bezpieczeństwa podczas wspinaczki górskiej?",
-            "answer": "Zawsze używaj sprzętu asekuracyjnego, sprawdzaj warunki pogodowe, nie przeceniaj swoich umiejętności."
+            "question": "Jak przetłumaczysz na hiszpański: \"Mam nadzieję, że spotkamy się wkrótce\"?",
+            "answer": "Espero que nos encontremos pronto."
         },
         {
             "_id": 16,
-            "question": "Jak działa system operacyjny Linux?",
-            "answer": "Linux to system operacyjny typu open-source, znany z wydajności i bezpieczeństwa."
+            "question": "Jak brzmi po polsku zdanie: \"I am learning to play the guitar\" (angielski)?",
+            "answer": "Uczę się grać na gitarze."
         },
         {
             "_id": 17,
-            "question": "Wymień trzy stolice państw afrykańskich.",
-            "answer": "Kair (Egipt), Nairobi (Kenia), Pretoria (RPA)."
+            "question": "Jak przetłumaczysz na włoski: \"Jest bardzo zimno tej zimy\"?",
+            "answer": "Fa molto freddo quest'inverno."
         },
         {
             "_id": 18,
-            "question": "Jakie są zalety i wady energii słonecznej?",
-            "answer": "Zalety: odnawialna, ekologiczna; wady: zależność od pogody, koszt instalacji."
+            "question": "Jak brzmi po polsku zdanie: \"Ich habe meinen Schlüssel verloren\" (niemiecki)?",
+            "answer": "Zgubiłem moje klucze."
         },
         {
             "_id": 19,
-            "question": "Opisz cykl życia motyla.",
-            "answer": "Motyl przechodzi przez etapy: jajo, gąsienica, poczwarka, dorosły motyl."
+            "question": "Jak przetłumaczysz na francuski: \"Czy możesz zamówić pizzę?\"",
+            "answer": "Peux-tu commander une pizza?"
         },
         {
             "_id": 20,
-            "question": "Jakie są główne składniki lasagne?",
-            "answer": "Lasagne składa się z płatów makaronu, sosu mięsnego, beszamelu i sera."
+            "question": "Jak brzmi po polsku zdanie: \"Yesterday, I went to the cinema with my friends\" (angielski)?",
+            "answer": "Wczoraj poszedłem do kina z moimi przyjaciółmi."
         }
+        
     ],
     "testing_protection ": [
         {
@@ -208,3 +210,4 @@
         }
     ]
 }
+

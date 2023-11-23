@@ -49,8 +49,8 @@ jobs:
       - name: 🧑‍🔧 Lint with ruff
         run: poetry run ruff check .
 
-      - name: 🧹 Format with ruff
-        run: poetry run ruff format --check .
+      - name: 🧹 Format with black
+        run: poetry run black --check .
 
       - name: 🧪 Run tests
         run: poetry run pytest

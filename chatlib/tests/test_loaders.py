@@ -7,12 +7,14 @@ from chatlib.wikijs.models import PageListItem, Page
 
 @pytest.fixture
 def wikijs_api_token():
+    """Get API token for WikiJS's API."""
     return os.environ["WIKIJS_API_TOKEN"]
 
 
 @pytest.mark.asyncio
 @pytest.fixture
 async def session_coro(wikijs_api_token):
+    """Get session as soroutine."""
     session = get_session("https://wiki.knml.edu.pl", wikijs_api_token)
     return session
 
@@ -20,6 +22,7 @@ async def session_coro(wikijs_api_token):
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_list_pages(session_coro):
+    """Test listing ALL pages on WikiJS."""
     session = await session_coro  # Needs to bo awaited
     async with session:
         pages = await list_all_pages(session, "pl")
@@ -34,6 +37,7 @@ async def test_list_pages(session_coro):
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_search_by_keywords(session_coro):
+    """Test searching by keyword on WikiJS."""
     session = await session_coro  # Needs to bo awaited
     async with session:
         pages = await search_by_keywords(session, ["KNML"], "pl")

@@ -15,13 +15,12 @@ def _get_base_url(resp: aiohttp.ClientResponse) -> str:
 
 
 def get_session(url: str, token: str):
-    """Generate aiohttp session with authentication headers
+    """Generate aiohttp session with authentication headers.
 
     Args:
         url: GraphQL endpoint url
-        token: Authentication token
+        token: Authentication token.
     """
-
     # Build headers
     headers = {"Authorization": f"Bearer {token}"}
 
@@ -69,11 +68,12 @@ async def _fix_pageid(
 
 
 async def _get_page(session: aiohttp.ClientSession, page_id: int, locale: str) -> Page:
-    """Get page with content
+    """Get page with content.
 
     Args:
         session: aiohttp session
         page_id: Page ID
+        locale: language code from ISO 639 eg. pl
 
     Returns:
         Page or None if page does not exist or is not accessible (unauthorized)
@@ -124,6 +124,7 @@ async def _list_by_keyword(
     Args:
         session: aiohttp session
         keyword: Keyword to search for
+        locale: language code from ISO 639 eg. pl
 
     Returns:
         List of page items (Pages without content)
@@ -163,11 +164,12 @@ async def _list_by_keyword(
 async def search_by_keywords(
     session: aiohttp.ClientSession, keywords: List[str], locale: str
 ) -> List[Page]:
-    """Search for pages by keywords
+    """Search for pages by keywords on WikiJS.
 
     Args:
+        session: session used to connect with WikiJS
         keywords: List of keywords
-        locale: Locale of the wiki
+        locale: language code from ISO 639 eg. pl
 
     Returns:
         List of documents
@@ -203,16 +205,15 @@ async def search_by_keywords(
 async def list_all_pages(
     session: aiohttp.ClientSession, locale: str
 ) -> List[PageListItem]:
-    """
-    List all pages in wiki
+    """List all pages in wiki.
 
     Args:
         session: aiohttp session
+        locale: language code from ISO 639 eg. pl
 
     Returns:
         List of pages
     """
-
     query = """
     query {
         pages {

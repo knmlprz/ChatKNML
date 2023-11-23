@@ -4,6 +4,7 @@ from langchain.docstore.document import Document
 
 
 class PageListItem(BaseModel):
+    """PageListItem from WikiJS's Graphql API."""
     # Allow extra fields
     model_config = ConfigDict(extra="allow")
 
@@ -12,10 +13,12 @@ class PageListItem(BaseModel):
     title: str
 
     def __hash__(self) -> int:
-        return hash(self.id)
+        """Required for this object to be hashable."""
+        return hash(self.path)
 
 
 class Page(BaseModel):
+    """Page from WikiJS's Graphql API."""
     # Allow extra fields
     model_config = ConfigDict(extra="allow")
 
@@ -30,11 +33,13 @@ class Page(BaseModel):
     @computed_field
     @property
     def source(self) -> str:
-        # Url pf page is instance url / locale / path
+        """Source of page (url/locale/path)"""
+        # Url page is: instance url / locale / path
         return urljoin(self.instance_url, f"{self.locale}/{self.path}")
 
     @property
     def metadata(self) -> dict[str, str | int | float | bool]:
+        """Convert page to metadata."""
         return {
             "id": self.id,
             "path": self.path,
@@ -46,6 +51,7 @@ class Page(BaseModel):
         }
 
     def to_document(self) -> Document:
+        """Convert page to Langchain's `Document`"""
         return Document(
             page_content=self.content,
             metadata=self.metadata,

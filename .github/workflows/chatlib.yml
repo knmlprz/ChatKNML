@@ -1,9 +1,13 @@
-name: Python application
+name: Lint, test and format chatblib
 
 on:
   pull_request:
     paths:
       - "chatlib/**"
+  workflow_run:
+    workflows: ["Dependabot PR Check"]
+    types:
+      - completed
 
 permissions:
   contents: read

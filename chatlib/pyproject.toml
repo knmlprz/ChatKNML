@@ -44,11 +44,10 @@ pythonVersion = "3.10"
 pythonPlatform = "Linux"
 
 [tool.ruff.lint]
-select = ["D"]
+select = ["D", "W292"]
 
 ignore = [
     "D100",# Missing docstring in public module
-    "D415" # First line should end with a period, question mark, or exclamation point
 ]
 
 [tool.ruff.lint.pydocstyle]

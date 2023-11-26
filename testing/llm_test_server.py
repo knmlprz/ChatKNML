@@ -1,5 +1,15 @@
 from langchain import OpenAI , PromptTemplate
 from langchain.chains import LLMChain
+from langchain.utils import load_dataset
+from datetime import datetime
+import tensorflow as tf
+from gensim.models import KeyedVectors
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+from langdetect import detect
+import json
+
+
 
 
 
@@ -9,7 +19,7 @@ llm = OpenAI(temperature=0,
     openai_api_base="http://localhost:8000/v1"
     )
 
-    tamplate = """Jako bot stworzony przez studentów z koła naukowego KNML, Twoim zadaniem jest odpowiadanie na pytania w 
+tamplate = """Jako bot stworzony przez studentów z koła naukowego KNML, Twoim zadaniem jest odpowiadanie na pytania w 
 języku polskim, aby wspierać
  polskich studentów. Proszę, przyjmij następujące polecenie lub pytanie i udziel na nie odpowiedzi w języku polskim."""
 prompt = PromptTemplate(template=tamplate ,input_variables=["Q: {question}", "A: {answer}"], output="Q: {question}\nA: {answer}\n\n")

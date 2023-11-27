@@ -1,11 +1,14 @@
 import discord
 import os
-import config
-
+from chatbot import config
 from typing import Self
 from discord.ext import commands
+import logging
 
-intents = discord.Intents.all()
+discord.utils.setup_logging()
+
+intents = discord.Intents.default()
+intents.message_content = True
 
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
@@ -20,6 +23,7 @@ class Buttons(discord.ui.View):
         interaction: discord.Interaction,
         button: discord.ui.Button,
     ):
+        logging.info(interaction.message.content)
         await interaction.response.send_message(
             content="This is an edited button response!"
         )
@@ -36,11 +40,16 @@ class Buttons(discord.ui.View):
 
 
 @bot.command()
-async def ask(
+async def pomocy(
     ctx: commands.Context,
     *args: str,
 ):
     await ctx.send(args, view=Buttons())
 
 
-bot.run(os.environ["TOKEN"])
+def main():
+    bot.run(os.environ["TOKEN"])
+
+
+if __name__ == "__main__":
+    main()

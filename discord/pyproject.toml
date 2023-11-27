@@ -1,15 +1,22 @@
 [tool.poetry]
-name = "discord-knml"
+name = "chatbot"
 version = "0.1.0"
 description = ""
-authors = [""]
+authors = []
 readme = "README.md"
+packages = [
+    { include = "chatbot"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 discord = "^2.3.2"
 
+[tool.poetry.scripts]
+start-bot = "chatbot.bot:main"
+
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

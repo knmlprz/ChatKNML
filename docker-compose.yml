@@ -17,3 +17,18 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
+  llamacpp:
+    image: ghcr.io/ggerganov/llama.cpp:full-cuda
+    command: "-s -m /models/sheep-duck-llama-2-70b-v1.1.Q4_0.gguf --ctx-size 8192 -ngl 100 --port 8080 --host 0.0.0.0"
+    volumes:
+      - ./models:/models
+    ports:
+      - 5002:8080
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

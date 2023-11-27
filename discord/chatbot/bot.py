@@ -1,11 +1,14 @@
 import discord
 import os
-import config
-
+from chatbot import config, llm
 from typing import Self
 from discord.ext import commands
+import logging
 
-intents = discord.Intents.all()
+discord.utils.setup_logging()
+
+intents = discord.Intents.default()
+intents.message_content = True
 
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
@@ -35,12 +38,21 @@ class Buttons(discord.ui.View):
         )
 
 
-@bot.command()
-async def ask(
+@bot.command(name="q")
+async def query_llm(
     ctx: commands.Context,
-    *args: str,
+    *,
+    arg: str
 ):
-    await ctx.send(args, view=Buttons())
+    logging.info("Got message %s", arg)
+    async with ctx.typing():
+        response = await llm.query_llm(arg)
+    await ctx.send(response)
 
 
-bot.run(os.environ["TOKEN"])
+def main():
+    bot.run(os.environ["TOKEN"])
+
+
+if __name__ == "__main__":
+    main()

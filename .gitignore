@@ -1,3 +1,7 @@
 .env
+<<<<<<< HEAD
+*.bin
+=======
 .envrc
 models/**
+>>>>>>> 7cfb49cc2091ad67aecf2d1de7dfd5bbc6dad067

@@ -1,12 +1,9 @@
 [tool.poetry]
-name = "chatbot"
+name = "discord-knml"
 version = "0.1.0"
 description = ""
-authors = []
+authors = [""]
 readme = "README.md"
-packages = [
-    { include = "chatbot"}
-]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"

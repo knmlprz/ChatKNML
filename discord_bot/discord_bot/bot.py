@@ -1,12 +1,11 @@
 """Sets up discord bot."""
-import logging
 import os
 from typing import Self
 
 import discord
 from discord.ext import commands
 
-from discord_bot import config, llm
+from discord_bot import config
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -37,18 +36,6 @@ class Buttons(discord.ui.View):
         await interaction.response.send_message(
             content="This is an edited button response!",
         )
-
-
-@bot.command(name="q")
-async def query_llm(ctx: commands.Context, *, arg: str):
-    """!q command.
-
-    Example usage on discord: !q Jak się nazywasz?
-    """
-    logging.info("Got message %s", arg)
-    async with ctx.typing():
-        response = await llm.query_llm(arg)
-    await ctx.send(response)
 
 
 def main():

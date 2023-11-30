@@ -1,34 +1,4 @@
 services:
   discord-bot:
-    build: ./discord
+    build: ./discord_bot
     env_file: .env
-
-  embedding-api:
-    image: michaelf34/infinity:latest
-    command: "--model-name-or-path /models/e5-large-v2 --port 80"
-    volumes:
-      - ./models:/models
-    ports:
-      - 5001:80
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
-  llamacpp:
-    image: ghcr.io/ggerganov/llama.cpp:full-cuda
-    command: "-s -m /models/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf --ctx-size 8192 -ngl 100 --port 8080 --host 0.0.0.0"
-    volumes:
-      - ./models:/models
-    ports:
-      - 5002:8080
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]

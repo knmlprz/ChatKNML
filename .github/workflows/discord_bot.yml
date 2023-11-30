@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "discord/**"
+      - "discord_bot/**"
   workflow_run:
     workflows: ["Dependabot PR Check"]
     types:
@@ -23,13 +23,13 @@ jobs:
 
     defaults:
       run:
-        working-directory: discord
+        working-directory: discord_bot
 
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
         with:
-          sparse-checkout: "discord"
+          sparse-checkout: "discord_bot"
           sparse-checkout-cone-mode: false
 
       - name: 🐍 Set up Python ${{ matrix.python-version }} 
@@ -45,8 +45,8 @@ jobs:
       - name: 🚀 Cache the venv based on the .lock 
         uses: actions/cache@v3
         with:
-          path: discord/.venv
-          key: venv-${{ hashFiles('discord/poetry.lock') }}
+          path: discord_bot/.venv
+          key: venv-${{ hashFiles('discord_bot/poetry.lock') }}
 
       - name: 🔨 Install dev dependencies
         run: poetry install --with dev

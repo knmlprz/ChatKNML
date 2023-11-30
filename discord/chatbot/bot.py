@@ -1,6 +1,6 @@
 import discord
 import os
-from chatbot import config
+from chatbot import config, llm
 from typing import Self
 from discord.ext import commands
 import logging
@@ -23,7 +23,6 @@ class Buttons(discord.ui.View):
         interaction: discord.Interaction,
         button: discord.ui.Button,
     ):
-        logging.info(interaction.message.content)
         await interaction.response.send_message(
             content="This is an edited button response!"
         )
@@ -39,12 +38,16 @@ class Buttons(discord.ui.View):
         )
 
 
-@bot.command()
-async def pomocy(
+@bot.command(name="q")
+async def query_llm(
     ctx: commands.Context,
-    *args: str,
+    *,
+    arg: str
 ):
-    await ctx.send(args, view=Buttons())
+    logging.info("Got message %s", arg)
+    async with ctx.typing():
+        response = await llm.query_llm(arg)
+    await ctx.send(response)
 
 
 def main():

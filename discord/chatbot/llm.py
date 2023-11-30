@@ -1,14 +1,57 @@
+import os
 import aiohttp
 import json
 import logging
 
-COMPLETIONS_API_URL = "http://llamacpp:8080/completion"
+logger = logging.getLogger(__name__)
 
-async def query_llm(query: str) -> str:
-    PROPMT = f"""Nazywasz się Cudo. Twoja nazwa pochodzi od rdzeni NVIDIA CUDA. Jesteś pomocnym, pełnym szacunku i uczciwym asystentem. Zawsze udzielaj jak najbardziej pomocnych i bezpiecznych odpowiedzi.  Odpowiedzi nie powinny zawierać żadnych szkodliwych, nieetycznych, rasistowskich, seksistowskich, toksycznych, niebezpiecznych lub nielegalnych treści. Upewnij się, że Twoje odpowiedzi są bezstronne społecznie i mają pozytywny charakter. Jeśli pytanie nie ma sensu lub nie jest spójne z faktami, wyjaśnij dlaczego, zamiast odpowiadać niepoprawnie. Jeśli nie znasz odpowiedzi na pytanie, nie udostępniaj fałszywych informacji. Pracujesz na discordzie Koła Naukowego Machine Learning Politechniki Rzeszowskiej (w skrócie KNML). Koło Naukowe Machine Learning Politechniki Rzeszowskiej jest to grupa studentów zainteresowanych uczeniem maszynowym, sztuczną inteligencją, analizą danych i pokrewnymi tematami. Koło powstało w 2020 roku na Wydziale Matematyki i Fizyki Stosowanej i od tego czasu realizuje różne projekty i działania naukowe. Koło ma własną stronę internetową1, profil na Facebooku2 i GitHubie3, gdzie można znaleźć więcej informacji o ich działalności. Koło zostało także wyróżnione w kategorii Debiut Roku 2021 w Konkursie Studenckiego Ruchu Naukowego StRuNa4. Koło jest otwarte dla wszystkich studentów Politechniki Rzeszowskiej, którzy chcą rozwijać swoje umiejętności i pasje w zakresie uczenia maszynowego. Odpowiedz na następujące zapytanie: {query}"""
-    headers = {'content-type': 'application/json'}
+COMPLETIONS_API_URL = os.environ.get(
+    "COMPLETIONS_API_URL", "http://llamacpp:8080/completion"
+)
+
+COMPLETION_PROMPT_FILE = os.environ.get(
+    "COMPLETION_PROMPT_FILE", "sheep-duck-llama2-70B.txt"
+)
+
+with open(os.path.join("prompts", COMPLETION_PROMPT_FILE), "r") as f:
+    COMPLETION_PROMPT = f.read()
+    logging.debug("Loded prompt: %s", COMPLETION_PROMPT)
+
+
+async def query_llm(
+    query: str,
+    prompt: str = COMPLETION_PROMPT,
+    completions_api: str = COMPLETIONS_API_URL,
+    max_tokens: int = 3000,
+    temperature: float = 0.7,
+) -> str:
+    """Query and LLM on OpenAI-like /completions API Endpoint.
+
+    This function comes with pre-formatted prompt that is tied to the model used.
+
+    Args:
+        query: Query from user.
+        prompt: Chat prompt template for LLM.
+        completions_api: OpenAI like completions api endpoint.
+        max_tokens: The maximum number of tokens to generate in the chat completion.
+        temparature: What sampling temperature to use, between 0 and 2.
+            Higher values like 0.8 will make the output more random, while
+            lower values like 0.2 will make it more focused and deterministic.
+    """
+    logging.info("query_lmm: %s", query)
+    formatted_prompt = prompt.format(query)
+    logging.debug("query_llm: %s", formatted_prompt)
+    headers = {"content-type": "application/json"}
     async with aiohttp.ClientSession() as session:
-        async with session.post(COMPLETIONS_API_URL, json={"prompt": PROPMT, "n_predict": 300, "stopping_word": "<s>"}, headers=headers) as response:
+        async with session.post(
+            completions_api,
+            json={
+                "prompt": formatted_prompt,
+                "n_predict": max_tokens,
+                "temperature": temperature,
+            },
+            headers=headers,
+        ) as response:
             text = await response.text()
             logging.info("Got response: %s", text)
             data = json.loads(text)

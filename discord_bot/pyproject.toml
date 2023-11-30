@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "discord-knml"
+name = "discord_bot"
 version = "0.1.0"
 description = ""
 authors = ["Piotr Krawiec <contact@piotrk.it>"]

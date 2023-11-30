@@ -1,6 +1,6 @@
 services:
   discord-bot:
-    build: ./discord
+    build: ./discord_bot
     env_file: .env
 
   embedding-api:

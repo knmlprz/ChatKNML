@@ -4,7 +4,7 @@ import json
 
 from aioresponses import aioresponses
 
-from chatbot import llm
+from discord_bot import llm
 
 
 def test_query_llm():

@@ -1,6 +1,6 @@
 ## Chatlib
 
-Library for creating chatbots.
+Library for creating discord_bots.
 
 Modules:
 - wikijs - module for querying wikijs

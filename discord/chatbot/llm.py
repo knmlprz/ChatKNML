@@ -38,9 +38,9 @@ async def query_llm(
             Higher values like 0.8 will make the output more random, while
             lower values like 0.2 will make it more focused and deterministic.
     """
-    logging.info("query_lmm: %s", query)
+    logger.info("query_lmm: %s", query)
     formatted_prompt = prompt.format(query)
-    logging.debug("query_llm: %s", formatted_prompt)
+    logger.debug("query_llm: %s", formatted_prompt)
     headers = {"content-type": "application/json"}
     async with aiohttp.ClientSession() as session:
         async with session.post(
@@ -53,6 +53,6 @@ async def query_llm(
             headers=headers,
         ) as response:
             text = await response.text()
-            logging.info("Got response: %s", text)
+            logger.info("Got response: %s", text)
             data = json.loads(text)
     return data["content"]

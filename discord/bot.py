@@ -8,10 +8,7 @@ from discord.ext import commands
 
 from chatbot import config, llm
 
-discord.utils.setup_logging()
-
-intents = discord.Intents.default()
-intents.message_content = True
+intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 

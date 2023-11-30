@@ -1,2 +1,2 @@
-PREFIX="!"
-BOT_NAME=""
+PREFIX = "!"
+BOT_NAME = ""

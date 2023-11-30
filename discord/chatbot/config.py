@@ -1,2 +1,3 @@
-PREFIX="!"
-BOT_NAME=""
+"""All configurations."""
+PREFIX = "!"
+BOT_NAME = ""

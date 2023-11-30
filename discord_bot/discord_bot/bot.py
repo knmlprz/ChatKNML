@@ -6,7 +6,7 @@ from typing import Self
 import discord
 from discord.ext import commands
 
-from chatbot import config, llm
+from discord_bot import config, llm
 
 intents = discord.Intents.default()
 intents.message_content = True

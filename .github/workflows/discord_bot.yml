@@ -1,4 +1,4 @@
-name: Lint, test and format discord chatbot
+name: Lint, test and format discord_bot
 
 on:
   workflow_dispatch:

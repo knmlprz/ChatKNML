@@ -23,4 +23,4 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY . ./
 
-ENTRYPOINT ["python", "-m", "chatbot.bot"]
+ENTRYPOINT ["python", "-m", "discord_bot.bot"]

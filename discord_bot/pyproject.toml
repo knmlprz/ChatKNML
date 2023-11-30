@@ -2,7 +2,7 @@
 name = "discord-knml"
 version = "0.1.0"
 description = ""
-authors = [""]
+authors = ["Piotr Krawiec <contact@piotrk.it>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -27,7 +27,7 @@ markers = [
 ]
 
 [tool.pyright]
-include = ["chatbot"]
+include = ["discord_bot"]
 exclude = [
     "**/__pycache__",
 ]

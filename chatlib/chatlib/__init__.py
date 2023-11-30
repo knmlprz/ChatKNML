@@ -1,1 +1,1 @@
-"""Library for ChatKNML chatbot."""
+"""Library for ChatKNML discord_bot."""

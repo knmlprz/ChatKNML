@@ -1,9 +1,12 @@
-import discord
-import os
-from chatbot import config, llm
-from typing import Self
-from discord.ext import commands
+"""Sets up discord bot."""
 import logging
+import os
+from typing import Self
+
+import discord
+from discord.ext import commands
+
+from chatbot import config, llm
 
 discord.utils.setup_logging()
 
@@ -24,7 +27,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="This is an edited button response!",
         )
 
     @discord.ui.button(label="Bad bot", style=discord.ButtonStyle.red)
@@ -34,16 +37,16 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="This is an edited button response!",
         )
 
 
 @bot.command(name="q")
-async def query_llm(
-    ctx: commands.Context,
-    *,
-    arg: str
-):
+async def query_llm(ctx: commands.Context, *, arg: str):
+    """!q command.
+
+    Example usage on discord: !q Jak się nazywasz?
+    """
     logging.info("Got message %s", arg)
     async with ctx.typing():
         response = await llm.query_llm(arg)
@@ -51,6 +54,7 @@ async def query_llm(
 
 
 def main():
+    """Entrypoint."""
     bot.run(os.environ["TOKEN"])
 
 

@@ -20,7 +20,7 @@ services:
 
   llamacpp:
     image: ghcr.io/ggerganov/llama.cpp:full-cuda
-    command: "-s -m /models/sheep-duck-llama-2-70b-v1.1.Q4_0.gguf --ctx-size 8192 -ngl 100 --port 8080 --host 0.0.0.0"
+    command: "-s -m /models/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf --ctx-size 8192 -ngl 100 --port 8080 --host 0.0.0.0"
     volumes:
       - ./models:/models
     ports:

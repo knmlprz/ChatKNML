@@ -19,7 +19,7 @@ services:
   #             capabilities: [gpu]
   
   db:
-    image: postgres
+    image: postgres:16
     volumes:
       - ./db:/var/lib/postgresql/data
     env_file:

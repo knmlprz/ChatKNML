@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  web:
+    build:
+      context: .
+      args:
+        APPENV: "local"
+    command: gunicorn --bind=0.0.0.0:8001 --timeout=10 drfboilerplate.wsgi:application --log-level debug -k gevent --reload
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db

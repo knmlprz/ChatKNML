@@ -1,4 +1,7 @@
 from pathlib import Path
+import environ
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,12 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#+s6&fgndq2-z2ou1rm@y32fj*0nw)-$_h7xxuc_bkemmdi+a@"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -64,11 +67,11 @@ WSGI_APPLICATION = "api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db_name",
-        "USER": "db_user",
-        "PASSWORD": "db_user_password",
-        "HOST": "",
-        "PORT": "111",
+        "NAME": env("POSTGRES_NAME"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
     }
 }
 

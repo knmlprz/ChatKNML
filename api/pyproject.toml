@@ -11,6 +11,7 @@ django = "^4.2.7"
 uvicorn = "^0.24.0.post1"
 channels = "^4.0.0"
 psycopg2-binary = "^2.9.9"
+django-environ = "^0.11.2"
 
 
 [build-system]

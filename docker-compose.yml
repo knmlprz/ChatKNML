@@ -17,3 +17,22 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+  
+  db:
+    image: postgres:16
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  api:
+    build:
+      context: ./api/
+    env_file:
+      - .env
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

@@ -3,17 +3,36 @@ services:
     build: ./discord
     env_file: .env
 
-  embedding-api:
-    image: michaelf34/infinity:latest
-    command: "--model-name-or-path /models/e5-large-v2 --port 80"
+  # embedding-api:
+  #   image: michaelf34/infinity:latest
+  #   command: "--model-name-or-path /models/e5-large-v2 --port 80"
+  #   volumes:
+  #     - ./models:/models
+  #   ports:
+  #     - 5001:80
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  
+  db:
+    image: postgres
     volumes:
-      - ./models:/models
+      - ./db:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  api:
+    build:
+      context: ./api/
+    env_file:
+      - .env
+    volumes:
+      - .:/code
     ports:
-      - 5001:80
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+      - "8000:8000"
+    depends_on:
+      - db

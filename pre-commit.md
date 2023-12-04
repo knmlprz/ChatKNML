@@ -1,35 +1,35 @@
 # Pre-commit
 
-## Installing Code Formatting Tools
+## Instalowanie narzędzi do formatowania kodu
 
-## Install pre-commit using the following command
+## Zainstaluj przed zatwierdzeniem, używając następującego polecenia
 
 ```bash
 pip install pre-commit
 ```
 
-## Install hooks for your project
+## Zainstaluj hooki dla swojego projektu
 
 ```bash
 pre-commit install
 ```
 
-## Pre-commit will automatically run configured hooks to check and format the code
+## Pre-commit automatycznie uruchomi skonfigurowane hooki w celu sprawdzenia i sformatowania kodu
 
-## Add files to the commit
+## Dodaj pliki do zatwierdzenia
 
 ```bash
 git add .
 ```
 
-## Commit the changes
+## Zatwierdz zmiany
 
 ```bash
 git commit -m "Your commit message"
 pre-commit run --all-files
 ```
 
-## To update hooks to the latest versions, use the following command
+## Aby zaktualizować hooki do najnowszych wersji, użyj poniższego polecenia
 
 ```bash
 pre-commit autoupdate

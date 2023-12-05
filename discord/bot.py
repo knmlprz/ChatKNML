@@ -21,12 +21,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="Good response!"
         )
-        filename = f"discord/private_chats/{interaction.user.id}.txt"
-        with open(filename, "a") as file:
-            file.write(f"1\n")
-        self.stop()
 
 
 
@@ -37,15 +32,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="Bad desponse!"
         )
-        filename = f"discord/private_chats/{interaction.user.id}.txt"
-        with open(filename, "a") as file:
-            file.write(f"0\n")
-        self.stop()
-
-
-
 
 
 
@@ -57,8 +44,8 @@ async def chats_history(bot, last_messages_per_channel):
             if channel.permissions_for(guild.me).read_messages:
                 async for message in channel.history(limit=100):
                     last_messages_per_channel[channel.id].append(f"{message.author.name}: {message.content}")
-
                     
+                                        
 async def repetitor(bot, last_messages_per_channel):
     while True:
         await chats_history(bot, last_messages_per_channel)

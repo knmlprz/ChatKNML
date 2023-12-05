@@ -1,11 +1,14 @@
-import discord
+"""Sets up discord bot."""
 import os
-import config
-
 from typing import Self
+
+import discord
 from discord.ext import commands
 
-intents = discord.Intents.all()
+from discord_bot import config
+
+intents = discord.Intents.default()
+intents.message_content = True
 
 bot = commands.Bot(command_prefix=config.PREFIX, help_command=None, intents=intents)
 
@@ -21,7 +24,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="This is an edited button response!",
         )
 
     @discord.ui.button(label="Bad bot", style=discord.ButtonStyle.red)
@@ -31,16 +34,14 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="This is an edited button response!",
         )
 
 
-@bot.command()
-async def ask(
-    ctx: commands.Context,
-    *args: str,
-):
-    await ctx.send(args, view=Buttons())
+def main():
+    """Entrypoint."""
+    bot.run(os.environ["TOKEN"])
 
 
-bot.run(os.environ["TOKEN"])
+if __name__ == "__main__":
+    main()

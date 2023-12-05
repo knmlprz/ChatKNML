@@ -1,0 +1,94 @@
+[tool.poetry]
+name = "discord_bot"
+version = "0.1.0"
+description = ""
+authors = ["Piotr Krawiec <contact@piotrk.it>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+discord = "^2.3.2"
+aiohttp = "^3.9.1"
+
+[tool.poetry.group.dev.dependencies]
+aioresponses = "^0.7.6"
+black = "^23.11.0"
+ruff = "^0.1.6"
+pytest = "^7.4.3"
+pyright = "^1.1.338"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: mark a test as an integration test (deselect with '-m \"not integration\"')",
+]
+
+[tool.pyright]
+include = ["discord_bot"]
+exclude = [
+    "**/__pycache__",
+]
+useLibraryCodeForTypes = true
+typeCheckingMode = "basic"
+
+reportMissingImports = true
+reportMissingTypeStubs = false
+
+pythonVersion = "3.11"
+pythonPlatform = "Linux"
+
+[tool.ruff.lint]
+select = [
+       "E",
+       "F",
+       "I",
+       "D",
+       "W",
+       "N",
+       "UP",
+       "YTT",
+       "S",
+       "B",
+       "A",
+       "COM",
+       "C4",
+       "T10",
+       "DJ",
+       "EM",
+       "ICN",
+       "PIE",
+       "T20",
+       "PYI",
+       "Q",
+       "RSE",
+       "RET",
+       "SLF",
+       "SIM",
+       "TD",
+       "ERA",
+       "PL",
+       "TRY",
+       "FLY",
+       "RUF",
+]
+
+ignore = [
+    "D101",
+    "D102",
+    "D107",
+]
+
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402", "S101"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+max-line-length = 100 # E501 reports lines that exceed the length of 100.

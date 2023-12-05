@@ -21,7 +21,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="Good response!"
         )
         filename = f"discord/private_chats/{interaction.user.id}.txt"
         with open(filename, "a") as file:
@@ -37,7 +37,7 @@ class Buttons(discord.ui.View):
         button: discord.ui.Button,
     ):
         await interaction.response.send_message(
-            content="This is an edited button response!"
+            content="Bad desponse!"
         )
         filename = f"discord/private_chats/{interaction.user.id}.txt"
         with open(filename, "a") as file:
@@ -45,39 +45,42 @@ class Buttons(discord.ui.View):
         self.stop()
 
 
-@bot.command()
-async def ask(
-    ctx: commands.Context,
-    *args: str,
-):
-    await ctx.send(args, view=Buttons())
 
 
-# wywołanie bota i przejście do rozmowy prywatnej
+
+
+import asyncio
+from collections import defaultdict
+async def chats_history(bot, last_messages_per_channel):
+    for guild in bot.guilds:
+        for channel in guild.text_channels:
+            if channel.permissions_for(guild.me).read_messages:
+                async for message in channel.history(limit=100):
+                    last_messages_per_channel[channel.id].append(f"{message.author.name}: {message.content}")
+
+                    
+async def repetitor(bot, last_messages_per_channel):
+    while True:
+        await chats_history(bot, last_messages_per_channel)
+        await asyncio.sleep(30)
+
+async def start_bot(bot):
+    last_messages_per_channel = defaultdict(list)
+    bot.loop.create_task(repetitor(bot, last_messages_per_channel))
+    await asyncio.sleep(2)  
+    return last_messages_per_channel
+
+
 @bot.command()
-async def DM(ctx, *, message=None):
-    if not isinstance(ctx.channel, discord.DMChannel):
-        message = "Witam, w czym mogę pomóc"
-        author = ctx.author
-        await author.send(message)
+async def show(ctx: commands.Context, limit: int = 10):
+    last_messages = await start_bot(ctx.bot)
+    channel_id = ctx.channel.id
+    if last_messages[channel_id]:
+        for msg in last_messages[channel_id][:limit]:
+            await ctx.send(msg)
     else:
-        message = "Jesteś już w rozmowie prywatnej, w czym mogę pomóc"
-        author = ctx.author
-        await author.send(message) 
-
-# odpowiedź na każde z pytań lorem ipsum
-@bot.event
-async def on_message(message):
-    if (message.author.bot == False) and isinstance(message.channel, discord.DMChannel) and not message.content.startswith('!DM'): 
-                response = "Lorem ipsum \n"
-                await message.channel.send(response, view = Buttons())
-                filename = f"discord/private_chats/{message.author.id}.txt"
-                with open(filename, "a") as file:
-                        file.write(f"{message.author.display_name} - {message.clean_content} \n")
-                        file.write(f"odpowiedź bota {response} - ")
-    
-    await bot.process_commands(message)
+        await ctx.send("Brak ostatnich wiadomości.")
 
 
+bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.GJ4muL.NrRMDflqytsIc1bPB9F2Q1gYYU291UjHyV4l9Q")
 
-bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.GeJlgw.at5Pn28P4hiYlKssHgzNyz2l80oQIwOjIeMG_k")

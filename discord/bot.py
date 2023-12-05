@@ -82,5 +82,5 @@ async def show(ctx: commands.Context, limit: int = 10):
         await ctx.send("Brak ostatnich wiadomości.")
 
 
-bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.GJ4muL.NrRMDflqytsIc1bPB9F2Q1gYYU291UjHyV4l9Q")
+bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.GPMwqY.Sm3nWVukPsQhF3eeAdKQWVaLSPgrJZj2qSHCW8")
 

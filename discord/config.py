@@ -1,2 +1,0 @@
-PREFIX="!"
-BOT_NAME=""

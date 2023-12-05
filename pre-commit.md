@@ -14,7 +14,7 @@ pip install pre-commit
 pre-commit install
 ```
 
-## Pre-commit automatycznie uruchomi skonfigurowane hooki w celu sprawdzenia i sformatowania kodu
+## Pre-commit automatycznie uruchomi hooki w celu sprawdzenia i sformatowania kodu
 
 ## Dodaj pliki do zatwierdzenia
 

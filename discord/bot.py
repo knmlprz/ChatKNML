@@ -46,17 +46,6 @@ async def chats_history(bot, last_messages_per_channel):
                     last_messages_per_channel[channel.id].append(f"{message.author.name}: {message.content}")
                     
                                         
-async def repetitor(bot, last_messages_per_channel):
-    while True:
-        await chats_history(bot, last_messages_per_channel)
-        await asyncio.sleep(30)
-
-async def start_bot(bot):
-    last_messages_per_channel = defaultdict(list)
-    bot.loop.create_task(repetitor(bot, last_messages_per_channel))
-    await asyncio.sleep(2)  
-    return last_messages_per_channel
-
 
 @bot.command()
 async def show(ctx: commands.Context, limit: int = 10):

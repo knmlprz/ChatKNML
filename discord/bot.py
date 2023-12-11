@@ -1,9 +1,10 @@
 import discord
 import os
 import config
-
+import asyncio
 from typing import Self
 from discord.ext import commands
+from collections import defaultdict
 
 intents = discord.Intents.all()
 
@@ -36,17 +37,31 @@ class Buttons(discord.ui.View):
 
 
 
-import asyncio
-from collections import defaultdict
-async def get_chats_history(bot):
+
+async def get_chats_history():
     chats_history = defaultdict(list)
     for guild in bot.guilds:
-        for channel in guild.text_channels:
-            if channel.permissions_for(guild.me).read_messages:
-                async for message in channel.history(limit=100):
-                    chats_history[channel.id].append(f"{message.author.name}: {message.content}")
+        readable_channels = filter(
+            lambda c: c.permissions_for(guild.me).read_messages,
+            guild.text_channels
+        )
+        for channel in readable_channels:
+            async for message in channel.history(limit=100):
+                chats_history[channel.id].append(f"{message.author.name}: {message.content}")
     return chats_history
-                    
-                                    
-bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.GPMwqY.Sm3nWVukPsQhF3eeAdKQWVaLSPgrJZj2qSHCW8")
+
+
+
+# a comand to check what returns get_chats_history
+@bot.command()
+async def show(ctx: commands.Context, limit: int = 100):
+    last_messages = await get_chats_history()
+    channel_id = ctx.channel.id
+    if last_messages[channel_id]:
+        for msg in last_messages[channel_id][:limit]:
+            await ctx.send(msg)
+    else:
+        await ctx.send("Brak ostatnich wiadomości.")
+
+bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.G7aYQ6.tnkStSGPkkDw30-eVtn2aCFQ9dIeaSqy_yb-O4")
 

@@ -63,5 +63,11 @@ async def show(ctx: commands.Context, limit: int = 100):
     else:
         await ctx.send("Brak ostatnich wiadomości.")
 
-bot.run("MTE3NTUwNDAwMTc4NjE4NzgxNg.G7aYQ6.tnkStSGPkkDw30-eVtn2aCFQ9dIeaSqy_yb-O4")
+def main():
+    """Entrypoint."""
+    bot.run(os.environ["TOKEN"])
+
+
+if __name__ == "__main__":
+    main()
 

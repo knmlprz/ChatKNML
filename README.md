@@ -2,7 +2,17 @@
 
 ## Getting started
 
-### Embedding api
+### Starting app development
+
+Launching services using the "dev" profile:
+
+```sh
+docker compose --profile dev up
+```
+
+### Starting app production
+
+#### Embedding api
 
 Download models (need git-lfs):
 
@@ -26,5 +36,5 @@ wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/ma
 #### Starting app
 
 ```sh
-docker compose up -d
+docker compose --profile prod up
 ```

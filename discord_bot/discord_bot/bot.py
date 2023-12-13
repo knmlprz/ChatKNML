@@ -44,7 +44,8 @@ async def get_chats_history():
     chats_history = defaultdict(list)
     for guild in bot.guilds:
         readable_channels = filter(
-            lambda c: c.permissions_for(guild.me).read_messages, guild.text_channels,
+            lambda c: c.permissions_for(guild.me).read_messages,
+            guild.text_channels,
         )
         for channel in readable_channels:
             async for message in channel.history(limit=100):
@@ -54,7 +55,6 @@ async def get_chats_history():
     return chats_history
 
 
-# a comand to check what returns get_chats_history
 @bot.command()
 async def show(ctx: commands.Context, limit: int = 100):
     """Shows what get_chats_history gets."""

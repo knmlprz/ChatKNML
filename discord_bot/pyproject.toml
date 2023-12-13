@@ -1,29 +1,25 @@
 [tool.poetry]
-name = "chatlib"
+name = "discord_bot"
 version = "0.1.0"
 description = ""
-authors = ["Piotr Krawiec <piotr.krawiec23@gmail.com>"]
+authors = ["Piotr Krawiec <contact@piotrk.it>"]
 readme = "README.md"
-packages = [{include = "chatlib"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-python-dotenv = "^1.0.0"
-aiohttp = {extras = ["speedups"], version = "^3.9.0"}
-pydantic = "^2.5.1"
-langchain = "^0.0.329"
+python = ">=3.11,<3.12"
+discord = "^2.3.2"
+aiohttp = "^3.9.1"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.3"
-ruff = "^0.1.5"
-pytest-asyncio = "^0.21.1"
-pyright = "^1.1.336"
+aioresponses = "^0.7.6"
 black = "^23.11.0"
+ruff = "^0.1.6"
+pytest = "^7.4.3"
+pyright = "^1.1.338"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
 
 [tool.pytest.ini_options]
 markers = [
@@ -31,7 +27,7 @@ markers = [
 ]
 
 [tool.pyright]
-include = ["chatlib"]
+include = ["discord_bot"]
 exclude = [
     "**/__pycache__",
 ]
@@ -41,7 +37,7 @@ typeCheckingMode = "basic"
 reportMissingImports = true
 reportMissingTypeStubs = false
 
-pythonVersion = "3.10"
+pythonVersion = "3.11"
 pythonPlatform = "Linux"
 
 [tool.ruff.lint]
@@ -77,6 +73,12 @@ select = [
        "TRY",
        "FLY",
        "RUF",
+]
+
+ignore = [
+    "D101",
+    "D102",
+    "D107",
 ]
 
 

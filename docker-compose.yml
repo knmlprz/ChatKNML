@@ -1,9 +1,11 @@
 services:
   discord-bot:
+    profiles: ["dev","prod"]
     build: ./discord_bot
     env_file: .env
 
   embedding-api:
+    profiles: ["prod"]
     image: michaelf34/infinity:latest
     command: "--model-name-or-path /models/e5-large-v2 --port 80"
     volumes:
@@ -19,6 +21,7 @@ services:
               capabilities: [gpu]
 
   db:
+    profiles: ["dev","prod"]
     image: postgres:16
     volumes:
       - ./db:/var/lib/postgresql/data
@@ -26,6 +29,7 @@ services:
       - .env
 
   api:
+    profiles: ["dev","prod"]
     build:
       context: ./api/
     env_file:

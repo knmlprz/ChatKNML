@@ -1,5 +1,6 @@
 """Sets up discord bot."""
 import os
+from collections import defaultdict
 from typing import Self
 
 import discord
@@ -36,6 +37,34 @@ class Buttons(discord.ui.View):
         await interaction.response.send_message(
             content="This is an edited button response!",
         )
+
+
+async def get_chats_history():
+    """Taking chat conversation from all chanells."""
+    chats_history = defaultdict(list)
+    for guild in bot.guilds:
+        readable_channels = filter(
+            lambda c: c.permissions_for(guild.me).read_messages,
+            guild.text_channels,
+        )
+        for channel in readable_channels:
+            async for message in channel.history(limit=100):
+                chats_history[channel.id].append(
+                    f"{message.author.name}: {message.content}",
+                )
+    return chats_history
+
+
+@bot.command()
+async def show(ctx: commands.Context, limit: int = 100):
+    """Shows what get_chats_history gets."""
+    last_messages = await get_chats_history()
+    channel_id = ctx.channel.id
+    if last_messages[channel_id]:
+        for msg in last_messages[channel_id][:limit]:
+            await ctx.send(msg)
+    else:
+        await ctx.send("Brak ostatnich wiadomości.")
 
 
 def main():

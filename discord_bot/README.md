@@ -18,7 +18,8 @@ direct link - **https://docs.docker.com/desktop/install/windows-install/**
 pip install pipx
 pipx install poetry
 ```
-## Copy insides of ".env.example", create ".env" file,
+## Copy insides
+Copy insides of ".env.example", create ".env" file,
 paste it there and put your own discord token in parenthesis
 TOKEN="DISCORD_TOKEN"
 

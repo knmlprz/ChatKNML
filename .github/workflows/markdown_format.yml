@@ -1,17 +1,29 @@
-name: formatting check
+name: Lint, test and format discord_bot
 
 on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "*/**"
-  push:
-    paths:
-      - "*/**"
+      - "discord_bot/**"
+  workflow_run:
+    workflows: ["Dependabot PR Check"]
+    types:
+      - completed
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        poetry-version: ["1.7"]
+
+    defaults:
+      run:
+        working-directory: discord_bot
 
     steps:
       - name: 📥 Checkout repository
@@ -19,6 +31,31 @@ jobs:
         with:
           sparse-checkout: "discord_bot"
           sparse-checkout-cone-mode: false
-       
-      - name: Auto-Formatter
-        uses: mezgoodle/auto-formatter@v1.0.10
+
+      - name: 🐍 Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: 📜 Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+
+      - name: 🚀 Cache the venv based on the .lock
+        uses: actions/cache@v3
+        with:
+          path: discord_bot/.venv
+          key: venv-${{ hashFiles('discord_bot/poetry.lock') }}
+
+      - name: 🔨 Install dev dependencies
+        run: poetry install --with dev
+
+      - name: 🧑‍🔧 Lint with ruff
+        run: poetry run ruff check .
+
+      - name: 🧹 Format with black
+        run: poetry run black --check .
+
+      - name: 🧪 Run tests
+        run: poetry run pytest

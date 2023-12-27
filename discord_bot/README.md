@@ -1,6 +1,6 @@
 # ChatKNML Discord Bot
 
-# Setup
+## Setup
 
 ## Clone repository
 ```sh

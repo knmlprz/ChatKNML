@@ -10,14 +10,16 @@ git clone https://github.com/knmlprz/ChatKNML.git
 ## Install docker compose
 direct link - **https://docs.docker.com/desktop/install/windows-install/**
 
-> **WARNING**: After docker has been installed, make sure to register and log in to docker desktop.
+> **WARNING**: After docker has been installed,
+>  make sure to register and log in to docker desktop.
 
 ## Install poetry and packs needed
 ```sh
 pip install pipx
 pipx install poetry
 ```
-## Copy insides of ".env.example", create ".env" file, paste it there and put your own discord token in parenthesis
+## Copy insides of ".env.example", create ".env" file,
+paste it there and put your own discord token in parenthesis
 TOKEN="DISCORD_TOKEN"
 
 ## Setting docker compose

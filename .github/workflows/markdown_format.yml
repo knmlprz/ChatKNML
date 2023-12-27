@@ -59,6 +59,9 @@ jobs:
 
       - name: 🧹 Format with black
         run: poetry run black --check .
-
+                    
+      - name: Auto-Formatter         
+        uses: mezgoodle/auto-formatter@v1.0.10
+        
       - name: 🧪 Run tests
         run: poetry run pytest

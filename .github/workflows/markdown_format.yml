@@ -16,4 +16,5 @@ jobs:
     - name: markdownlint-cli
       uses: DavidAnson/markdownlint-cli2-action@v14
       with:
+        fix: True
         globs: '**/*.md'

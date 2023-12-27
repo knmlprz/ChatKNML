@@ -28,8 +28,8 @@ TOKEN="DISCORD_TOKEN"
 docker compose up
 ```
 ## Run a bot!
-```sh
-cd "your path to bot.py"
+```plaintext
+cd [your path to bot.py]
 ```
 Path ends with "/ChatKNML/discord_bot/discord_bot/bot.py"
 ```

@@ -8,11 +8,7 @@ name: Formate Code
 #############################
 # Start the job on all push #
 #############################
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches-ignore: [master]
+on: [push]
     # Remove the line above to run when pull-requesting to master
 
 ###############

@@ -1,67 +1,55 @@
-name: formatting check 
+---
+####################
+####################
+## Auto Formatter ##
+####################
+####################
+name: Formate Code
 
+#
+# Documentation:
+# https://github.com/mezgoodle/auto-formatter
+#
+
+#############################
+# Start the job on all push #
+#############################
 on:
-  workflow_dispatch:
-  pull_request:
-    paths:
-      - "*/**"
   push:
     paths:
       - "*/**"
-  workflow_run:
-    workflows: ["Dependabot PR Check"]
-    types:
-      - completed
+  pull_request:
+     paths:
+      - "*/**"
+    # Remove the line above to run when pull-requesting to master
 
-permissions:
-  contents: read
-
+###############
+# Set the Job #
+###############
 jobs:
   build:
+    # Name the Job
+    name: Formate Code
+    # Set the agent to run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11"]
-        poetry-version: ["1.7"]
 
-    defaults:
-      run:
-        working-directory: discord_bot
-
+    ##################
+    # Load all steps #
+    ##################
     steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
+      ##########################
+      # Checkout the code base #
+      ##########################
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
-          sparse-checkout: "discord_bot"
-          sparse-checkout-cone-mode: false
+          # Full git history is needed to get a proper list of changed files within `auto-formatter`
+          fetch-depth: 0
 
-      - name: 🐍 Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: 📜 Install poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-
-      - name: 🚀 Cache the venv based on the .lock
-        uses: actions/cache@v3
-        with:
-          path: discord_bot/.venv
-          key: venv-${{ hashFiles('discord_bot/poetry.lock') }}
-
-      - name: 🔨 Install dev dependencies
-        run: poetry install --with dev
-
-      - name: 🧑‍🔧 Lint with ruff
-        run: poetry run ruff check .
-
-      - name: 🧹 Format with black
-        run: poetry run black --check .
-                    
-      - name: Auto-Formatter         
-        uses: mezgoodle/auto-formatter@v1.0.10
-        
-      - name: 🧪 Run tests
-        run: poetry run pytest
+      ################################
+      # Run Auto-formatter against code base #
+      ################################
+      - name: Auto-Formatter
+        uses: mezgoodle/auto-formatter@v1.0.2
+        env:
+            GITHUB_TOKEN: ${{ secrets.TOKEN }}

@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "discord_bot/**"
+      - "*/**"
   push:
     paths:
-      - "discord_bot/**"
+      - "*/**"
   workflow_run:
     workflows: ["Dependabot PR Check"]
     types:

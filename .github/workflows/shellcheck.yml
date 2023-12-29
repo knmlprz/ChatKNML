@@ -1,7 +1,9 @@
 name: Lint and format shell scripts
 
 on:
-  [pull_request]
+  pull_request:
+    paths:
+      - '**.sh'
 
 jobs:
   shellcheck:
@@ -15,5 +17,3 @@ jobs:
         uses: luizm/action-sh-checker@v0.8.0
         env:
           SHFMT_OPTS: -w
-        with:
-          sh_checker_only_diff: true

@@ -1,22 +1,6 @@
 #!/bin/bash
-## Example: ShellCheck can detect some higher level semantic problems
 
-while getopts "nf:" param
+for (( n=2; n<=10; n++ ))
 do
-  case "$param" in
-    f) file="$OPTARG" ;;
-    v) set -x ;;
-  esac
+echo "$n seconds"
 done
-
-case "$file" in
-*.gz) gzip -d "$file" ;;
-*.zip) unzip "$file" ;;
-*.tar.gz) tar xzf "$file" ;;
-*) echo "Unknown filetype" ;;
-esac
-
-if [[ "$$(uname)" == "Linux" ]]
-then
-echo "Using Linux"
-fi

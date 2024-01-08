@@ -3,3 +3,5 @@
 .envrc
 models/**
 db/
+static/
+.idea/

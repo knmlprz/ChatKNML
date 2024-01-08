@@ -4,22 +4,6 @@ services:
     build: ./discord_bot
     env_file: .env
 
-  embedding-api:
-    profiles: ["prod"]
-    image: michaelf34/infinity:latest
-    command: "--model-name-or-path /models/e5-large-v2 --port 80"
-    volumes:
-      - ./models:/models
-    ports:
-      - 5001:80
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-
   db:
     profiles: ["dev","prod"]
     image: postgres:16

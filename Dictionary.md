@@ -14,4 +14,3 @@ Odpowiedz na pytanie: {pytanie}". W miejsce `{pytanie}` wstawiamy pytanie.
 internetowych) i tworzenia z nich Dokumentów.
 - Retriever - program lub kod przeznaczony do wyszukiwania Dokumentów lub
 Chunków podobnych do Prompta (np. wyszukiwarka internetowa).
-- ADSD

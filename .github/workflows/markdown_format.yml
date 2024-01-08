@@ -1,0 +1,18 @@
+name: markdown check
+
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v4
+
+    - name: markdownlint-cli
+      uses: DavidAnson/markdownlint-cli2-action@v14
+      with:
+        globs: '**/*.md'

@@ -1,0 +1,19 @@
+name: Lint and format shell scripts
+
+on:
+  pull_request:
+    paths:
+      - '**.sh'
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Shellcheck / shfmt
+        uses: luizm/action-sh-checker@v0.8.0
+        env:
+          SHFMT_OPTS: -w

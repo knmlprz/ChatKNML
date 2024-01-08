@@ -12,7 +12,7 @@ Jestemśmy wdzięczni za chęć udzielania się w naszym projekcie, miło nam je
 Opis krok po kroku:
 1. Na początku, gdy zostanie zlecone Ci zadanie, utwórz brancha na swoim repozytorium, przez zklonowanie repozytorium ChatKNML.
 2. Na stworzonym przez Ciebie branchu utwórz program. Musisz pamiętać, żeby odpowiednio komentować co robi zmieniony lub dodany przez Ciebie kod, by ułatwić odczytywanie go Twoim wspólnikom. Nie martw się jeżeli popełnisz jakiś błąd, kod w Twoim branchu nie zostanie włączony do kodu głównego do momentu kiedy nie zostanie zmergowany z Mainem 😁.
-3. Zrób pull requesta - Wejdź w swoje repozytorium, oraz wybierz opcję "Pull Requests", następnie kliknij w zielony przycisk "New pull request" i po upewnieniu się, że Twoje repozytorium będzie porównywane do repozytorium naszego projektu. Wpisz tytuł oraz opis pull requesta i jako Reviewers wybierz osobę, która zleciła Ci wykonanie projektu. Jeżeli Twój kod zostanie uznany za dobry otrzymasz zgodę na jego zmergowanie. 
+3. Zrób pull requesta - Wejdź w swoje repozytorium, oraz wybierz opcję "Pull Requests", następnie kliknij w zielony przycisk "New pull request". Wpisz tytuł oraz opis pull requesta i jako Reviewers wybierz osobę, która zleciła Ci wykonanie projektu. Jeżeli Twój kod zostanie uznany za dobry otrzymasz zgodę na jego zmergowanie. 
 4. Mergujesz kod z branchem Main i cieszysz się z dobrze wykonanej pracy 🤩.
 
 Commity oraz branche nazywamy tak, by możliwie jak najkrócej opisywały dokonane zmiany.

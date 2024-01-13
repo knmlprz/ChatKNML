@@ -3,3 +3,7 @@
 .envrc
 models/**
 db/
+static/
+.idea/
+
+**/__pycache__/

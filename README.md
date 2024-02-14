@@ -66,7 +66,7 @@
     git clone git@hf.co:intfloat/e5-large-v2
     ```
 
-    After starting the app, OpenAI-compatible embedding API will be available at: 
+    Upon app startup, OpenAI-compatible embedding API will be available at:
     <http://172.16.3.101:5001/v1>
 
     Check the docs here: <http://172.16.3.101:5001/docs>

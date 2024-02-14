@@ -1,6 +1,6 @@
-[![KNML](https://i.imgur.com/GLpXodx.png)](https://knml.edu.pl/)
-
 # ChatKNML
+
+[![KNML](https://i.imgur.com/GLpXodx.png)](https://knml.edu.pl/)
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Docker-24.0%2B-blue)](https://www.docker.com/)
@@ -14,19 +14,27 @@
 ## Getting started
 
 ### First setup
+
 1. **Clone the repository**:
+
     ```sh
     git clone git@github.com:knmlprz/ChatKNML.git
     ```
+
 2. **Navigate to the project directory**:
+
     ```sh
     cd ChatKNML
     ```
+
 3. **Create a new branch for your development work**:
+
     ```sh
     git checkout -b {your_branch_name}
     ```
+
 4. **Make sure you are working on the correct branch**:
+
    ```sh
     git status
     ```
@@ -34,12 +42,15 @@
 ### Starting app development
 
 1. **Copy the `.env.example` file**:
+
     ```sh
     cp .env.example .env
     ```
+
    Modify the environment variables to suit your requirements.
 
 2. Launching services using the "dev" profile:
+
     ```sh
     docker compose --profile dev up
     ```
@@ -47,6 +58,7 @@
 ### Starting app production
 
 1. **Embedding api**:
+
     Download models (need git-lfs):
 
     ```sh
@@ -59,6 +71,7 @@
     Check the docs here: <http://172.16.3.101:5001/docs>
 
 2. **llamacpp**:
+
     Download models (this can take >1h):
 
     ```sh
@@ -66,6 +79,7 @@
     ```
 
 3. **Starting app**:
+
     ```sh
     docker compose --profile prod up
     ```

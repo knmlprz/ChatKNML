@@ -1,7 +1,6 @@
 from ninja import NinjaAPI
-from .views import router as documents_router
 
 api = NinjaAPI()
 
-
-api.add_router("documents", documents_router, tags=["Documents"])
+api.add_router("/", "documents.views.document_router", tags=["Documents"])
+api.add_router("/", "documents.views.chunk_router", tags=["Chunks"])

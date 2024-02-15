@@ -1,9 +1,8 @@
 from ninja import Schema
-from typing import List
 
 class ChunkIn(Schema):
     text: str
-    embedding: List[float]
+    embedding: list[float]
     chunk_idx: int
     start_char: int
     end_char: int
@@ -11,16 +10,16 @@ class ChunkIn(Schema):
 class ChunkOut(Schema):
     id: int
     text: str
-    embedding: List[float]
+    embedding: list[float]
     chunk_idx: int
     start_char: int
     end_char: int
 
 class DocumentIn(Schema):
     text: str
-    embedding: List[float]
+    embedding: list[float]
 
 class DocumentOut(Schema):
     id: int
     text: str
-    embedding: List[float]
+    embedding: list[float]

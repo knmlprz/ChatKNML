@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField()),
                 ('embedding', pgvector.django.VectorField(dimensions=10)),
-                ('chunks', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='documents.chunk')),
+                ('chunks', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='MyModels.chunk')),
             ],
         ),
     ]

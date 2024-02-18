@@ -4,6 +4,7 @@ from typing import List
 from django.http import HttpRequest
 from ninja import Router
 from ninja.pagination import LimitOffsetPagination, paginate
+from django.shortcuts import get_object_or_404
 
 from MyModels.models import Document
 from MyModels.documents.schemas import DocumentIn, DocumentOut
@@ -29,7 +30,7 @@ def retrieve_document(request: HttpRequest, id: int):
 
 @document_router.put("/document/{id}/", response={HTTPStatus.OK: DocumentOut})
 def update_document(request: HttpRequest, id: int, payload: DocumentIn):
-    document = Document.objects.get(id=id)
+    document = get_object_or_404(Document, id=id)
     for attr, value in payload.dict(exclude_unset=True).items():
         setattr(document, attr, value)
     document.full_clean()

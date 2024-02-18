@@ -15,25 +15,25 @@
 
 ### First setup
 
-1. **Clone the repository**:
+1. Clone the repository:
 
     ```sh
     git clone git@github.com:knmlprz/ChatKNML.git
     ```
 
-2. **Navigate to the project directory**:
+2. Navigate to the project directory:
 
     ```sh
     cd ChatKNML
     ```
 
-3. **Create a new branch for your development work**:
+3. Create a new branch for your development work:
 
     ```sh
     git checkout -b {your_branch_name}
     ```
 
-4. **Make sure you are working on the correct branch**:
+4. Make sure you are working on the correct branch:
 
    ```sh
     git status
@@ -41,7 +41,7 @@
 
 ### Starting app development
 
-1. **Copy the `.env.example` file**:
+1. Copy the `.env.example` file:
 
     ```sh
     cp .env.example .env
@@ -57,7 +57,7 @@
 
 ### Starting app production
 
-1. **Embedding api**:
+1. Embedding api:
 
     Download models (need git-lfs):
 
@@ -71,7 +71,7 @@
 
     Check the docs here: <http://172.16.3.101:5001/docs>
 
-2. **llamacpp**:
+2. llamacpp:
 
     Download models (this can take >1h):
 
@@ -79,7 +79,7 @@
     wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/main/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf
     ```
 
-3. **Starting app**:
+3. Starting app:
 
     ```sh
     docker compose --profile prod up

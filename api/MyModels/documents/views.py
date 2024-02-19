@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 
 from MyModels.models import Document
 from MyModels.documents.schemas import DocumentIn, DocumentOut
+import json
 
 document_router = Router()
 
@@ -29,9 +30,10 @@ def retrieve_document(request: HttpRequest, id: int):
     return document
 
 @document_router.put("/document/{id}/", response={HTTPStatus.OK: DocumentOut})
-def update_document(request: HttpRequest, id: int, payload: DocumentIn):
-    document = get_object_or_404(Document, id=id)
-    for attr, value in payload.dict(exclude_unset=True).items():
+def update_document(request: HttpRequest, id: int):
+    document = Document.objects.get(id=id)
+    request_data = json.loads(request.body.decode("utf-8"))
+    for attr, value in request_data.items():
         setattr(document, attr, value)
     document.full_clean()
     document.save()

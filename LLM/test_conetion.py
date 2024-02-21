@@ -2,7 +2,7 @@ import requests
 import json
 
 def query_local_openai_api(prompt, stop_signs):
-    url = 'http://localhost:8000/v1/completions'
+    url = 'http://127.0.0.1:8000/v1/completions'
     headers = {'Content-Type': 'application/json'}
     data = {
         'prompt': prompt,
@@ -16,12 +16,11 @@ def query_local_openai_api(prompt, stop_signs):
     else:
         return response.text
 
-# Dane wejściowe
+# Prompt and stop_signs
 prompt = "\n\n### Instructions:\n jaka jest stolica polski\n\n### Response:\n"
 stop_signs = ["\n", "###"]
 
-# Zapytanie do lokalnego serwera OpenAI
-
+# Query local API
 result = query_local_openai_api(prompt, stop_signs)
 
 print(result['choices'][0]['text'])

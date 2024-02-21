@@ -14,7 +14,7 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 RUN touch README.md
 
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install 
 
 FROM python:3.11-slim-buster as runtime
 
@@ -23,12 +23,8 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY models ./app/models
-COPY llama-cpp-python ./app/llama-cpp-python
 
-RUN pip install llama-cpp-python[server]
-RUN pip install ll
+COPY . ./
 RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python[server]
-RUN python3 -m llama_cpp.server --model models/llama-2-7b.Q2_K.gguf --n_gpu_layers 9999999
 
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+ENTRYPOINT ["python3", "-m", "llama_cpp.server", "--host", "0.0.0.0", "--model", "models/llama-2-7b.Q2_K.gguf", "--n_gpu_layers", "9999999"]

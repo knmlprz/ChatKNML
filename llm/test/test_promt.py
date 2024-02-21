@@ -2,7 +2,7 @@ import requests
 import json
 
 def query_local_openai_api(prompt, stop_signs):
-    url = 'http://127.0.0.1:8000/v1/completions'
+    url = 'http://127.0.0.1:9000/v1/completions'
     headers = {'Content-Type': 'application/json'}
     data = {
         'prompt': prompt,

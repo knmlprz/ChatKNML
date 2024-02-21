@@ -7,7 +7,7 @@ RUN git clone --recurse-submodules https://github.com/abetlen/llama-cpp-python.g
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR=/tmp/poetry_cache
+    POETRY_CACHE_DIR=/tmp/poetry_cachee
 
 WORKDIR /app
 
@@ -23,8 +23,6 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-
-COPY . ./
 RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python[server]
 
-ENTRYPOINT ["python3", "-m", "llama_cpp.server", "--host", "0.0.0.0", "--model", "models/llama-2-7b.Q2_K.gguf", "--n_gpu_layers", "9999999"]
+ENTRYPOINT ["python3", "-m", "llama_cpp.server", "--host", "0.0.0.0", "--port", "9000", "--model", "models/llama-2-7b.Q3_K_L.gguf", "--n_gpu_layers", "9999999"]

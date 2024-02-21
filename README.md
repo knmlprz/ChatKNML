@@ -57,7 +57,7 @@
 
 ### Starting app production
 
-#### Embedding api:
+#### Embedding api
 
 Download models (need git-lfs):
 
@@ -71,7 +71,7 @@ Upon app startup, OpenAI-compatible embedding API will be available at:
 
 Check the docs here: <http://172.16.3.101:5001/docs>
 
-#### llamacpp:
+#### llamacpp
 
 Download models (this can take >1h):
 
@@ -79,7 +79,7 @@ Download models (this can take >1h):
 wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/main/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf
 ```
 
-#### Starting app:
+#### Starting app
 
 ```sh
 docker compose --profile prod up

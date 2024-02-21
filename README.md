@@ -57,30 +57,30 @@
 
 ### Starting app production
 
-1. Embedding api:
+#### Embedding api:
 
-    Download models (need git-lfs):
+Download models (need git-lfs):
 
-    ```sh
-    cd models
-    git clone git@hf.co:intfloat/e5-large-v2
-    ```
+```sh
+cd models
+git clone git@hf.co:intfloat/e5-large-v2
+```
 
-    Upon app startup, OpenAI-compatible embedding API will be available at:
-    <http://172.16.3.101:5001/v1>
+Upon app startup, OpenAI-compatible embedding API will be available at:
+<http://172.16.3.101:5001/v1>
 
-    Check the docs here: <http://172.16.3.101:5001/docs>
+Check the docs here: <http://172.16.3.101:5001/docs>
 
-2. llamacpp:
+#### llamacpp:
 
-    Download models (this can take >1h):
+Download models (this can take >1h):
 
-    ```sh
-    wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/main/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf
-    ```
+```sh
+wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/main/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf
+```
 
-3. Starting app:
+#### Starting app:
 
-    ```sh
-    docker compose --profile prod up
-    ```
+```sh
+docker compose --profile prod up
+```

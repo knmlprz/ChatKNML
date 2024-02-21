@@ -8,7 +8,9 @@ authors = ["Kleczyk <mailnasyff@gmail.com>"]
 python = "^3.11"
 openai = "^1.8.0"
 langchain = "^0.1.1"
-llama-cpp-python = {extras = ["server"], version = "^0.2.29"}
+llama-cpp-python = "^0.2.29"
+uvicorn = "^0.26.0"
+
 
 [tool.poetry.dev-dependencies]
 

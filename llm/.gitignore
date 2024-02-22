@@ -1,3 +1,4 @@
 models/
 *.ipynb
 llama-cpp-python/
+.pytest_cache/

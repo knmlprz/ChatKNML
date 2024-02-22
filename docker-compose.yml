@@ -5,10 +5,13 @@ services:
     env_file: .env
 
   db:
-    profiles: [ "dev", "prod" ]
-    image: postgres:16
+    profiles: ["dev","prod"]
+    build:
+      context: ./postgres
+      dockerfile: postgres.Dockerfile
     volumes:
       - ./db:/var/lib/postgresql/data
+      - ./postgres/vector_extension.sql:/docker-entrypoint-initdb.d/0-vector_extension.sql
     env_file:
       - .env
 

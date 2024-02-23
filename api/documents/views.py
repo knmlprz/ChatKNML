@@ -5,8 +5,9 @@ from django.http import HttpRequest
 from ninja import Router
 from ninja.pagination import LimitOffsetPagination, paginate
 
-from MyModels.models import Document
-from MyModels.documents.schemas import DocumentIn, DocumentOut
+from documents.models import Document
+from documents.schemas import DocumentIn, DocumentOut
+import json
 
 document_router = Router()
 
@@ -28,9 +29,10 @@ def retrieve_document(request: HttpRequest, id: int):
     return document
 
 @document_router.put("/document/{id}/", response={HTTPStatus.OK: DocumentOut})
-def update_document(request: HttpRequest, id: int, payload: DocumentIn):
+def update_document(request: HttpRequest, id: int):
     document = Document.objects.get(id=id)
-    for attr, value in payload.dict(exclude_unset=True).items():
+    request_data = json.loads(request.body.decode("utf-8"))
+    for attr, value in request_data.items():
         setattr(document, attr, value)
     document.full_clean()
     document.save()

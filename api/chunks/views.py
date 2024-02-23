@@ -4,10 +4,10 @@ from typing import List
 from django.http import HttpRequest
 from ninja import Router
 from ninja.pagination import LimitOffsetPagination, paginate
-from django.shortcuts import get_object_or_404
 
-from MyModels.models import Chunk
-from MyModels.chunks.schemas import ChunkIn, ChunkOut
+from chunks.models import Chunk
+from chunks.schemas import ChunkIn, ChunkOut
+import json
 
 chunk_router = Router()
 
@@ -23,15 +23,16 @@ def create_chunk(request: HttpRequest, payload: ChunkIn):
 def list_chunks(request: HttpRequest):
     return Chunk.objects.all()
 
-@chunk_router.get("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut}) 
+@chunk_router.get("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut})
 def retrieve_chunk(request: HttpRequest, id: int):
     chunk = Chunk.objects.get(id=id)    
     return chunk
 
 @chunk_router.put("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut})
-def update_chunk(request: HttpRequest, id: int, payload: ChunkIn):
-    chunk = get_object_or_404(Chunk, id=id)
-    for attr, value in payload.dict(exclude_unset=True).items():
+def update_chunk(request: HttpRequest, id: int):
+    chunk = Chunk.objects.get(id=id)
+    request_data = json.loads(request.body.decode("utf-8"))
+    for attr, value in request_data.items():
         setattr(chunk, attr, value)
     chunk.full_clean()
     chunk.save()

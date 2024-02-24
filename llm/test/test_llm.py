@@ -17,6 +17,6 @@ def test_llm_response():
     response = requests.post(url, json=data)
     
     assert response.status_code == 200
-    assert 'choices' in response.json()
-    assert len(response.json()['choices']) > 0
-    assert 'text' in response.json()['choices'][0]
+	resp_body = response.json()
+    assert 'choices' in resp_body
+    assert 'text' in resp_body['choices'][0]

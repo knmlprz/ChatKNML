@@ -71,12 +71,18 @@ Upon app startup, OpenAI-compatible embedding API will be available at:
 
 Check the docs here: <http://172.16.3.101:5001/docs>
 
-#### llamacpp
+#### Download llm model (must have for servis llm to work !!!)
 
-Download models (this can take >1h):
+Download model (size of file 3.6GB ):
 
 ```sh
-wget https://huggingface.co/TheBloke/sheep-duck-llama-2-70B-v1.1-GGUF/resolve/main/sheep-duck-llama-2-70b-v1.1.Q4_K_S.gguf
+curl -o ./llm/models/llama-2-7b.Q3_K_L.gguf -L https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
+```
+
+or
+
+```sh
+wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
 ```
 
 #### Starting app

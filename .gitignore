@@ -1,5 +1,6 @@
 .env
 *.bin
 .envrc
+.vscode
 models/**
 db/

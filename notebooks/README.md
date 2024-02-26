@@ -1,7 +1,9 @@
 # 📙 Notebooks
 
-Ten katalog zawiera notebooki, na których były wykonywane szkice architektury pozyskiwania danych z różnych źródeł.
-Poniżej znajduje się lista notebooków, które prezentują działanie narzędzi oraz bibliotek do pozyskiwania lub przetwarzania danych.
+Ten katalog zawiera notebooki, na których były wykonywane szkice architektury
+pozyskiwania danych z różnych źródeł. Poniżej znajduje się lista notebooków,
+które prezentują działanie narzędzi oraz bibliotek do pozyskiwania
+lub przetwarzania danych.
 
 ## 📝 Lista notebooków
 

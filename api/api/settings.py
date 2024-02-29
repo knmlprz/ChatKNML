@@ -76,7 +76,10 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
-    }
+        "TEST": {
+            "NAME": env("POSTGRES_DB"),
+        },
+    },
 }
 
 

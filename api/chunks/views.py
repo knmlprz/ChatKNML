@@ -1,45 +1,37 @@
 from http import HTTPStatus
-from typing import List
-
 from django.http import HttpRequest
-from ninja import Router
-from ninja.pagination import LimitOffsetPagination, paginate
 
 from chunks.models import Chunk
 from chunks.schemas import ChunkIn, ChunkOut
-import json
+from chunks.controllers import *
 
-chunk_router = Router()
+from ninja import Router
+from ninja.pagination import LimitOffsetPagination, paginate
+
+chunk_router = Router(tags=["Chunks"])
 
 @chunk_router.post("/chunk/", response={HTTPStatus.CREATED: ChunkOut})
 def create_chunk(request: HttpRequest, payload: ChunkIn):
-    chunk = Chunk(**payload.dict())
-    chunk.full_clean()
-    chunk.save()
-    return HTTPStatus.CREATED, chunk
+    http_status, chunk = create_chunk_controller(payload)
+    return http_status, chunk
 
-@chunk_router.get("/chunk/", response={HTTPStatus.OK: List[ChunkOut]})
+@chunk_router.get("/chunk/", response={HTTPStatus.OK: list[ChunkOut]})
 @paginate(LimitOffsetPagination)
 def list_chunks(request: HttpRequest):
-    return Chunk.objects.all()
+    chunk = list_chunks_controller()
+    return chunk
 
 @chunk_router.get("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut})
 def retrieve_chunk(request: HttpRequest, id: int):
-    chunk = Chunk.objects.get(id=id)    
+    chunk = retrieve_chunk_controller(id)
     return chunk
 
 @chunk_router.put("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut})
 def update_chunk(request: HttpRequest, id: int):
-    chunk = Chunk.objects.get(id=id)
-    request_data = json.loads(request.body.decode("utf-8"))
-    for attr, value in request_data.items():
-        setattr(chunk, attr, value)
-    chunk.full_clean()
-    chunk.save()
+    chunk = update_chunk_controller(request,id)
     return chunk
 
 @chunk_router.delete("/chunk/{id}/", response={HTTPStatus.OK: None})
 def delete_chunk(request: HttpRequest, id: int):
-    chunk = Chunk.objects.get(id=id)
-    chunk.delete()
-    return HTTPStatus.OK
+    http_status = delete_chunk_controller(id)
+    return http_status

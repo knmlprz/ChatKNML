@@ -14,4 +14,3 @@ class ChunkOut(Schema):
     chunk_idx: int
     start_char: int
     end_char: int
-    

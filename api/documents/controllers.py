@@ -5,10 +5,9 @@ from documents.models import Document
 from documents.schemas import DocumentIn, DocumentOut
 
 import json
-from typing import Tuple
 
 
-def create_document_controller(payload: DocumentIn) -> Tuple[HTTPStatus, DocumentOut]:
+def create_document_controller(payload: DocumentIn) -> tuple[HTTPStatus, DocumentOut]:
     document = Document(**payload.dict())
     document.full_clean()
     document.save()
@@ -24,10 +23,9 @@ def retrieve_document_controller(id: int) -> DocumentOut:
     return document
 
 
-def update_document_controller(request: HttpRequest, id: int) -> DocumentOut:
+def update_document_controller(payload: DocumentIn, id: int) -> DocumentOut:
     document = Document.objects.get(id=id)
-    request_data = json.loads(request.body.decode("utf-8"))
-    for attr, value in request_data.items():
+    for attr, value in payload.dict().items():
         setattr(document, attr, value)
     document.full_clean()
     document.save()

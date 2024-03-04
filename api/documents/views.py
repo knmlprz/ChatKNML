@@ -34,8 +34,8 @@ def retrieve_document(request: HttpRequest, id: int):
 
 
 @router.put("/document/{id}/", response={HTTPStatus.OK: DocumentOut})
-def update_document(request: HttpRequest, id: int):
-    return update_document_controller(request, id)
+def update_document(request: HttpRequest, data: DocumentIn, id: int):
+    return update_document_controller(data, id)
 
 
 @router.delete("/document/{id}/", response={HTTPStatus.OK: None})

@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "chunks.apps.ChunksConfig",
     "documents.apps.DocumentsConfig",
-    
 ]
 
 MIDDLEWARE = [

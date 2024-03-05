@@ -4,8 +4,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from db import getdlc
 
-
-# Load the pre-trained T5 tokenizer and model
 tokenizer = T5Tokenizer.from_pretrained("e5-large-v2")
 model = T5ForConditionalGeneration.from_pretrained("e5-large-v2")
 

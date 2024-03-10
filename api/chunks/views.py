@@ -34,7 +34,7 @@ def retrieve_chunk(request: HttpRequest, id: int):
 
 
 @router.put("/chunk/{id}/", response={HTTPStatus.OK: ChunkOut})
-def update_chunk(request: HttpRequest,data: ChunkIn, id: int):
+def update_chunk(request: HttpRequest, data: ChunkIn, id: int):
     return update_chunk_controller(data, id)
 
 

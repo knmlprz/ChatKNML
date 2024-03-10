@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 import environ
+import django_stubs_ext
+
+django_stubs_ext.monkeypatch()
 
 env = environ.Env()
 

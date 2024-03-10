@@ -4,8 +4,8 @@ from chunks.models import Chunk
 
 
 class Document(models.Model):
-    text: str = models.TextField()
-    embedding: list[float] = VectorField(dimensions=10)
-    chunks: int = models.ForeignKey(
+    text = models.TextField[str, str]()
+    embedding = VectorField[list[float], VectorField](dimensions=10)
+    chunks = models.ForeignKey[int, int](
         Chunk, on_delete=models.CASCADE, null=True, blank=True
     )

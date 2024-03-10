@@ -3,8 +3,8 @@ from pgvector.django import VectorField
 
 
 class Chunk(models.Model):
-    text: str = models.CharField(max_length=100)
-    embedding: list[float] = VectorField(dimensions=10)
-    chunk_idx: int = models.IntegerField()
-    start_char: int = models.IntegerField()
-    end_char: int = models.IntegerField()
+    text = models.CharField[str, str](max_length=100)
+    embedding = VectorField[list[float], VectorField](dimensions=10)
+    chunk_idx = models.IntegerField[int, int]()
+    start_char = models.IntegerField[int, int]()
+    end_char = models.IntegerField[int, int]()

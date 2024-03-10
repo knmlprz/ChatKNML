@@ -35,6 +35,8 @@ ENV POSTGRES_HOST = $POSTGRES_HOST
 
 ENV POSTGRES_PORT = $POSTGRES_PORT
 
+RUN pip install django_stubs_ext
+
 RUN python manage.py collectstatic
 
 ENTRYPOINT ["uvicorn", "api.asgi:application", "--host", "0.0.0.0"]

@@ -1,4 +1,5 @@
 """Sets up discord bot."""
+
 import os
 from collections import defaultdict
 from typing import Self

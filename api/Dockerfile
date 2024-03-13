@@ -23,6 +23,8 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY . ./
 
-RUN manage.py collectstatic
+RUN pip install django_stubs_ext
+
+RUN python manage.py collectstatic
 
 ENTRYPOINT ["uvicorn", "api.asgi:application", "--host", "0.0.0.0"]

@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from django.http import HttpRequest
 
-from chunks.models import Chunk
 from chunks.schemas import ChunkIn, ChunkOut
 from chunks.controllers import (
     create_chunk_controller,

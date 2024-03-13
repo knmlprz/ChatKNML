@@ -1,10 +1,7 @@
 from http import HTTPStatus
-from django.http import HttpRequest
 
 from documents.models import Document
 from documents.schemas import DocumentIn, DocumentOut
-
-import json
 
 
 def create_document_controller(payload: DocumentIn) -> tuple[HTTPStatus, DocumentOut]:

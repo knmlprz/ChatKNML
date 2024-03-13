@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from django.http import HttpRequest
 
-from documents.models import Document
 from documents.schemas import DocumentIn, DocumentOut
 from documents.controllers import (
     create_document_controller,

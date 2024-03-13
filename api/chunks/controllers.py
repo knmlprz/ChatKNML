@@ -1,10 +1,7 @@
 from http import HTTPStatus
-from django.http import HttpRequest
 
 from chunks.models import Chunk
 from chunks.schemas import ChunkIn, ChunkOut
-
-import json
 
 
 def create_chunk_controller(payload: ChunkIn) -> tuple[HTTPStatus, ChunkOut]:

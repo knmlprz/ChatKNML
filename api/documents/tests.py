@@ -4,9 +4,7 @@ from .models import Document
 
 
 def create_document():
-    return Document.objects.create(
-        text="example", embedding=list(range(1, 11))
-    )
+    return Document.objects.create(text="example", embedding=list(range(1, 11)))
 
 
 class DocumentModelTests(TestCase):
@@ -20,17 +18,17 @@ class DocumentModelTests(TestCase):
     @pytest.mark.django_db
     def test_post_method(self):
         create_document()
-        assert (
-            Document.objects.filter(text="example").exists()
-        ), "Can't create document object"
+        assert Document.objects.filter(
+            text="example"
+        ).exists(), "Can't create document object"
 
     @pytest.mark.django_db
     def test_put_method(self):
         create_document()
         document = Document.objects.get(text="example")
-        assert (
-            Document.objects.filter(text="example").exists()
-        ), "Can't create document object"
+        assert Document.objects.filter(
+            text="example"
+        ).exists(), "Can't create document object"
         document.text = "notexample"
         document.save()
         assert all(
@@ -42,6 +40,6 @@ class DocumentModelTests(TestCase):
         create_document()
         document = Document.objects.get(text="example")
         document.delete()
-        assert (
-            not Document.objects.filter(text="example").exists()
-        ), "Can't delete document object"
+        assert not Document.objects.filter(
+            text="example"
+        ).exists(), "Can't delete document object"

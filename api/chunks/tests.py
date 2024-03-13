@@ -24,17 +24,17 @@ class ChunkModelTests(TestCase):
     @pytest.mark.django_db
     def test_post_method(self):
         create_chunk()
-        assert (
-            Chunk.objects.filter(text="example").exists()
-        ), "Can't create chunk object"
+        assert Chunk.objects.filter(
+            text="example"
+        ).exists(), "Can't create chunk object"
 
     @pytest.mark.django_db
     def test_put_method(self):
         create_chunk()
         chunk = Chunk.objects.get(text="example")
-        assert (
-            Chunk.objects.filter(text="example").exists()
-        ), "Can't create chunk object"
+        assert Chunk.objects.filter(
+            text="example"
+        ).exists(), "Can't create chunk object"
         chunk.text = "notexample"
         chunk.save()
         assert all(
@@ -46,6 +46,6 @@ class ChunkModelTests(TestCase):
         create_chunk()
         chunk = Chunk.objects.get(text="example")
         chunk.delete()
-        assert (
-            not Chunk.objects.filter(text="example").exists()
-        ), "Can't delete chunk object"
+        assert not Chunk.objects.filter(
+            text="example"
+        ).exists(), "Can't delete chunk object"

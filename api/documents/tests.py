@@ -5,7 +5,7 @@ from .models import Document
 
 def create_document():
     return Document.objects.create(
-        text="example", embedding=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        text="example", embedding=list(range(1, 11))
     )
 
 
@@ -21,7 +21,7 @@ class DocumentModelTests(TestCase):
     def test_post_method(self):
         create_document()
         assert (
-            Document.objects.filter(text="example").exists() == True
+            Document.objects.filter(text="example").exists()
         ), "Can't create document object"
 
     @pytest.mark.django_db
@@ -29,12 +29,12 @@ class DocumentModelTests(TestCase):
         create_document()
         document = Document.objects.get(text="example")
         assert (
-            Document.objects.filter(text="example").exists() == True
+            Document.objects.filter(text="example").exists()
         ), "Can't create document object"
         document.text = "notexample"
         document.save()
         assert all(
-            a == b for a, b in zip(document.embedding, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            a == b for a, b in zip(document.embedding, range(1, 10))
         ), "Can't update document object"
 
     @pytest.mark.django_db
@@ -43,5 +43,5 @@ class DocumentModelTests(TestCase):
         document = Document.objects.get(text="example")
         document.delete()
         assert (
-            Document.objects.filter(text="example").exists() == False
+            not Document.objects.filter(text="example").exists()
         ), "Can't delete document object"

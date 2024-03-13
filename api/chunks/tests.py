@@ -6,7 +6,7 @@ from .models import Chunk
 def create_chunk():
     return Chunk.objects.create(
         text="example",
-        embedding=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        embedding=list(range(1, 11)),
         chunk_idx=1,
         start_char=1,
         end_char=2,
@@ -25,7 +25,7 @@ class ChunkModelTests(TestCase):
     def test_post_method(self):
         create_chunk()
         assert (
-            Chunk.objects.filter(text="example").exists() == True
+            Chunk.objects.filter(text="example").exists()
         ), "Can't create chunk object"
 
     @pytest.mark.django_db
@@ -33,12 +33,12 @@ class ChunkModelTests(TestCase):
         create_chunk()
         chunk = Chunk.objects.get(text="example")
         assert (
-            Chunk.objects.filter(text="example").exists() == True
+            Chunk.objects.filter(text="example").exists()
         ), "Can't create chunk object"
         chunk.text = "notexample"
         chunk.save()
         assert all(
-            a == b for a, b in zip(chunk.embedding, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            a == b for a, b in zip(chunk.embedding, range(1, 11))
         ), "Can't update chunk object"
 
     @pytest.mark.django_db
@@ -47,5 +47,5 @@ class ChunkModelTests(TestCase):
         chunk = Chunk.objects.get(text="example")
         chunk.delete()
         assert (
-            Chunk.objects.filter(text="example").exists() == False
+            not Chunk.objects.filter(text="example").exists()
         ), "Can't delete chunk object"

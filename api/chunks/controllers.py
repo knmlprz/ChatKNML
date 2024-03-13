@@ -33,6 +33,5 @@ def update_chunk_controller(payload: ChunkIn, id: int) -> ChunkOut:
 
 
 def delete_chunk_controller(id: int) -> HTTPStatus:
-    chunk = Chunk.objects.get(id=id)
-    chunk.delete()
+Chunk.objects.get(id=id).delete()
     return HTTPStatus.OK

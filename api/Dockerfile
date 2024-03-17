@@ -15,6 +15,7 @@ RUN touch README.md
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --no-root
 
 FROM python:3.11-slim-buster as runtime
+WORKDIR /app
 
 ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
@@ -23,8 +24,6 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY . ./
 
-RUN pip install django_stubs_ext
-
-RUN python manage.py collectstatic
+RUN python ./manage.py collectstatic --noinput
 
 ENTRYPOINT ["uvicorn", "api.asgi:application", "--host", "0.0.0.0"]

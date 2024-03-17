@@ -24,6 +24,6 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY . ./
 
-RUN python ./manage.py collectstatic
+RUN python ./manage.py collectstatic --noinput
 
 ENTRYPOINT ["uvicorn", "api.asgi:application", "--host", "0.0.0.0"]

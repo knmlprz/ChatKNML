@@ -7,7 +7,7 @@ authors = ["Kleczyk <mailnasyff@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.11"
 openai = "^1.8.0"
-langchain = "^0.1.1"
+langchain = "^0.1.11"
 llama-cpp-python = "^0.2.29"
 uvicorn = "^0.26.0"
 

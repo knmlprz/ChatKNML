@@ -44,6 +44,6 @@ def delete_document(request: HttpRequest, id: int):
     return delete_document_controller(id)
 
 
-@router.post("/document/compare/", response={HTTPStatus.OK: list[DocumentOut]})
+@router.get("/document/compare/", response={HTTPStatus.OK: list[DocumentOut]})
 def compare_documents(request: HttpRequest, payload: List[DocumentIn]):
     return compare_documents_controller(payload)

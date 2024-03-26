@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from django.http import HttpRequest
-from typing import List
 
 from documents.schemas import DocumentIn, DocumentOut
 from documents.controllers import (
@@ -44,6 +43,6 @@ def delete_document(request: HttpRequest, id: int):
     return delete_document_controller(id)
 
 
-@router.get("/document/compare/", response={HTTPStatus.OK: list[DocumentOut]})
-def compare_documents(request: HttpRequest, payload: List[DocumentIn]):
+@router.get("/document/compare/", response={HTTPStatus.OK: DocumentOut})
+def compare_documents(request: HttpRequest, payload: DocumentIn):
     return compare_documents_controller(payload)

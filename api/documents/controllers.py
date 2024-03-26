@@ -2,7 +2,6 @@ from http import HTTPStatus
 
 from documents.models import Document
 from documents.schemas import DocumentIn, DocumentOut
-from typing import List
 from sklearn.metrics.pairwise import cosine_similarity
 
 
@@ -37,15 +36,15 @@ def delete_document_controller(id: int) -> HTTPStatus:
     return HTTPStatus.OK
 
 
-def compare_documents_controller(payload: List[DocumentIn]) -> List[DocumentOut]:
+def compare_documents_controller(payload: DocumentIn) -> DocumentOut:
     embeddings = [doc.embedding for doc in payload]
     similarities = cosine_similarity(embeddings)
     result = []
     for i, doc in enumerate(payload):
-        similarity_dict = {"text": doc.text, "similarities": {}}
-        for j, similarity in enumerate(similarities[i]):
-            if i == j:
-                continue
-            similarity_dict["similarities"][payload[j].text] = similarity
-        result.append(similarity_dict)
+        similar_docs = [
+            {"text": payload[j].text, "similarity": similarities[i][j]}
+            for j in range(len(payload))
+            if i != j
+        ]
+        result.append({"text": doc.text, "similar_documents": similar_docs})
     return result

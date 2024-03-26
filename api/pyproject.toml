@@ -14,7 +14,12 @@ psycopg2-binary = "^2.9.9"
 django-environ = "^0.11.2"
 django-ninja = "^1.0.1"
 pgvector = "^0.2.4"
+django-stubs-ext = "^4.2.7"
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+ruff = "^0.3.2"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,6 +1,6 @@
 services:
   discord-bot:
-    profiles: ["dev","prod"]
+    profiles: [ "dev", "prod" ]
     build: ./discord_bot
     env_file: .env
 
@@ -16,7 +16,7 @@ services:
       - .env
 
   api:
-    profiles: ["dev","prod"]
+    profiles: [ "dev", "prod" ]
     build:
       context: ./api/
     env_file:
@@ -27,3 +27,12 @@ services:
       - "8000:8000"
     depends_on:
       - db
+
+  llm:
+    profiles: [ "dev", "prod" ]
+    build:
+      context: ./llm/
+    volumes:
+      - ./llm/models:/models
+    ports:
+      - "9000:9000"

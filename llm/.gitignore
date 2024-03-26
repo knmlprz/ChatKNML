@@ -1,0 +1,5 @@
+models/
+*.ipynb
+llama-cpp-python/
+.pytest_cache/
+__pycache__/

@@ -9,6 +9,6 @@ class Chunk(models.Model):
     chunk_idx = models.IntegerField[int, int]()
     start_char = models.IntegerField[int, int]()
     end_char = models.IntegerField[int, int]()
-    document_idx = models.ForeignKey[int, int](
+    document_idx = models.ForeignKey[int, Document](
         Document, on_delete=models.CASCADE, null=True, blank=True
     )

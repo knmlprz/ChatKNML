@@ -1,4 +1,5 @@
 from ninja import Schema
+from documents.schemas import DocumentOut
 
 
 class ChunkIn(Schema):
@@ -7,6 +8,7 @@ class ChunkIn(Schema):
     chunk_idx: int
     start_char: int
     end_char: int
+    document_idx: int
 
 
 class ChunkOut(Schema):
@@ -16,3 +18,4 @@ class ChunkOut(Schema):
     chunk_idx: int
     start_char: int
     end_char: int
+    document_idx: DocumentOut

@@ -4,9 +4,7 @@ from .models import Document
 
 
 def create_document():
-    return Document.objects.create(
-        text="example", embedding=list(range(1, 11))
-    )
+    return Document.objects.create(text="example", embedding=list(range(1, 11)))
 
 
 class DocumentModelTests(TestCase):

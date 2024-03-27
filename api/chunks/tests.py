@@ -1,6 +1,14 @@
 import pytest
 from django.test import TestCase
+from documents.models import Document
 from .models import Chunk
+
+
+def create_document():
+    return Document.objects.create(
+        text="example",
+        embedding=list(range(1, 11)),
+    )
 
 
 def create_chunk():
@@ -10,6 +18,7 @@ def create_chunk():
         chunk_idx=1,
         start_char=1,
         end_char=2,
+        document_idx=create_document(),
     )
 
 
@@ -49,3 +58,11 @@ class ChunkModelTests(TestCase):
         assert not Chunk.objects.filter(
             text="example"
         ).exists(), "Can't delete chunk object"
+
+    @pytest.mark.django_db
+    def test_model_foreignkey(self):
+        create_chunk()
+        document = Document.objects.get(text="example")
+        assert Chunk.objects.filter(
+            text="example", document_idx=document
+        ), "Can't define foreignkey on chunk object"

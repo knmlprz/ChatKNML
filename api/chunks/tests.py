@@ -7,7 +7,6 @@ from .models import Chunk
 def create_document():
     return Document.objects.create(
         text="example",
-        embedding=list(range(1, 11)),
     )
 
 

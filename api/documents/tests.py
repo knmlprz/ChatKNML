@@ -4,7 +4,7 @@ from .models import Document
 
 
 def create_document():
-    return Document.objects.create(text="example", embedding=list(range(1, 11)))
+    return Document.objects.create(text="example")
 
 
 class DocumentModelTests(TestCase):
@@ -31,9 +31,9 @@ class DocumentModelTests(TestCase):
         ).exists(), "Can't create document object"
         document.text = "notexample"
         document.save()
-        assert all(
-            a == b for a, b in zip(document.embedding, range(1, 10))
-        ), "Can't update document object"
+        assert Document.objects.filter(
+            text="notexample"
+        ).exists(), "Can't update document object"
 
     @pytest.mark.django_db
     def test_delete_method(self):

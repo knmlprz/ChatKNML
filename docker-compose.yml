@@ -36,3 +36,19 @@ services:
       - ./llm/models:/models
     ports:
       - "9000:9000"
+  
+  embedding-api:
+    profiles: [ "dev", "prod" ]
+    image: michaelf34/infinity:latest
+    command: "--model-name-or-path /models/e5-large-v2 --port 9090"
+    volumes:
+      - ./embedding_model:/models
+    ports:
+      - 9090:9090
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

@@ -5,6 +5,6 @@ models/**
 db/
 static/
 .idea/
-embeding/models/
+
 
 **/__pycache__/

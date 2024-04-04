@@ -63,7 +63,7 @@
 docker compose --profile prod up
 ```
 
-### Dowload embeding and llm(must have for servis llm and  embedning-api to work)
+### Download embedding and llm(must have for services llm and  embedding-api to work)
 
 ### Embedding api
 
@@ -75,15 +75,15 @@ What you need:
 - GPU from nvidia
 
 ```sh
-cd embeding/models
+cd embedding/models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
 
 Check the embeding-api docs here: <http://0.0.0.0:9090/docs>
 
-More info in [README.md](./embedding/README.md) from embeding_models/
+More info in [README.md](./embedding/README.md) from embedding/
 
-### Download llm model (must have for servis llm to work !!!)
+### Download llm model (must have for service llm to work !!!)
 
 Download model (size of file 3.6GB ):
 

@@ -6,17 +6,17 @@
 
 1. Instal git lfs
 2. NVIDIA Docker Toolkit
-3. Add shh key to hugingface  account
+3. Add shh key to huggingface  account
 4. run this in ChatKNML/ :
 
 ```sh
-cd embeding_models
+cd embedding_models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
 
 ### Aleternativ for 1,2,3
 
-Copy evry flie form here:
+Copy every file form here:
 
 #### IMPORTANT
 
@@ -56,6 +56,6 @@ from `docker-compose.yml` remove:
 
 ```
 
-#### MOST IMPORTANT DONT PUSH THIS CHANGE
+#### MOST IMPORTANT DON'T PUSH THIS CHANGE
 
 #### Rest like in GPU option GLHF

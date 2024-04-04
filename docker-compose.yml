@@ -42,7 +42,7 @@ services:
     image: michaelf34/infinity:latest
     command: "--model-name-or-path /models/e5-large-v2 --port 9090"
     volumes:
-      - ./embeding/models:/models
+      - ./embedding/models:/models
     ports:
       - 9090:9090
     deploy:

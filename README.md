@@ -63,15 +63,15 @@
 docker compose --profile prod up
 ```
 
-### Dowload embeding and llm (must have for servis llm and sercis embedning-api to work )
+### Dowload embeding and llm(must have for servis llm and  embedning-api to work)
 
 ### Embedding api
 
 What you need:
 - git lfs [link](https://git-lfs.com/)
-- ssh key. More info: 
-- NVIDIA Docker Toolkit 
-- GPU From nvidia
+- ssh key. More info:
+- NVIDIA Docker Toolkit
+- GPU from nvidia
 
 ```sh
 cd embeding_models

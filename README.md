@@ -69,8 +69,8 @@ docker compose --profile prod up
 
 What you need:
 - git lfs [link](https://git-lfs.com/)
-- ssh key. More info: [link](https://huggingface.co/docs/hub/security-git-ssh ) or [link](https://huggingface.co/blog/password-git-deprecation)
-- NVIDIA Docker Toolkit [link]([URL](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html))
+- ssh key. More info: 
+- NVIDIA Docker Toolkit 
 - GPU From nvidia
 
 ```sh

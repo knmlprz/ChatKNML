@@ -5,9 +5,8 @@
 ### GPU option
 
 1. Instal git lfs
-2. NVIDIA Docker Toolkit [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
-3. Add shh key to hugingface  account [link](https://huggingface.co/docs/hub/security-git-ssh) or [link](https://huggingface.co/blog/password-git-deprecation)
-
+2. NVIDIA Docker Toolkit 
+3. Add shh key to hugingface  account
 4. run this in ChatKNML/ :
 
 ```sh
@@ -17,7 +16,7 @@ git clone git@hf.co:intfloat/e5-large-v2
 
 ### Aleternativ for 1,2,3
 
-Copy evry flie form here: [link](https://huggingface.co/intfloat/multilingual-e5-large/tree/main)
+Copy evry flie form here: 
 
 #### IMPORTANT
 

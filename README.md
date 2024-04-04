@@ -68,6 +68,7 @@ docker compose --profile prod up
 ### Embedding api
 
 What you need:
+
 - git lfs
 - ssh key. More info:
 - NVIDIA Docker Toolkit

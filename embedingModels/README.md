@@ -1,21 +1,23 @@
 # Embeding-api
 
-## How run servis 
+## How run servis
 
 ### GPU option
 
 1. Instal git lfs
-2. NVIDIA Docker Toolkit [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) 
+2. NVIDIA Docker Toolkit [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 3. Add shh key to hugingface  account [link](https://huggingface.co/docs/hub/security-git-ssh) or [link](https://huggingface.co/blog/password-git-deprecation)
 
 4. run this in ChatKNML/ :
+
 ```sh
 cd embeding_models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
+
 ### Aleternativ for 1,2,3
 
-copy evry flie form here: [link](https://huggingface.co/intfloat/multilingual-e5-large/tree/main)
+Copy evry flie form here: [link](https://huggingface.co/intfloat/multilingual-e5-large/tree/main)
 
 #### IMPORTANT
 
@@ -55,8 +57,8 @@ from `docker-compose.yml` remove:
 
 ```
 
-#### <span style="color: red;">MOST IMPORTANT DONT PUSH THIS CHANGE !!!</span>
+#### MOST IMPORTANT DONT PUSH THIS CHANGE !!!
 
-ps. Patryk don't kill me :'(  I want help to beginers. 
+ps. Patryk don't kill me :'( I want help to beginers. 
 
 #### Rest like in GPU option GLHF :)

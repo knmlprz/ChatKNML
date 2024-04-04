@@ -1,4 +1,4 @@
-# Embeding-api
+# embedding-api
 
 ## How run servis
 
@@ -20,10 +20,10 @@ Copy evry flie form here:
 
 #### IMPORTANT
 
-keep file tree like this !!!
+Keep file tree like this !!!
 
 ```sh
-embeding_models
+models
 ├── e5-large-v2
 │   ├── 1_Pooling
 │   │   └── config.json

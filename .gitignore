@@ -5,6 +5,6 @@ models/**
 db/
 static/
 .idea/
-embeding_models/e5-large-v2/
+embeding/models/
 
 **/__pycache__/

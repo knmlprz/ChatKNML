@@ -58,6 +58,4 @@ from `docker-compose.yml` remove:
 
 #### MOST IMPORTANT DONT PUSH THIS CHANGE
 
-ps. Patryk don't kill me :'( I want help to beginers. 
-
-#### Rest like in GPU option GLHF :)
+#### Rest like in GPU option GLHF

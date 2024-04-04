@@ -57,21 +57,34 @@
 
 ### Starting app production
 
-#### Embedding api
-
-Download models (need git-lfs):
+#### Starting app
 
 ```sh
-cd models
+docker compose --profile prod up
+```
+
+
+
+### Dowload embeding and llm (must have for servis llm and sercis embedning-api to work )
+
+### Embedding api
+
+What you need:
+- git lfs https://git-lfs.com/
+- ssh key. More info: https://huggingface.co/docs/hub/security-git-ssh or https://huggingface.co/blog/password-git-deprecation
+- NVIDIA Docker Toolkit https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+- GPU From nvidia
+
+```sh
+cd embeding_models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
 
-Upon app startup, OpenAI-compatible embedding API will be available at:
-<http://172.16.3.101:5001/v1>
+Check the embeding-api docs here: <http://0.0.0.0:9090/docs>
 
-Check the docs here: <http://172.16.3.101:5001/docs>
+More info in [README.md](./embeding_models/README.md) from embeding_models/
 
-#### Download llm model (must have for servis llm to work !!!)
+### Download llm model (must have for servis llm to work !!!)
 
 Download model (size of file 3.6GB ):
 
@@ -85,8 +98,4 @@ or
 wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
 ```
 
-#### Starting app
 
-```sh
-docker compose --profile prod up
-```

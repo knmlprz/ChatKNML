@@ -10,6 +10,8 @@ from chunks.controllers import (
     delete_chunk_controller,
 )
 
+from chunks.utils import split_document_into_chunks 
+
 from ninja import Router
 from ninja.pagination import LimitOffsetPagination, paginate
 
@@ -18,6 +20,7 @@ router = Router(tags=["Chunks"])
 
 @router.post("/chunk/", response={HTTPStatus.CREATED: ChunkOut})
 def create_chunk(request: HttpRequest, payload: ChunkIn):
+    document_chunks = split_document_into_chunks(payload.document, 1000)
     return create_chunk_controller(payload)
 
 

@@ -83,7 +83,7 @@ Check the embeding-api docs here: <http://0.0.0.0:9090/docs>
 
 More info in [README.md](./embedding/README.md) from embedding/
 
-### Download llm model (must have for service llm to work !!!)
+### Download llm model (must have for service llm to work!!!)
 
 Download model (size of file 3.6GB ):
 

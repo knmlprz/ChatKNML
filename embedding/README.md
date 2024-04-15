@@ -10,7 +10,7 @@
 4. run this in ChatKNML/ :
 
 ```sh
-cd embedding_models
+cd embedding/models
 git clone git@hf.co:intfloat/e5-large-v2
 ```
 

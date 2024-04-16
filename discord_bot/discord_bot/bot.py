@@ -1,12 +1,14 @@
 """Sets up discord bot."""
 
+import json
 import os
 from collections import defaultdict
 from typing import Self
-import requests
-import json
+
 import discord
+import requests
 from discord.ext import commands
+
 from discord_bot import config
 
 intents = discord.Intents.default()
@@ -43,7 +45,7 @@ class Buttons(discord.ui.View):
 @bot.command()
 @commands.has_any_role("Admins", "Moderators")
 async def sync(ctx) -> None:
-    """Call to Discord API to update slash commands"""
+    """Call to Discord API to update slash commands."""
     await ctx.send("Synchronizing commands...")
     await bot.tree.sync()
 
@@ -56,8 +58,12 @@ def query_llm(prompt, stop_signs):
 
     response = requests.post(url, headers=headers, data=json.dumps(data), timeout=5)
 
-    if response.status_code == 200:
+    respose_status_code = 200
+
+    if response.status_code == respose_status_code:
         return response.json()
+
+    return response.text
 
 
 async def get_chats_history():

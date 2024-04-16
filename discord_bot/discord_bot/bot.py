@@ -5,10 +5,8 @@ from collections import defaultdict
 from typing import Self
 import requests
 import json
-
 import discord
 from discord.ext import commands
-
 from discord_bot import config
 
 intents = discord.Intents.default()
@@ -45,22 +43,21 @@ class Buttons(discord.ui.View):
 @bot.command()
 @commands.has_any_role("Admins", "Moderators")
 async def sync(ctx) -> None:
+    """Call to Discord API to update slash commands"""
     await ctx.send("Synchronizing commands...")
     await bot.tree.sync()
 
 
 def query_llm(prompt, stop_signs):
-    """Returns llm response"""
+    """Returns llm's response."""
     url = "http://llm:9000/v1/completions"
     headers = {"Content-Type": "application/json"}
     data = {"prompt": prompt, "stop": stop_signs}
 
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response = requests.post(url, headers=headers, data=json.dumps(data), timeout=5)
 
     if response.status_code == 200:
         return response.json()
-    else:
-        return response.text
 
 
 async def get_chats_history():
@@ -81,7 +78,7 @@ async def get_chats_history():
 
 @bot.command()
 async def show(ctx: commands.Context, limit: int = 100):
-    """Shows the results of get_chats_history"""
+    """Shows the results of get_chats_history."""
     last_messages = await get_chats_history()
     channel_id = ctx.channel.id
     if last_messages[channel_id]:

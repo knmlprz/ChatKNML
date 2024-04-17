@@ -76,7 +76,7 @@ What you need:
 
 ```sh
 cd embedding/models
-git clone git@hf.co:intfloat/e5-large-v2
+git submodule add git@hf.co:intfloat/e5-large-v2
 ```
 
 Check the embeding-api docs here: <http://0.0.0.0:9090/docs>

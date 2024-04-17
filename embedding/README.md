@@ -1,12 +1,12 @@
 # embedding-api
 
-## How run servis
+## How run services
 
 ### GPU option
 
 1. Instal git lfs
 2. NVIDIA Docker Toolkit
-3. Add shh key to huggingface  account
+3. Add shh key to huggingface account
 4. run this in ChatKNML/ :
 
 ```sh
@@ -46,13 +46,13 @@ models
 from `docker-compose.yml` remove:
 
 ```sh
-48 deploy:
-49      resources:
-50        reservations:
-51          devices:
-52          - driver: nvidia
-53            count: 1
-54            capabilities: [ gpu ]
+deploy:
+     resources:
+       reservations:
+         devices:
+         - driver: nvidia
+           count: 1
+           capabilities: [ gpu ]
 
 ```
 

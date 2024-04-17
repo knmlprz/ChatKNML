@@ -27,3 +27,7 @@ COPY . ./
 RUN python ./manage.py collectstatic --noinput
 
 ENTRYPOINT ["uvicorn", "api.asgi:application", "--host", "0.0.0.0"]
+
+RUN pip install celery
+
+CMD celery -A czatknml.celery worker -l info

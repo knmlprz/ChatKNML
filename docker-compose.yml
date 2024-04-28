@@ -28,8 +28,8 @@ services:
     depends_on:
       - db
 
-  llm:
-    profiles: [ "dev", "prod" ]
+  llm-embedding:
+    profiles: [ "cpu" ]
     build:
       context: ./llm/
     volumes:
@@ -37,18 +37,18 @@ services:
     ports:
       - "9000:9000"
 
-  embedding-api:
-    profiles: [ "dev", "prod" ]
-    image: michaelf34/infinity:latest
-    command: "--model-name-or-path /models/e5-large-v2 --port 9090"
+  llm-embedding-gpu:
+    profiles: [ "gpu" ]
+    build:
+      context: ./llm/
     volumes:
-      - ./embedding/models:/models
+      - ./llm/models:/models
     ports:
-      - 9090:9090
+      - "9000:9000"
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
               count: 1
-              capabilities: [gpu]
+              capabilities: [ gpu ]

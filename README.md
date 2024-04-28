@@ -63,36 +63,36 @@
 docker compose --profile prod up
 ```
 
-### Download embedding and llm(must have for services llm and  embedding-api to work)
+### Starting llm and embedding
 
-### Embedding api
+1. Download model (must have for service llm-embedding to work!!!)
 
-What you need:
+    Download model (size of file 3.6GB ):
 
-- git lfs
-- ssh key. More info:
-- NVIDIA Docker Toolkit
-- GPU from nvidia
+    ```sh
+    curl -o ./llm/models/llama-2-7b.Q3_K_L.gguf -L https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
+    ```
 
-```sh
-cd embedding/models
-git submodule add git@hf.co:intfloat/e5-large-v2
-```
+    or
 
-Check the embeding-api docs here: <http://0.0.0.0:9090/docs>
+    ```sh
+    wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
+    ```
 
-More info in [README.md](./embedding/README.md) from embedding/
+2. Launching llm and embedding
 
-### Download llm model (must have for service llm to work!!!)
+    2.1. Running on cpu
 
-Download model (size of file 3.6GB ):
+    ```sh
+    docker compose --profile cpu up
+    ```
 
-```sh
-curl -o ./llm/models/llama-2-7b.Q3_K_L.gguf -L https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
-```
+    2.2. Running on gpu
 
-or
+    ```sh
+    docker compose --profile gpu up
+    ```
 
-```sh
-wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
-```
+#### LLM and embedding api swagger
+
+Swegger with EP for completions(llm + embedding) and only embedding is [here](http://0.0.0.0:9000/docs)

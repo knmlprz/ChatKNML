@@ -28,7 +28,7 @@ services:
     depends_on:
       - db
 
-  llm-embedding:
+  llm-embedding-cpu:
     profiles: [ "cpu" ]
     build:
       context: ./llm/

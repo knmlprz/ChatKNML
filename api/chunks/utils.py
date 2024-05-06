@@ -1,30 +1,37 @@
 from documents.models import Document
+from pydantic import BaseModel
+from itertools import batched
+from typing import List
 
 
-def split_document_into_chunks(document: Document, chunk_size: int = 100) -> list[dict]:
-    """Splits document into chunks of size chunk_size and returns them as dictionaries.
-    End_char is assumed to be the last included character of the document."""
+class ChunkData(BaseModel):
+    text: str
+    chunk_idx: int
+    start_char: int
+    end_char: int
+    document_idx: int
+
+
+def split_document_into_chunks(
+    document: Document, chunk_size: int = 100
+) -> List[ChunkData]:
+    """Splits document into chunks of size chunk_size and returns them as ChunkData objects."""
     chunks = []
     start_char = 0
-    end_char = chunk_size
-    chunk_idx = 1
 
-    while start_char < len(document.text):
-        if end_char >= len(document.text):
-            end_char = len(document.text)
-        chunk_text = document.text[start_char:end_char]
-        chunk = dict(
-            text=chunk_text,
-            chunk_idx=chunk_idx,
-            start_char=start_char,
-            end_char=(end_char - 1),
-            document_idx=document.id,
+    for i, chunk in enumerate(batched(document.text, chunk_size)):
+        next_start_char = start_char + len(chunk)
+
+        chunks.append(
+            ChunkData(
+                text="".join(chunk),
+                chunk_idx=i,
+                start_char=start_char,
+                end_char=next_start_char - 1,
+                document_idx=document.id,
+            )
         )
 
-        chunks.append(chunk)
-
-        start_char += chunk_size
-        end_char += chunk_size
-        chunk_idx += 1
+        start_char = next_start_char
 
     return chunks

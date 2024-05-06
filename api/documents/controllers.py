@@ -16,7 +16,7 @@ def create_document_controller(payload: DocumentIn) -> tuple[HTTPStatus, Documen
         document.full_clean()
         document.save()
 
-        chunks = split_document_into_chunks(document, 100) 
+        chunks = split_document_into_chunks(document, 100)
         chunk_instances = [Chunk(**chunk_data) for chunk_data in chunks]
         Chunk.objects.bulk_create(chunk_instances)
 

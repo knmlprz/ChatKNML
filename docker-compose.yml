@@ -5,7 +5,7 @@ services:
     env_file: .env
 
   db:
-    profiles: ["dev","prod"]
+    profiles: [ "dev", "prod" ]
     build:
       context: ./postgres
       dockerfile: postgres.Dockerfile
@@ -28,11 +28,27 @@ services:
     depends_on:
       - db
 
-  llm:
-    profiles: [ "dev", "prod" ]
+  llm-embedding-cpu:
+    profiles: [ "cpu" ]
     build:
       context: ./llm/
     volumes:
       - ./llm/models:/models
     ports:
       - "9000:9000"
+
+  llm-embedding-gpu:
+    profiles: [ "gpu" ]
+    build:
+      context: ./llm/
+    volumes:
+      - ./llm/models:/models
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]

@@ -5,6 +5,7 @@ api = NinjaAPI()
 
 api.add_router("/", "documents.views.router")
 api.add_router("/", "chunks.views.router")
+api.add_router("/", "bot.views.router")
 
 urlpatterns = [
     path("api/", api.urls),

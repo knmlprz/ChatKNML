@@ -40,16 +40,15 @@ def update_document_controller(payload: DocumentIn, id: int) -> DocumentOut:
         document.full_clean()
         document.save()
 
-        # Removing old chunks related to this document first and then
-        # generating new ones. Because new
-        # embeddings will have to be generated there
+        # Removing old chunks and generating new ones.
         Chunk.objects.filter(chunks__document_idx=document).delete()
+
         # Create new chunks then
+        # Modified update_document_controller to use bulk_create for creating chunks
+        # Removed individual chunk save operations for efficiency
         chunks = split_document_into_chunks(document, 100)
-        for chunk_data in chunks:
-            chunk = Chunk(**chunk_data)
-            chunk.full_clean()
-            chunk.save()
+        chunk_instances = [Chunk(**chunk_data) for chunk_data in chunks]
+        Chunk.objects.bulk_create(chunk_instances)
     return document
 
 

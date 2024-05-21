@@ -42,10 +42,6 @@ def update_document_controller(payload: DocumentIn, id: int) -> DocumentOut:
 
         # Removing old chunks and generating new ones.
         Chunk.objects.filter(chunks__document_idx=document).delete()
-
-        # Create new chunks then
-        # Modified update_document_controller to use bulk_create for creating chunks
-        # Removed individual chunk save operations for efficiency
         chunks = split_document_into_chunks(document, 100)
         chunk_instances = [Chunk(**chunk_data) for chunk_data in chunks]
         Chunk.objects.bulk_create(chunk_instances)

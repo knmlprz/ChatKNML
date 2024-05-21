@@ -57,36 +57,42 @@
 
 ### Starting app production
 
-#### Embedding api
-
-Download models (need git-lfs):
-
-```sh
-cd models
-git clone git@hf.co:intfloat/e5-large-v2
-```
-
-Upon app startup, OpenAI-compatible embedding API will be available at:
-<http://172.16.3.101:5001/v1>
-
-Check the docs here: <http://172.16.3.101:5001/docs>
-
-#### Download llm model (must have for servis llm to work !!!)
-
-Download model (size of file 3.6GB ):
-
-```sh
-curl -o ./llm/models/llama-2-7b.Q3_K_L.gguf -L https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
-```
-
-or
-
-```sh
-wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
-```
-
 #### Starting app
 
 ```sh
 docker compose --profile prod up
 ```
+
+### Starting llm and embedding
+
+1. Download model (must have for service llm-embedding to work!!!)
+
+    Download model (size of file 3.6GB ):
+
+    ```sh
+    curl -o ./llm/models/llama-2-7b.Q3_K_L.gguf -L https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
+    ```
+
+    or
+
+    ```sh
+    wget -P ./llm/models/llama-2-7b.Q3_K_L.gguf https://huggingface.co/TheBloke/Llama-2-7B-GGUF/resolve/main/llama-2-7b.Q3_K_L.gguf
+    ```
+
+2. Launching llm and embedding
+
+    2.1. Running on cpu
+
+    ```sh
+    docker compose --profile cpu up
+    ```
+
+    2.2. Running on gpu
+
+    ```sh
+    docker compose --profile gpu up
+    ```
+
+#### LLM and embedding api swagger
+
+Swegger with EP for completions(llm + embedding) and only embedding is [here](http://0.0.0.0:9000/docs)

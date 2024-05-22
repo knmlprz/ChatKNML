@@ -8,6 +8,7 @@ from documents.models import Document
 def create_chunk_controller(payload: ChunkIn) -> tuple[HTTPStatus, ChunkOut]:
     document_instance = Document.objects.get(pk=payload.document_idx)
 
+    # TODO: Embedings
     chunk_data = payload.dict()
     chunk_data["document_idx"] = document_instance
     chunk = Chunk(**chunk_data)

@@ -21,6 +21,7 @@ def split_document_into_chunks(
     for i, chunk in enumerate(batched(document.text, chunk_size)):
         next_start_char = start_char + len(chunk)
 
+        #TODO: Embedingi i celary job
         chunks.append(
             ChunkData(
                 text="".join(chunk),

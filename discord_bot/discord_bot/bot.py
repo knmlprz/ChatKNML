@@ -1,10 +1,13 @@
 """Sets up discord bot."""
 
+import json
 import os
 from collections import defaultdict
+from http import HTTPStatus
 from typing import Self
 
 import discord
+import requests
 from discord.ext import commands
 
 from discord_bot import config
@@ -40,8 +43,30 @@ class Buttons(discord.ui.View):
         )
 
 
+@bot.command()
+@commands.has_any_role("Admins", "Moderators")
+async def sync(ctx) -> None:
+    """Call to Discord API to update slash commands."""
+    await ctx.send("Synchronizing commands...")
+    await bot.tree.sync()
+
+
+def query_llm(prompt, stop_signs):
+    """Returns llm's response."""
+    url = "http://0.0.0.0:9000/v1/completions"
+    headers = {"Content-Type": "application/json"}
+    data = {"prompt": prompt, "stop": stop_signs}
+
+    response = requests.post(url, headers=headers, data=json.dumps(data), timeout=5)
+
+    if response.status_code == HTTPStatus.CREATED:
+        return response.json()
+
+    return response.text
+
+
 async def get_chats_history():
-    """Taking chat conversation from all chanells."""
+    """Taking chat conversation from all channels."""
     chats_history = defaultdict(list)
     for guild in bot.guilds:
         readable_channels = filter(
@@ -58,7 +83,7 @@ async def get_chats_history():
 
 @bot.command()
 async def show(ctx: commands.Context, limit: int = 100):
-    """Shows what get_chats_history gets."""
+    """Shows the results of get_chats_history."""
     last_messages = await get_chats_history()
     channel_id = ctx.channel.id
     if last_messages[channel_id]:
@@ -66,6 +91,19 @@ async def show(ctx: commands.Context, limit: int = 100):
             await ctx.send(msg)
     else:
         await ctx.send("Brak ostatnich wiadomości.")
+
+
+@bot.tree.command(name="chatknml", description="Porozmawiaj z chatbotem")
+async def chatknml(interaction: discord.Interaction, *, prompt: str):
+    """Passes the prompt to the llm and returns the answer."""
+    await interaction.response.defer()
+
+    query = f"\n\n### Instructions:\n {prompt} \n\n### Response:\n"
+    stop_signs = ["\n", "###"]
+
+    result = query_llm(query, stop_signs)
+
+    await interaction.followup.send(result["choices"][0]["text"])
 
 
 def main():

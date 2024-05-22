@@ -3,6 +3,7 @@
 import json
 import os
 from collections import defaultdict
+from http import HTTPStatus
 from typing import Self
 
 import discord
@@ -52,15 +53,13 @@ async def sync(ctx) -> None:
 
 def query_llm(prompt, stop_signs):
     """Returns llm's response."""
-    url = "http://llm:9000/v1/completions"
+    url = "http://0.0.0.0:9000/v1/completions"
     headers = {"Content-Type": "application/json"}
     data = {"prompt": prompt, "stop": stop_signs}
 
     response = requests.post(url, headers=headers, data=json.dumps(data), timeout=5)
 
-    respose_status_code = 200
-
-    if response.status_code == respose_status_code:
+    if response.status_code == HTTPStatus.CREATED:
         return response.json()
 
     return response.text
@@ -99,7 +98,7 @@ async def chatknml(interaction: discord.Interaction, *, prompt: str):
     """Passes the prompt to the llm and returns the answer."""
     await interaction.response.defer()
 
-    query = "\n\n### Instructions:\n" + prompt + "\n\n### Response:\n"
+    query = f"\n\n### Instructions:\n {prompt} \n\n### Response:\n"
     stop_signs = ["\n", "###"]
 
     result = query_llm(query, stop_signs)

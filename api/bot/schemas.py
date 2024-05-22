@@ -2,7 +2,7 @@ from ninja import Schema
 
 
 class BotIn(Schema):
-    text:str
+    text: str
 
 
 class BotOut(Schema):

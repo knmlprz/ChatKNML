@@ -34,9 +34,7 @@ def retrieve_document_controller(id: int) -> DocumentOut:
 
 def update_document_controller(payload: DocumentIn, id: int) -> DocumentOut:
     with transaction.atomic():
-        document = Document.objects.get(id=id)
-        for attr, value in payload.dict().items():
-            setattr(document, attr, value)
+        document = Document.objects.filter(id=id).update(**payload.dict())
         document.full_clean()
         document.save()
 

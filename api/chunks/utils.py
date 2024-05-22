@@ -1,7 +1,6 @@
 from documents.models import Document
 from pydantic import BaseModel
 from itertools import batched
-from typing import List
 
 
 class ChunkData(BaseModel):

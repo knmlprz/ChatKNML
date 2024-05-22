@@ -14,7 +14,7 @@ class ChunkData(BaseModel):
 
 def split_document_into_chunks(
     document: Document, chunk_size: int = 100
-) -> List[ChunkData]:
+) -> list[ChunkData]:
     """Splits document into chunks of size chunk_size and returns them as ChunkData objects."""
     chunks = []
     start_char = 0

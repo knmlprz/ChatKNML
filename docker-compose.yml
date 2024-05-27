@@ -27,6 +27,9 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      inner:
+        ipv4_address: 192.168.0.2
 
   llm-embedding-cpu:
     profiles: [ "cpu" ]
@@ -36,6 +39,9 @@ services:
       - ./llm/models:/models
     ports:
       - "9000:9000"
+    networks:
+      inner:
+        ipv4_address: 192.168.0.3
 
   llm-embedding-gpu:
     profiles: [ "gpu" ]
@@ -52,3 +58,13 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
+    networks:
+      inner:
+        ipv4_address: 192.168.0.3
+
+networks:
+  inner:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.0.0/30

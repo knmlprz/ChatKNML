@@ -1,6 +1,7 @@
+from itertools import islice
+
 from documents.models import Document
 from pydantic import BaseModel
-from itertools import batched
 
 
 class ChunkData(BaseModel):
@@ -15,6 +16,14 @@ def split_document_into_chunks(
     document: Document, chunk_size: int = 100
 ) -> list[ChunkData]:
     """Splits document into chunks of size chunk_size and returns them as ChunkData objects."""
+
+    def batched(iterable, n):
+        if n < 1:
+            raise ValueError('n must be at least one')
+        iterable = iter(iterable)
+        while batch := tuple(islice(iterable, n)):
+            yield batch
+
     chunks = []
     start_char = 0
 

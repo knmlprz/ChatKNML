@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+import requests
+
 from chunks.models import Chunk
 from chunks.schemas import ChunkIn, ChunkOut
 from documents.models import Document
@@ -8,9 +10,18 @@ from documents.models import Document
 def create_chunk_controller(payload: ChunkIn) -> tuple[HTTPStatus, ChunkOut]:
     document_instance = Document.objects.get(pk=payload.document_idx)
 
-    # TODO: Embedings
+    # TODO: embeddings
+
     chunk_data = payload.dict()
     chunk_data["document_idx"] = document_instance
+
+    response = requests.post(
+        url="http://0.0.0.0:9000/v1/embeddings",
+        data={"input": payload.text})
+
+    if response.ok:
+        chunk_data["embedding"] = response.content
+
     chunk = Chunk(**chunk_data)
     chunk.full_clean()
     chunk.save()
@@ -29,6 +40,7 @@ def retrieve_chunk_controller(id: int) -> ChunkOut:
 def update_chunk_controller(payload: ChunkIn, id: int) -> ChunkOut:
     document_instance = Document.objects.get(pk=payload.document_idx)
 
+    # TODO: Embeddings
     chunk = Chunk.objects.get(id=id)
     chunk_data = payload.dict()
     chunk_data["document_idx"] = document_instance

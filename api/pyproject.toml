@@ -16,7 +16,7 @@ django-ninja = "^1.0.1"
 pgvector = "^0.2.4"
 django-stubs-ext = "^4.2.7"
 requests = "^2.32.2"
-
+celery = "^5.4.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"

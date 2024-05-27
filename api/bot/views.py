@@ -15,7 +15,11 @@ router = Router(tags=["Bot"])
 @router.post("/bot/", response={HTTPStatus.CREATED: BotOut})
 def query_llm(request: HttpRequest, payload: BotIn):
     # TODO: payload na embeding  -> Vector -> Szukamy w bazie podobne -> dokument do payloada
-    response = requests.post("0.0.0.0:9000/v1/embeddings", data=payload)
-    Chunk.objects.order_by(L2Distance('embedding', response))
+    response = requests.post("0.0.0.0:9000/v1/embeddings", data=payload.text)
+
+    if not response.ok:
+        return HTTPStatus.INTERNAL_SERVER_ERROR
+
+   # Chunk.objects.order_by(L2Distance('embedding', response))
     response = requests.post("0.0.0.0:9000/v1/completions", data=payload)
     return query_llm_controller(response)

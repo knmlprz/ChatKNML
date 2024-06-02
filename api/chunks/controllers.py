@@ -16,7 +16,7 @@ def create_chunk_controller(payload: ChunkIn) -> tuple[HTTPStatus, ChunkOut]:
     chunk_data["document_idx"] = document_instance
 
     response = requests.post(
-        url="http://0.0.0.0:9000/v1/embeddings",
+        url="http://0.0.0.0:9000/v1/embeddings/",
         data={"input": payload.text})
 
     if response.ok:

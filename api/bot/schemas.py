@@ -2,8 +2,12 @@ from ninja import Schema
 
 
 class BotIn(Schema):
-    text: str
+    input: str
 
 
 class BotOut(Schema):
-    text: str
+    output: str
+
+
+class BotError(Schema):
+    pass

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "chunks.apps.ChunksConfig",
     "documents.apps.DocumentsConfig",
+    "bot.apps.BotConfig",
 ]
 
 MIDDLEWARE = [

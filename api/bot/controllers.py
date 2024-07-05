@@ -21,5 +21,5 @@ def query_llm_controller(payload: BotIn) -> tuple[HTTPStatus, BotOut]:
                  openai_api_base=model_url
                  )
     llm_response = llm.invoke(
-        "Odpowiedz na pytanie używając 5 zdań" + payload.input + "\n\nWiedząc że" + similar_chunk.text)
+        "\n\n### Jesteś bardzo pomocnym, kulturalnym i nie używającym wulgarnych słów asystentem na Politechnice Rzeszowskiej. Twoim zadaniem jest odpowiadać bardzo konkretnie i zwięźle na pytania. Oto pytanie do analizy: " + payload.input + "\n\n oraz na podstawie podanych informacji " + similar_chunk.text + "\n\n i udzielić odpowiedzi w języku polskim.")
     return HTTPStatus.OK, BotOut(output=str(llm_response))

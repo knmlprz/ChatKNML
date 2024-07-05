@@ -1,9 +1,10 @@
-"""Sets up discord bot."""
-
+import asyncio
 import discord
+import functools
 import json
 import os
 import requests
+import typing
 from collections import defaultdict
 from discord.ext import commands
 from http import HTTPStatus
@@ -50,6 +51,7 @@ def query_llm(prompt):
     response = requests.post(url, headers=headers, data=json.dumps(data))
 
     if response.status_code == HTTPStatus.OK:
+        print("fdafhdfh")
         return response.json()['output']
 
     return response.text
@@ -68,12 +70,10 @@ async def show(ctx: commands.Context, limit: int = 100):
 
 
 @bot.command(name="chatknml", description="Porozmawiaj z chatbotem")
-async def chatknml(ctx: commands.Context, prompt: str):
+async def chatknml(ctx: commands.Context, *, prompt: str):
     """Passes the prompt to the llm and returns the answer."""
-    print(prompt)
     result = query_llm(prompt)
-    print(result)
-    await ctx.send(result)
+    await ctx.send("HEJ" + result)
 
 
 def main():

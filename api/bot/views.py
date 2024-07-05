@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from ninja import Router
 
 from bot.controllers import query_llm_controller
-from bot.schemas import BotIn, BotOut, BotError
+from bot.schemas import BotIn, BotOut
 
 router = Router(tags=["Bot"])
 

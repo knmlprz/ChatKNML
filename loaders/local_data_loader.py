@@ -1,9 +1,10 @@
+import os
+import logging
 from langchain.document_loaders.base import BaseLoader
 from langchain.document_loaders import PyPDFLoader, JSONLoader
 from langchain.document_loaders.text import TextLoader
 from langchain.document_loaders.csv_loader import CSVLoader
 from typing import Union, List
-import os
 
 
 class LocalDataLoader(BaseLoader):
@@ -45,14 +46,12 @@ class LocalDataLoader(BaseLoader):
                 or having the same text as another document in the input list.
         """
         junk_docs = [doc for doc in docs if len(doc.page_content) < 300]
-        seen_texts = set()
+        seen_texts = {}
         clear_docs = []
         for doc in docs:
             if doc.page_content not in seen_texts and doc not in junk_docs:
                 clear_docs.append(doc)
                 seen_texts.add(doc.page_content)
-            else:
-                pass
         return clear_docs
 
     def load(self) -> List[dict]:
@@ -67,18 +66,52 @@ class LocalDataLoader(BaseLoader):
         """
         docs = []
         for path in self.path_list:
-            for root, _, files in os.walk(path):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    d_type = os.path.splitext(file_path)[1].lower()
-                    if d_type in LocalDataLoader.loaders:
-                        loader = LocalDataLoader.loaders[d_type](file_path)
-                        try:
-                            docs.append(loader.load()[0])
-                        except Exception as e:
-                            print(f"Exception: {e}")
-                            continue
+            docs.extend(self._process_directory(path))
 
-        docs = LocalDataLoader.junk_remover(docs)
-        docs = LocalDataLoader.ds_converter(docs)
+        docs = self._process_loaded_data(docs)
         return docs
+
+    def _process_directory(self, path: str) -> List[dict]:
+        """
+        Process all files in the given directory path using the appropriate loaders.
+
+        :param path: The path to the directory containing the files.
+        :return: A list of dictionaries with loaded data.
+        """
+        loaded_docs = []
+        for root, _, files in os.walk(path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                doc = self._load_file(file_path)
+                if doc:
+                    loaded_docs.append(doc)
+        return loaded_docs
+
+    def _load_file(self, file_path: str) -> dict:
+        """
+        Load a single file using the appropriate loader based on its extension.
+
+        :param file_path: The full path to the file.
+        :return: A dictionary with loaded data or None if an error occurred.
+        """
+        file_extension = os.path.splitext(file_path)[1].lower()
+        loader = LocalDataLoader.loaders.get(file_extension)
+        
+        if loader:
+            try:
+                return loader(file_path).load()[0]
+            except Exception as e:
+                logging.error(f"Error loading file {file_path}: {e}")
+        else:
+            logging.warning(f"No loader found for file type: {file_extension}")
+        return None
+
+    def _process_loaded_data(self, docs: List[dict]) -> List[dict]:
+        """
+        Process loaded data by removing junk and converting the data structure.
+
+        :param docs: A list of dictionaries with raw loaded data.
+        :return: A list of dictionaries with cleaned and processed data.
+        """
+        docs = LocalDataLoader.junk_remover(docs)
+        return LocalDataLoader.ds_converter(docs)

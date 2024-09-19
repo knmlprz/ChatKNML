@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD013 -->
 # 📙 Notebooks
 
 Ten katalog zawiera notebooki, na których były wykonywane szkice architektury

@@ -16,3 +16,4 @@ def upload_data(web_url=None, web_depth=None, local_path=None):
 
     for doc in docs:
         requests.post(url, json=doc)
+        

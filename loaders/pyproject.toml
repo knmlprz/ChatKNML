@@ -15,6 +15,6 @@ newspaper3k = "^0.2.8"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 flake8 = "*"

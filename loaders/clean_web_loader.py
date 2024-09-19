@@ -1,9 +1,10 @@
+from newspaper import Article
+from functools import reduce
+from typing import List, Optional
+from langchain_core.documents import Document
 from langchain.document_loaders.base import BaseLoader
 from langchain.document_loaders.recursive_url_loader import RecursiveUrlLoader
 from langchain.text_splitter import TextSplitter, SpacyTextSplitter
-from newspaper import Article
-from typing import Union, List, Optional
-from functools import reduce
 
 
 class CleanWebLoader(BaseLoader):
@@ -12,7 +13,7 @@ class CleanWebLoader(BaseLoader):
     and converting it into a specific data structure.
 
     Attributes:
-        url_list (Union[List[str], str]): Either a string or a list of strings representing URLs.
+        url_list (list[str] | str): Either a string or a list of strings representing URLs.
         depth (int): Maximum depth for recursive extraction (default is 1).
 
     Methods:
@@ -26,7 +27,7 @@ class CleanWebLoader(BaseLoader):
 
     article = Article("")
 
-    def __init__(self, url_list: Union[List[str], str], depth: int = 1):
+    def __init__(self, url_list: list[str] | str, depth: int = 1):
         """
         Initializes the CleanWebLoader instance.
 
@@ -38,7 +39,7 @@ class CleanWebLoader(BaseLoader):
         self.depth = depth
 
     @staticmethod
-    def newspaper_extractor(html):
+    def newspaper_extractor(html: str):
         """
         Extracts and cleans text content from HTML using the 'newspaper' library.
 
@@ -50,7 +51,7 @@ class CleanWebLoader(BaseLoader):
         return " ".join(CleanWebLoader.article.text.split())
 
     @staticmethod
-    def ds_converter(docs):
+    def ds_converter(docs: list[Document]):
         """
         Converts a list of documents into a specific data structure.
 
@@ -60,7 +61,7 @@ class CleanWebLoader(BaseLoader):
         return [{"text": doc.page_content} for doc in docs]
 
     @staticmethod
-    def junk_remover(docs):
+    def junk_remover(docs: list[Document]):
         """
         Identifies and returns a list of suspected junk documents based on specific criteria.
 
@@ -126,18 +127,14 @@ class CleanWebLoader(BaseLoader):
         :param chunk_overlap: Overlap size between chunks (default is 80).
         :return: List of dictionaries, each representing a document with 'text' key.
         """
-        if text_splitter is None:
-            _text_splitter: TextSplitter = SpacyTextSplitter(
-                pipeline="pl_core_news_sm",
-                chunk_size=chunk,
-                chunk_overlap=chunk_overlap,
-            )
-        else:
-            _text_splitter = text_splitter
-        docs = self.load()
+        _text_splitter: text_splitter or TextSplitter = SpacyTextSplitter(
+            pipeline="pl_core_news_sm",
+            chunk_size=chunk,
+            chunk_overlap=chunk_overlap,
+        )
         docs = reduce(
             lambda data, method: method(data),
             [CleanWebLoader.junk_remover, CleanWebLoader.ds_converter],
-            docs,
+            self.load(),
         )
         return _text_splitter.split_documents(docs)

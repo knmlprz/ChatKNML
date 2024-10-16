@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = "^4.2.15"
+django = "^4.2.16"
 uvicorn = "^0.24.0.post1"
 channels = "^4.0.0"
 psycopg2-binary = "^2.9.9"

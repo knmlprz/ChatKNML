@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
 discord = "^2.3.2"
-aiohttp = "^3.9.4"
+aiohttp = "^3.10.2"
 
 [tool.poetry.group.dev.dependencies]
 aioresponses = "^0.7.6"

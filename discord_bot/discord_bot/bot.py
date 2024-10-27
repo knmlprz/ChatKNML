@@ -44,7 +44,7 @@ async def sync(ctx) -> None:
 
 def query_llm(prompt):
     """Returns llm's response."""
-    url = "http://192.168.0.1:8000/api/bot/"
+    url = "http://api:8000/api/bot/"
     headers = {"Content-Type": "application/json"}
     data = {"input": prompt}
 
